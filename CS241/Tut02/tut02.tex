@@ -1,0 +1,77 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{mips}
+
+\title{\vspace{-15ex}CS241 Tutorial 2\vspace{-1ex}}
+\date{May 22nd, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	\section*{SymbolTables}
+	
+	\subsection*{1)}
+	\lstset{language=[mips]Assembler}
+	\begin{lstlisting}
+	begin:
+	label: beq $0, $0, after
+	jr $4
+	after:
+	sw $31, 16($0)
+	lis $4
+	abc0: abc1: .word after
+	
+	badStore:
+	lw $20, 4($0)
+	sw $20, 28($0)
+	end:
+	\end{lstlisting}
+	
+	\begin{tabular}{c | c}
+		name & value(addr) \\ \hline
+		begin & 0x0 \\
+		label & 0x0 \\
+		after & 0x8 \\
+		abc0 & 0x10 \\
+		abc1 & 0x10 \\
+		badStore & 0x14 \\
+		end & 0x1c \\
+	\end{tabular}\\\\
+	
+	\section*{Assembly Errors}
+	\lstset{language=[mips]Assembler}
+	\begin{lstlisting}
+	0 label: label: .word label
+	4.word ;0
+	8 .word aaaaa
+	c .word 1 2 3
+	10 .word 2147483648 abcde:
+	14 .word ,
+	\end{lstlisting}
+	0: Two labels with the same name\\
+	4: Needs a number after .word (not in a comment)
+	8: cant have letters\\
+	c: has to have exactly 1 opperand (spaces make it 3)\\
+	10: we can get unsigned or signed integers so you can have values from $[-2^{31}, 2^{31} - 1]$ and $[0, 2^{32} - 1]$ so this number is allowed but the label has to be the very first thing on the line\\
+	14: no comma, bad (has to be the right thing).\\
+	
+	\section*{C++ Review}
+	\myt{Containers:}
+	\begin{enumerate}
+		\item Pair$<int, string>$ p
+		\item Vector$<int>$ v; v.push\_back(5);
+		\item List$<int>$ l; l.push\_back(10); l.push\_front(5);
+		\item Map$<string, int>$ m; m["foo"]=5; 
+		\item Set$<int>$ s;
+	\end{enumerate}
+	
+	
+	
+\end{document}
