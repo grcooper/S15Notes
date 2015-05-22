@@ -1,0 +1,148 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{circuitikz}
+
+\title{\vspace{-15ex}CS251 - Lecture 3\vspace{-1ex}}
+\date{May 11th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	\myt{Truth Tables:}\\
+	\begin{tabular}{c | c | c}
+		x & y & F \\ \hline
+		0 & 0 & 0\\
+		0 & 1 & 1\\
+		1 & 0 & 1\\
+		1 & 1 & 0\\
+	\end{tabular}
+	
+	\begin{enumerate}
+		\item Define F to be 0,1 depending on the input values
+		\item F is \underline{true} based on \underline{2}
+		\item Output function for F, F = \underline{$\bar{X}Y + X\bar{Y}$} - XY terms are minterms
+		\item Take this: Sum of Products build a Circuit
+	\end{enumerate}
+	
+	n inputs \{ $\equiv\ \Box \equiv$ \} m outputs\\
+	Above is the circuit that implements the output fuctions\\
+	
+	\myt{4 bit binary numbers:}\\
+	$$\overset{\_\_}{2^3}\overset{\_\_}{2^2}\overset{\_\_}{2^1}\overset{\_\_}{2^0}$$
+	$$= 2^0 \times 1 + 2^1 \times 1 + 2^2 \times 1 + 2^3 \times 1$$
+	$$= 15$$
+	
+	\myt{Course notes Slide 2-2:}\\
+	$F = \bar{X}\bar{Y}Z + X\bar{Y}Z + XY\bar{Z} + XYZ$\\
+	There are 4 minterms above\\
+	$\bar{G} = XYZ$\\
+	$G = \bar{XYZ}$
+	\pagebreak
+	\subsection*{Hardware}
+	\subsubsection*{Gates}
+	\begin{circuitikz} \draw
+		(0,0) node[and port] (myand) {}
+		(myand.in 1) node[anchor=east] {1}
+		(myand.in 2) node[anchor=east] {2}
+		(myand.out) node[anchor=west] {3}
+		;
+	\end{circuitikz}
+	
+	\myt{AND}\\
+	 \begin{tabular}{c | c | c}
+	 	x & y & F \\ \hline
+	 	0 & 0 & 0\\
+	 	0 & 1 & 0\\
+	 	1 & 0 & 0\\
+	 	1 & 1 & 1\\
+	 \end{tabular}
+	 
+	 \begin{circuitikz} \draw
+	 	(0,0) node[or port] (myand) {}
+	 	(myand.in 1) node[anchor=east] {1}
+	 	(myand.in 2) node[anchor=east] {2}
+	 	(myand.out) node[anchor=west] {3}
+	 	;
+	 \end{circuitikz}
+	 \\
+	 \myt{OR}\\
+	 \begin{tabular}{c | c | c}
+	 	x & y & F \\ \hline
+	 	0 & 0 & 0\\
+	 	0 & 1 & 1\\
+	 	1 & 0 & 1\\
+	 	1 & 1 & 1\\
+	 \end{tabular}
+	 
+	 \begin{circuitikz} \draw
+	 	(0,0) node[nand port] (myand) {}
+	 	(myand.in 1) node[anchor=east] {1}
+	 	(myand.in 2) node[anchor=east] {2}
+	 	(myand.out) node[anchor=west] {3}
+	 	;
+	 \end{circuitikz}
+	 
+	 \myt{NAND}\\
+	 \begin{tabular}{c | c | c}
+	 	x & y & F \\ \hline
+	 	0 & 0 & 1\\
+	 	0 & 1 & 1\\
+	 	1 & 0 & 1\\
+	 	1 & 1 & 0\\
+	 \end{tabular}
+	
+	\begin{circuitikz} \draw
+		(0,0) node[not port] {}
+		;
+	\end{circuitikz}
+	\myt{NOT}\\
+	\begin{tabular}{c | c}
+		x & F \\ \hline
+		0 & 1\\
+		0 & 1\\
+		1 & 0\\
+		1 & 0\\
+	\end{tabular}
+	
+	\subsection*{More Truth Tables}
+	\subsubsection*{Don't Cares slide 2-6}
+	x = 0, or 1 does not matter\\
+	$$F = \bar{A}BC + \bar{A}B\bar{C}$$
+	$$F = \bar{A}B(C + \bar{C})$$
+	$$F = \bar{A}B$$
+	The last line is a reduced function, we can remove anything that is true no matter what.\\
+	
+	\subsubsection*{Useing Overlapping Non-minimal Terms}
+	(slide 2-8)\\
+	\begin{tabular}{c | c| c | c}
+		A & B & C & F \\ \hline
+		... & & & \\
+		1 & 0 & 0 & 0 \\
+		1 & X & 1 & 1 \\
+		1 & 1 & X & 1 \\
+	\end{tabular}
+	
+	break\\\\
+	
+	\begin{circuitikz} \draw
+		(0,0) node[and port] (myand) {}
+		(myand.in 1) node[anchor=east] {$\bar{x}$}
+		(myand.in 2) node[anchor=east] {y}
+		(0,2) node[and port] (andy) {}
+		(andy.in 1) node[anchor=east] {X}
+		(andy.in 2) node[anchor=east] {$\bar{x}$}
+		(2,1) node[or port] (myor) {}
+		(myand.out) |- (myor.in 2) {}
+		(andy.out) |- (myor.in 1) {}
+		(myor.out) node[anchor=west] {F}
+		
+		;
+	\end{circuitikz}
+	
+\end{document}

@@ -1,0 +1,41 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}Math 239 Lecture 8\vspace{-1ex}}
+\date{May 22th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	\section*{Product Lemma}
+	Recall:\\
+	
+	Sets A,B with weight $\alpha$, $\beta$\\
+	Set A $\times$ B, with weight w(a,b) = $\alpha(a) + \beta(b)$\\
+	Then $\Phi_{A\times B}(x) \cdot \Phi_B(x)$\\
+	
+	\subsection*{Proof of the Product Lemma}
+	$$\Phi_A(x) \cdot \Phi_B(x) = (\sum_{a \in A}x^{\alpha(a)})(\sum_{b \in B}x^{\beta(b)})$$
+	$$= \sum_{a \in A}\sum_{b \in B}x^{\alpha(a)}x^{\beta(b)}$$
+	$$\sum_{(a,b) \in A \times B}x^{\alpha(a) + \beta(b)}$$
+	$$= \sum_{(a,b) \in A \times B}x^{w(a,b)}$$
+	$$= \Phi_{A\times B}(x)$$
+	
+	\myt{Example:} Let $N_0 = \{0,1,2,3,...\}$ w(a) = a. Then:\\
+	
+	$$\Phi_{N_0}(x) = 1 + x + x^2 + x^3 + ... = \frac{1}{1-x}$$
+	$\frac{1}{(1-x)^k}$ is the generating series for $N_0 \times N_0 ... \times N_0 = N_0^k$\\
+	Where $w(a_1,a_2...a_k) = a_1 + a_2 + ... + a_k$ by product lemma.\\
+	
+	So $[x^n]\frac{1}{(1-x)^k}$ is the number of k tuples ($a_1...a_k) \in N_0^k$ where they sum to n.\\
+	$\iff$ the number of non-negative integer solutions to $a_1 + a_2 + ,,, + a_k = n$\\
+	
+	
+	
+\end{document}

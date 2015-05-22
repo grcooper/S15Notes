@@ -1,0 +1,127 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+
+\title{\vspace{-15ex}CS241 Lec2- Machine Language\vspace{-1ex}}
+\date{May 6th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	Computer programs operate on data.\\
+	Computer programs \underline{are} data\\
+	- von Neuman architecture\\
+	- reside in the same memory as the data they operate on.\\
+	$\therefore$ possible to write programs that manipulate other programs\\
+	
+	How do we know what is program and what is data?\\
+	We don't\\
+	
+	What do instructions look like? What instructions are there?\\
+	- Many different machine languages (processor specific)\\
+	
+	For us: MIPS (simplified:) 18 different 32-bit instructions\\
+	
+	\myt{The MIPS Machine}\\
+	
+	\underline{CPU}: central Processing unit
+	\underline{ALU}: Arithmetic/Logic Unit, does math
+	\underline{Control Unit}:\\
+	- decodes instructions\\
+	- dispatches to other parts of the computer to carry them out\\
+	\underline{Memory}: Many kinds:\\
+	\underline{FAST} \\
+	CPU, Cache, Main Memory (RAM), disk memory, network memory \underline{SLOW}\\
+	
+	Our focus is CPU and Main Memory\\
+	On the CPU - small amount of very fast memory (registers)\\
+	MIPS - 32 "general purpose" registers, \$0 ... \$31\\
+	- each holds 32 bits - 1 word\\
+	
+	CPU can only operatoe on data in registers\\
+	\$0 is always 0.\\
+	\$31 is also special (later)\\
+	\$30 is also sort of special (later)\\
+	
+	eg. resiter operation: add the contents of regs \$s + \$t, put the result in \$d\\
+	
+	How many bits does it take to encode a reg \#?\\
+	$2^5 = 32, \therefore 5$\\
+	$\therefore$ 15 bits to encode 3 reg \#s\\
+	leaves 15 bits to encode the operation.\\
+	
+	\underline{RAM}:
+	- Large amount of memory away from the CPU\\
+	- data travels between CPU + RAM on the \underline{BUS}\\
+	- big array of n bytes $n \approx 10^{9+}$\\
+	- each cell has an address 0, 1, ..., n -1\\
+	- each 4 byte block is a word
+	$\therefore$ words have addresses that are multiples of 4: 0, 4, 8, c, 10, 14, 18, 1c, 20, ...\\
+	- much slower than regs\\
+	- data in RAM must be transfered to regs before it can be used.\\
+	\myt{Communicating with RAM - 2 commands:}\\
+	\begin{enumerate}
+		\item load 
+		\begin{itemize}
+			\item (Transfer a word from RAM to reg)
+			\item desired address goes in Memory Address Register (MAR)
+			\item goes out on the BUS
+			\item data at that location comes back on the BUS and goes into the Memory Data Register (MDR)
+			\item Value in MDR moved to destination register.
+		\end{itemize}
+		\item Store (reverse of load)
+	\end{enumerate}
+	
+	The computer doesn't know which words contain instructions and which contain data.Then how does it execture code?\\
+	Special reg called PC (program counter) hods the address of the \underline{next} instruction to run.\\
+	By convention, we guarantee that a specifc address (say, 0) contains code, initialize PC = 0.\\\\\\\\\\\\
+	\myt{Computer then runs the fetch-execute cycle:}\\
+	\begin{itemize}
+		\item $PC \Leftarrow 0$
+		\item loop
+		\begin{itemize}
+			\item IR $\leftarrow$ MEM[PC] (IR = instruction register, holds the current instruction)
+			\item PC $\leftarrow$ PC + 4
+			\item decode and execute instruction in IR
+		\end{itemize}
+		\item end loop
+		\item this is the only program the machine really runs
+	\end{itemize}
+	
+	\underline{NOTE}: PC holds the address of the \underline{next} instruction, while the \underline{current} instruction is running\\
+	
+	\myt{Q:} How does the program get executed?\\
+	\myt{A:} A program called a \underline{loader} that puts your program in memory and sets PC to the address of the first instruction in your program.\\
+	
+	\myt{Q:} What happens when your program ends?\\
+	\myt{A:} Need to return control to the loader. Need to set PC to the address of the next instruction in the loader. Which address is that? \$31 will contain the correct address. Set PC to register \$31. jr instruction in mips.\\
+	
+	\myt{Example 1:} Add the value in \$5 to the value in \$7, store the result in \$3 and return.\\
+	
+	MIPS MACHINE CODE\\
+	\begin{tabular}{c | c | c | c }
+		Location & Binary & Hexadecimal & Meaning \\ \hline
+		00000000 & 0000 0000 1010 0111 0001 1000 0010 0000 & 0x00A71820 & add \$3 \$5 \$7 \\ \hline
+		00000004 & 0000 0011 1110 0000 0000 0000 0000 1000 & 0x03e00008 & jr \$31 \\ \hline
+	\end{tabular}
+	
+	\myt{Example 2:} Add 42 + 52, store in \$3, return.\\
+	lis \$d 
+	- "Load immediate and skip"\\
+	- treat the \underline{next} word as a value, load into \$d, and skip over it to the \underline{following} instruction.\\
+	
+	MIPS MACHINE CODE\\
+	\begin{tabular}{c | c | c | c }
+		Location & Binary & Hexadecimal & Meaning \\ \hline
+		00000000 & 0000 0000 1010 0111 0001 1000 0010 0000 & 0x00A71820 & add \$3 \$5 \$7 \\ \hline
+		00000004 & 0000 0011 1110 0000 0000 0000 0000 1000 & 0x03e00008 & jr \$31 \\ \hline
+	\end{tabular}
+	
+	
+	
+\end{document}

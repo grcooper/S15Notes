@@ -1,0 +1,123 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+\newcommand{\tab}[1]{\hspace{.2\textwidth}\rlap{#1}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}CS240 Tutorial 2\vspace{-1ex}}
+\date{May 13th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	\myt{Topics:}
+	\begin{itemize}
+		\item small o proof
+		\item loop analysis
+		\item asymptotic proofs
+	\end{itemize}
+	
+	\myt{Recall:} We say that $f(n) \in o(g(n)) \iff \forall e > 0, \exists n_0 > 0$ such that f(n) $\leq$ cg(n).\\
+	
+	\subsubsection*{Q1)}
+	$2^{\sqrt{\log n}} \in o(n)$ : Show from first principals.\\
+	Goal: $2^{\sqrt{\log n}} < cn$\\
+	
+	Observe that $\underset{1}{2^{\sqrt{\log n}} < 2^{log_4{n}}} \underset{2}{<} cn$\\
+	\myt{What values of n does 1 hold?}\\
+	$$\sqrt{\log{n}} < log_4{n}$$
+	$$\sqrt{\log{n}} < 1/2log(n)$$
+	$$2 < \sqrt{logn}$$
+	$$4 < log(n)$$
+	$$16 < n$$
+	$$2^{log_4{n}} < cn$$
+	$$\sqrt{n} < cn$$
+	$$1/c < \sqrt{n}$$
+	$$1/c^2 < n$$
+	Pick $n_0 = max(16, 1/c^2)$
+	
+	\subsubsection*{Q2)}
+	Analyze the following:\\
+	for i = 1 to n \{\\
+	\tab for j = 1 to i \{\\
+	\tab \tab k = j\\
+	\tab \tab 	while k $>$ 1 \{\\
+	\tab \tab \tab k = k / 2\\
+	\tab \tab\}\\
+	\tab \}	\\
+	\}\\
+	
+	$$T(n) = \sum_{i = 1}^{n}\sum_{j=1}^{i}\log{j}$$
+	$$ = \sum_{i = 1}^{n}\log{i!}$$
+	Upper bound: 
+	$\leq \sum_{i = 1}^{n}\log{n!}$\\
+	$\leq \sum_{i = 1}^{n}cn\log{n}$\\
+	
+	Recall that\\
+	$\log{n!} \in O(n\log{n})$
+	$ \implies \sum_{i = 1}^{n}cn\log{n} = cn^2\log{n} \in O(n^2\log{n})$
+	
+	Lower Bound:
+	$$\sum_{i=1}^{n}\log{i!}$$
+	$$\geq \sum_{i = n/2 + 1}^{n}\log{i!}$$
+	$$\geq \sum_{i=n/2 + 1}^{\log{n/2!}}$$
+	$$n/2(c(n/2)\log{n/2}) = n/2\log{n/2!}$$
+	$$\geq c(n/4)(\log{n/2})$$
+	$$\in \Omega(n^2\log(n))$$
+	
+	\subsubsection*{Q3)}
+	for i = 1 to n\\
+		j = i\\
+			while j $\leq$ n\\
+				j=2j\\
+	
+	Aside:\\
+	After t iterations(of the inner loop), j = $i2^t$\\
+	$i2^{t-1} < n < i2^t$\\
+	$t = \log{n/i}$
+	
+	Answer:
+	$$T(n) = \sum_{i = 1}^{n}\log{n/i}$$
+	$$= \sum_{i = 1}{n}\log{n} - \log{i}$$
+	$$= n\log{n} - \sum_{i = 1}^{n}\log{i}$$
+	$$= n\log{n} - \log{n!}$$
+	$$\approx n\log{n} - log([\frac{n}{e}]^n)$$
+	$$= n\log{n} - n\log(\frac{n}{e})$$
+	$$= n\log{n} - (n\log{n} - n\log{e})$$
+	$$= n\log{e} \in \Theta(n)$$
+	
+	\myt{ASIDE: Stirling's Approximation:}\\
+	$$n! \approx (\frac{n}{e})^n\sqrt{2\pi n}$$
+	or
+	$$n! \approx (\frac{n}{e})^n$$
+	
+	\subsubsection*{Q4}
+	Prove or disprove:\\
+	If $f(n) \in \Theta(g(n))$ is $f(n) - g(n) \in \Theta(1)$\\
+	This is false, as shown above\\
+	$$f(n) = n^2, g(n) = n^2 + n$$
+	$$f(n) \in \Theta g(n)$$
+	$$f(n)-g(n) = n \notin \Theta(1)$$
+	
+	\subsubsection*{Q5}
+	If $f(n) \in O(g(n))$, and $g(n) \in O(h(n))$, is $f(n) \in O(h(n))$\\
+	True $\rightarrow f(n) \leq cg(n), \forall n \geq n_0$\\
+	$g(n) \leq c'h(n), \forall n \geq n_0'$\\
+	$f(n) \leq cg(n) \leq cc'h(n)$\\
+	Pick $c' = cc'$\\
+	$f(n) \leq c''h(n), \forall n \geq max(n_0, n_0')$\\
+	
+	\subsubsection*{Q6}
+	If $f(n) \in O(g(n))$, and $g(n) \in \Omega(h(n))$, is $f(n) \in \Omega(h(n))$\\
+	
+	Consider $f(n) = n$ and $g(n) = n^3$ and $h(n) = n^2$\\
+	check: $f(n) \in O(g(n))$ - True \\
+	$g(n) \in \Omega(h(n))$ - True\\
+	$f(n) \in \Omega(h(n))$ - False\\
+	
+	
+	
+\end{document}

@@ -1,0 +1,140 @@
+CS 241 Lecture 1 - Foudnations of Sequential Programs
+
+Brad Lushman 
+
+DC 3110 bmlushma
+
+ISA: Akshaya Senthi cs241@uwaterloo.ca
+
+https://www.student.cs.uwaterloo.ca/~cs241
+
+
+What is a "Sequential Program"
+	- "Ordinary" (Not concurrent or parallel)
+	- "Single-threaded" (Only one thing going on at a time)
+
+Foundations
+	- understand how seq.programs "work"
+	- from the groud up
+
+Starting point: 
+	- bare hardware (sort of)
+	- for CS241 (simulated MIPS machine)
+		- only interprets 1s & 0s
+
+At the end - get programs written in a C-like language to run on MIPS
+
+BINARY & HEXIDECIMAL NUMBERS
+
+bit - 0 or 1 		- high or low voltages
+	- binary digit 	- configurations of magnetic media (CD etc...)
+	- all the computer understands
+	- group bits together
+
+byte - 8 bits, eg 11001001 2^8 = 256 possible bytes
+
+word 	- machine specifi grouping of bytes
+		- we will assume at 32-bit computer architecture,
+			- 1 word = 32 bits = 4 bytes
+
+4bits (1/2 a byte) - sometimes called a nibble
+
+Q: Given a byte, (or a word) in the computer's memory, what does it mean?
+
+Ex: 11001001 - what does it mean?
+
+Ans: Depends on the adress of the location, and what is stored in the hash table associated with that byte
+	- It could mean many things
+
+1) it could represent a number - what number is it?
+	- Binary number system
+	- 1*2^7 + 1*2^6 + 0*2^5 + 0*2^4 + 1*2^3 + 0*2^2 + 0*2^1 + 1*2^0 = 201
+
+How can we represent negative numbers?
+Simple way 	- reserve the first bit to represent the sign
+			- 0 for positive, 1 for negative
+			- sign magnitude representation
+			- now 11001001 = -(64 + 8 + 1) = -73
+			- two representations for 0: 00000000 and 10000000
+			- waste (we don't need two zeros)
+			- arithmetic is tricky (eg. add a positive and a negitive number)
+
+Better way	- 2's compliment rep'n.
+			1) Interpret the n-bit number as an unsigned integer
+			2) If the first bit is 0, done!
+			3) Else, subtract 2^n (and make negative)
+			eg: for n = 3
+			000 | 001 | 010 | 011 | 100 | 101 | 110 | 111
+			_____________________________________________
+			  0 |  1  |  2  |  3  |  4  |  5  |  6  |  7
+			    |     |     |     | -8  |  -8 |  -8 | -8
+			    |     |     |     | =-4 | =-3 | =-2 | =-1
+			As a number line:
+			 ---|---|---|---|---|---|---|---|-- (2's compliment number line)
+			   100 101 110 111 000 001 010 011 
+			- Therefore: n bits represent -2^(n-1) ... 2^(n-1) - 1
+			- only 1 zero
+			- left bit gives sign
+			- arithmetic is cleaner
+			- eg. same addition circuitry works for both unsigned and 2's compliment
+			- Int 2's comp 11001001 = 201 - 2^8 = 201 - 256 = -55
+
+Convenience: Hexadecimal Notation: 1100 1001 = C9 CLOUD 9 BOYYZZ
+	- base 16 - 0..9,A...F
+	- more compact than binary
+	- each hex digit = 4 bits
+Notation: 0xC9 (0x means hexidecimal)
+
+Q: Given a byte, 11001001, how can we tell if it is unsigned, sign-magnitude, or 2's compliment?
+
+A: The only person who knows what that number means is the person who put it there.
+ - We can't! Need to remember what our intent was when we stored the byte!
+
+
+2) What else could the bits represent?
+ - A character - Which character?
+ - Need a mapping from chars to numbers, a convention
+ 	- ASCII 
+ 		- uses 7 bits
+ 		- 8th bit is supposed to be 0 (Companies used it for other characters )
+ 		- Compatibility issues
+ 		- 11001001 is not 7-bit ASCII
+ 		- 01001001 is ASCII for I
+ 	- Other Encodings:
+ 		- EBCDIC
+ 		- UNICODE
+
+3) An instruction (or part of one)
+	- our instrs will be 32 bits long
+
+4) Garbage (Unsused memory)
+
+ASSIGNMENT 0:
+Download MIPS reference Sheet (on the course webpage)
+- PRINT
+- BRING TO EVERY CLASS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

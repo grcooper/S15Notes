@@ -1,0 +1,93 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}Math 239 Lecture 1: Introduction\vspace{-1ex}}
+\date{May 4th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	Prof: 	Martin Pei\\
+	Email:	mpei@uwaterloo.ca\\
+			martin31315926@gmail.com\\
+	Office Hours:\\
+	MTF:	11:30am-12:20pm\\
+	T:		3:30-5:30pm\\
+	
+	\section*{Part 1 Enumeration}
+	
+	We will convert problems into sets\\
+	
+	[n] = \{1, 2, 3, ... n\}\\
+	
+	$\mathbb{N} = \{1, 2, 3 ...\}$ (no zero)\\
+	
+	\subsection*{Cartesian Product:}
+	If A, B are sets, then the cartesian product of A and B is:\\
+	
+	$A \times B = \{(a, b) | a \in A, b \in B\}$\\
+	
+	\myt{Example:} A = \{1, 2\}  B = \{2, 4, 6\}\\
+	
+	$A \times B = \{(1, 2), (1, 4), (1, 6), (2, 2), (2, 4), (2, 6)\}$\\
+	- Order inside the pairs matter\\
+	- Order of the pairs in the set does not matter\\
+	
+	If A and B are finite sets, then $|A \times B| = |A| \cdot |B|$\\
+	
+	$(A \times B) \times C \neq A \times(B \times C)$\\
+	$((a, b), c) \neq (a, (b, c))$\\
+	
+	$|A \times B \times C| = |A| \cdot |B| \cdot |C|$\\
+	
+	$A^n = \{(a_1, a_2, ... a_n) | a_i \in A \} |A^n| = |A|^n$\\
+	
+	\myt{Example:} The results of throwing 2 different 6-sided dice can be enumerated by $[6] \times [6] or [6]^2$\\
+	$ = \{(a, b) | a, b \in [6]\}$\\
+	
+	\subsection*{Disjoint Unions:}
+	Let $S = S_1 \cup S_2$ and $S_1 \cap S_2 = \phi$ Then $|S| = |S_1| + |S_2|$\\
+	
+	$S = S_1 \cup ... \cup S_k$ and $S_i \cap S_j = \phi$ where $i \neg j$\\
+	
+	\myt{Example:} Let E be elements of $[6] \times [6]$ whose sum is even.\\
+	
+	Partition E into $E_1$ and $E_2$ where\\
+	
+	$E_1 = \{(a, b) \in [6] \times [6]$ \vline \ a, b are even \}\\
+	$E_2 = \{(a, b) \in [6] \times [6]$ \vline \ a, b are odd \}\\
+	
+	$E_1 = {2, 4, 6} \times {2, 4, 6}$ $|E_1| = 3 \cdot 3 = 9$\\
+	$E_2 = {1, 3, 5} \times {1, 3, 5}$ $|E_2| = 3 \cdot 3 = 9$\\
+	
+	So $|E| = |E_1| + |E_2| = 18$ $(E_1 \cap E_2) = \phi$
+	
+	\subsection*{Review Basic Counting}
+	\subsubsection*{Permutations}
+	How many ways can we arrange elements of [n] in a line?\\
+	
+	There are n choices for the first spot, n-1 for the second... down to 1 choice for the last spot so there are n! different ways.\\
+	
+	\subsubsection*{Combinations}
+	How many subsets of [n] have size k?\\
+	
+	First pick k elements in order. There are n choices, then n-1 choices then ... then n - k + 1 choices.\\
+	
+	$ = \frac{n!}{(n - k)!}$\\
+	
+	Each subset of size k is counted k! times in order. So the number of subsets is: \\
+	
+	$\frac{n!}{k! \cdot (n - k)!} = {n \choose k}$ "N choose k"\\
+	
+	\subsubsection*{Binomial Theorem}
+	$(1 + x)^n = \sum_{k = 0}^{n} {n \choose k} \cdot x^k$\\
+	
+	We will touch on this later in the course
+	
+	
+\end{document}

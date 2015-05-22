@@ -1,0 +1,86 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}M239 - Lecture 6\vspace{-1ex}}
+\date{May 15th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	\section*{Power Series}
+	\subsection*{Multiplication}
+	$$A(x)B(x) = \sum_{n \geq 0}\sum_{i=0}{n}([x^i]A(x)[x^{n-i}]B(x))x^n$$
+	$$[x^n]x^kA(x)= [x^{n-k}]A(x) \ when \ k \leq n$$
+	$$[x^n]x^kA(x)= 0 \ when \ k > n$$
+	
+	Example: 
+	$$A(x)=(1+2x)^2$$
+	$$B(x) = 1 + 2x + 4x^2 + ... = \sum_{i \geq 0}2^ix^i$$
+	$$[x^n]A(x)B(x) = [x^n](1+4x+4x^2)B(x)$$
+	$$= [x^n]B(x) + [x^n]4xB(x) = [x^n]4x^2B(x)$$
+	$$= 2^n + 4[x^{n-1}]B(x) + 4[x^{n-2}]B(x)$$
+	$$= 2^n + 4 \cdot 2^{n-1} + 4 \cdot 2^{n-2} = 4 \cdot 2^n = 2^{n+2}$$
+	$$ = 2^n + 2\cdot 2^n + 2^n$$
+	
+	This works for $n \geq 2$ for $n = 1$, we have $1 + 6x$ (do them seperately). So $A(x)B(x) = 1+6x + \sum_{n \geq 2}2^{n+2}x^n$\\
+	
+	\subsection*{Inverses}
+	
+	$$\frac{1}{A(x)} = B(x)$$
+	Definition: The \underline{inverse} of A(x) is a power series B(x) such that $A(x)B(x) = 1$\\
+	Let B(d) be the inverse of 1-x. Let $B(x) = \sum_{i \geq 0}b_ix^i$\\
+	We Want $B(x)(1-x) = 1$\\
+	$$1 = B(x)(1-x)$$
+	$$= B(x) - xB(x)$$
+	$$= b_0 + b_1x + b_2x^2 + ... - b_0x - b_1x^2 - ...$$
+	$$= b_0 + (b_1 - b_0)x + (b_2-b_1)x^2 + ... $$
+	
+	This equals to 1. By comparing coefficients, we get $b_0 = 1, b_1 - b_0 = 0, b_2-b_1 = 0$\\
+	$\implies b_1 = 1, b_2 = 1 ...$\\
+	So $B(x) = 1 + x + x^2 + x^3 ... = \frac{1}{1-x}$\\
+	
+	Let C(x) be the inverse of x. $C(x) = \sum_{i \geq 0}c_ix^i$\\
+	Want C(x)x = 1, $1= c_0x + c_1x^2 + c_2x^3 + ...$\\
+	So x does not have an inverse because there is no constant term on the right to balance out the constant term on the left.\\
+	Never do $\frac{1}{x}$\\
+	
+	\myt{Theorem} A(x) has an inverse if and only if the constant term of A(x) is not 0.\\
+	
+	\subsubsection*{Common Series}
+	\begin{enumerate}
+		\item $\frac{1}{1-x} = 1 + x + x^2 + x^3 + ... = \sum_{i \geq 0}x^i$ Geometric Series
+		\item $1 + x + x^2 + ... + x^k = \frac{1-x^{k+1}}{1-x}$\\
+		\item $\frac{1}{(1-x)^k} = \sum_{n \geq 0}(\frac{n+k-1}{k-1})x^n$
+	\end{enumerate}
+	
+	\subsection*{Compositions}
+	
+	Let $G(x) = \frac{1}{1-x} = 1 + x + x^2 + ...$\\
+	$G(3x^2) = 1 + 3x^2 + 9x^4 + 27x^6 + ... = \sum_{i \geq 0}(3x^2)^i$\\
+	
+	$$G(3x^2) = \frac{1}{1-3x^2}$$
+	$$= \sum3^ix^{2i}$$
+	
+	$$[x^n]\frac{1}{1-3x^2} = 3^{n/2}$$
+	for n even
+	$$[x^n]\frac{1}{1-3x^2} = 0$$
+	for n odd
+	
+	Let A(x) = $(G(3x^2))^9 = \frac{1}{(1-3x^2)^9} = \sum_{n \geq 0}{n+9 - 1 \choose 9-1}(3x^2)^n$
+	$= \sum_{n \geq 0}{n+8 \choose 8}3^nx^{2n}$
+	$$[x^100]A(x) = {50+8 \choose 8}3^{50}$$
+	
+	Let B(x) = G(1+$x^2$) = $1 + (1+X^2) + (1+x^2)^2 + (1+x^2)^3 + ...$\\
+	Constant term is 1 for each $(1+x^2)^i$. So the sum of all constant terms is not a number. Not a power series.\\
+	
+	In General, if A(x), B(x) are power series where the constant term of B(x) is 0, then A(B(x)) is always a power series.\\
+	
+	
+	
+\end{document}

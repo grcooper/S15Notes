@@ -1,0 +1,180 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{mips}
+
+\title{\vspace{-15ex}CS241 Lec 3\vspace{-1ex}}
+\date{May 11th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	Recall: Example 1: \$3 $\leftarrow $ \$5 + \$7\\
+	
+	Ex2: \$3 $\leftarrow$ 42 + 52\\
+	
+	lis \$d - load immediate \& skip\\
+	
+	\begin{tabular}{c | c | c | c}
+		Location & Binary & Hex & Meaning \\ \hline
+		00000000 & 0000 0000 0000 0000 0010 1000 0001 0100 & 0x00002814 & lis \$5 \\
+		00000004 & 0000 0000 0000 0000 0000 0000 0010 1010 & 0x0000002a & .word 42 \\
+		00000008 & 0000 0000 0000 0000 0011 1000 0001 0100 & 0x00003814 & lis \$7 \\
+		0000000c & 0000 0000 0000 0000 0000 0000 0011 0100 & 0x00000034 & .word 52 \\
+	\end{tabular}
+	Then appaned code from Ex 1.
+	
+	\section*{Assembly Language}
+	\begin{itemize}
+		\item replace binary/hex encodings with easier to read shorthand
+		\item less chance of error
+		\item translation to binary can be automated (assembler)
+		\item one line of assembly = 1 machine instruction (1 word)
+	\end{itemize}
+	
+	\myt{EX2:}\\
+	\lstset{language=[mips]Assembler}
+	\begin{lstlisting}
+		lis $5
+		.word 42
+		lis $7
+		.word 52
+		add $3, $5, 87
+		jr $31
+	\end{lstlisting}
+	.word is not an instruction, it is a directive that teslls the assembler that the next word in the file should be literally 42//
+	jr \$31 is return to loader\\
+	
+	\myt{Ex3}: Compute the absolute value of \$1, store in \$1, return\\
+	\begin{itemize}
+		\item some instructions modify PC
+		\begin{itemize}
+			\item jumps, eg jr
+			\item branches
+		\end{itemize}
+		\item beq
+		\begin{itemize}
+			\item branch if 2 regs are equal
+			\item increment PC by the given \# of words
+			\item can branch backwards
+		\end{itemize}
+		\item also bne "Branch not equal"
+		\item "set less than"
+	\end{itemize}
+	
+	\begin{tabular}{c| c | c}
+		address & code & literal \\ \hline
+		00000000 & slt \$2, \$1, \$0 & compare \$1 \textless 0 \\
+		00000004 & beq \$2, \$0, 1 & if the above is false, skip over \\
+		00000008 & sub \$1, \$0, \$1 & \$1 $\leftarrow$ -\$1 \\
+		0000000c & jr \$31 & exit program
+	\end{tabular}
+	\newline  \\
+	
+	\myt{Ex 4 (looping):} Sum 1 ... 13 store in \$3.\\
+	
+	\begin{tabular}{c | c | c}
+		address & code & literal \\ \hline
+		0 & lis \$2 & \$2 $\leftarrow$ 13 \\
+		4 & .word 13 & \\
+		8 & add \$3, \$0, \$0 & \$3 $\leftarrow$ 0 \\
+		c & add \$3, \$2, \$3 & \$3 += \$2 \\
+		10 & lis \$1 & \$1 $\leftarrow$ 1 \\
+		14 & .word 1 & \\
+		18 & sub \$2, \$2, \$1 & --\$2 \\
+		1c & bne \$2, \$0, 5 & if \$2 $\neq$ \$0 back to line c \\
+		20 & jr \$31 & exit program \\
+	\end{tabular}
+	
+	\myt{RAM}\\
+	\begin{itemize}
+		\item lw "load-word" from RAM to regs
+		\begin{itemize}
+			\item lw \$a, i(\$b)
+			\item \$a $\leftarrow$ MEM[\$b + i]
+		\end{itemize}
+		\item sw "store-word" - from regs to RAM
+		\begin{itemize}
+			\item sw \$a, i(\$b)
+			\item MEM[\$b + i] $\leftarrow$ \$a
+		\end{itemize}
+	\end{itemize}
+	
+	\myt{Ex 5:} \$1 = address of an array, \$2 = length of the array
+	Place element 5 (0-based) into \$3
+	
+	\myt{Easy Way:}\\
+	\lstset{language=[mips]Assembler}
+	\begin{lstlisting}
+		lw $3, 20($1)
+		jr $31
+	\end{lstlisting}
+	
+	\myt{Hard Way:}\\
+	Suppose \$5 contains the index of the item we want to fetch\\
+	
+	\lstset{language=[mips]Assembler}
+	\begin{lstlisting}
+		lis $4
+		.word 4
+		mult $5, $4
+		mflo $5
+		add $5, $1, $5
+		lw $3, 0($5)
+		jr $31
+	\end{lstlisting}
+	
+	\subsubsection*{Mult Instruction Side Lesson}
+	\begin{itemize}
+		\item mult \$a, \$b
+		\item product of 2 32-bit \#s is 64-bits (too big for a register)
+		\item so two special registers, hi \& lo to store the result of a mult
+		\item \$a, \$b $\equiv$ hi:lo $\leftarrow$ \$a $\times$ \$b
+	\end{itemize}
+	
+	\subsubsection*{Revisit looping example}
+	\lstset{language=[mips]Assembler}
+	\begin{lstlisting}
+		ls $2
+		.word 13
+		add $3, $0, $0
+		add $3, $3, $2
+		lis $1 (move above add)
+		.word 1 (move above add)
+		sub $2, $2, $1
+		bne $2, $0, -5 (becomes -3)
+		jr $31
+	\end{lstlisting}
+	
+	Moving instructions into/out of branches, we must update branch offsets, and can be tricky\\
+	
+	Instead, the assembler allows labelled instructions\\
+	label : instr\\
+	
+	eg: foo : add \$1, \$2, \$3\\
+	Assembler associates the name 'foo' with the address of the command add \$1, \$2, \$3 in memory
+	
+	\lstset{language=[mips]Assembler}
+	\begin{lstlisting}
+		ls $2
+		.word 13
+		add $3, $0, $0
+		top: add $3, $3, $2
+		lis $1
+		.word 1
+		sub $2, $2, $1
+		bne $2, $0, top
+		jr $31
+	\end{lstlisting}
+	
+	Assembler says top = 0x0c, but that will jump our program ahead?\\ 
+	The assembler comutes the difference and jumps to the appropriate address. (Difference between PC and top in words)\\
+	ie. $\frac{top-pc}{4} = \frac{0c - 20}{4} = \frac{12 - 32}{4} = -5$\\
+	
+\end{document}

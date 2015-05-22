@@ -1,0 +1,456 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{tikz}
+
+\title{\vspace{-15ex}CS240 Tutorial 3\vspace{-1ex}}
+\date{May 20th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	\section*{Heaps}
+	Consider the following heap (max-heap):\\
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=200 pt},
+		level 2/.style={sibling distance=100 pt},
+		level 3/.style={sibling distance=60 pt}
+		]
+		\node {5}
+		child {node {5}
+			child {node {1}}
+			child {node {3}}
+		}
+		child {node {2}
+			child {node {2}}
+			child {node {1}}
+		};
+		\end{tikzpicture}\end{center}
+	A: [5,5,2,1,3,2,1]\\
+	
+	\subsection*{Insert}
+	Suppose we insert 17 and 8 into the heap\\
+	
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=200 pt},
+		level 2/.style={sibling distance=100 pt},
+		level 3/.style={sibling distance=60 pt}
+		]
+		\node {5}
+		child {node {5}
+			child {node {1}
+				child {node {17}}
+				child [missing]	
+			}
+			child {node {3}}
+		}
+		child {node {2}
+			child {node {2}}
+			child {node {1}}
+		};
+		\end{tikzpicture}\end{center}
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=200 pt},
+		level 2/.style={sibling distance=100 pt},
+		level 3/.style={sibling distance=60 pt}
+		]
+		\node {5}
+		child {node {5}
+			child {node {17}
+				child {node {1}}
+				child [missing]	
+			}
+			child {node {3}}
+		}
+		child {node {2}
+			child {node {2}}
+			child {node {1}}
+		};
+		\end{tikzpicture}\end{center}
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=200 pt},
+		level 2/.style={sibling distance=100 pt},
+		level 3/.style={sibling distance=60 pt}
+		]
+		\node {5}
+		child {node {17}
+			child {node {5}
+				child {node {1}}
+				child [missing]	
+			}
+			child {node {3}}
+		}
+		child {node {2}
+			child {node {2}}
+			child {node {1}}
+		};
+		\end{tikzpicture}\end{center}
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=200 pt},
+		level 2/.style={sibling distance=100 pt},
+		level 3/.style={sibling distance=60 pt}
+		]
+		\node {17}
+		child {node {5}
+			child {node {5}
+				child {node {1}}
+				child [missing]	
+			}
+			child {node {3}}
+		}
+		child {node {2}
+			child {node {2}}
+			child {node {1}}
+		};
+		\end{tikzpicture}\end{center}
+	
+	For 8:
+	
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=200 pt},
+		level 2/.style={sibling distance=100 pt},
+		level 3/.style={sibling distance=60 pt}
+		]
+		\node {17}
+		child {node {5}
+			child {node {5}
+				child {node {1}}
+				child {node {8}}	
+			}
+			child {node {3}}
+		}
+		child {node {2}
+			child {node {2}}
+			child {node {1}}
+		};
+		\end{tikzpicture}\end{center}
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=200 pt},
+		level 2/.style={sibling distance=100 pt},
+		level 3/.style={sibling distance=60 pt}
+		]
+		\node {17}
+		child {node {5}
+			child {node {8}
+				child {node {1}}
+				child {node {5}}	
+			}
+			child {node {3}}
+		}
+		child {node {2}
+			child {node {2}}
+			child {node {1}}
+		};
+		\end{tikzpicture}\end{center}
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=200 pt},
+		level 2/.style={sibling distance=100 pt},
+		level 3/.style={sibling distance=60 pt}
+		]
+		\node {17}
+		child {node {8}
+			child {node {5}
+				child {node {1}}
+				child {node {5}}	
+			}
+			child {node {3}}
+		}
+		child {node {2}
+			child {node {2}}
+			child {node {1}}
+		};
+		\end{tikzpicture}\end{center}
+	Do not swap with 17.\\
+	
+	\subsection*{Delete-max}
+	Suppose now we want to delete-max:\\
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=200 pt},
+		level 2/.style={sibling distance=100 pt},
+		level 3/.style={sibling distance=60 pt}
+		]
+		\node {17}
+		child {node {8}
+			child {node {5}
+				child {node {1}}
+				child {node {5}}	
+			}
+			child {node {3}}
+		}
+		child {node {2}
+			child {node {2}}
+			child {node {1}}
+		};
+		\end{tikzpicture}\end{center}
+	1) Swap root with the right most leaf, (on bottom level)\\
+	2) remove the largest element\\
+	3) Bubble down the new root\\
+	
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=200 pt},
+		level 2/.style={sibling distance=100 pt},
+		level 3/.style={sibling distance=60 pt}
+		]
+		\node {5}
+		child {node {8}
+			child {node {5}
+				child {node {1}}
+				child [missing]	
+			}
+			child {node {3}}
+		}
+		child {node {2}
+			child {node {2}}
+			child {node {1}}
+		};
+		\end{tikzpicture}\end{center}
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=200 pt},
+		level 2/.style={sibling distance=100 pt},
+		level 3/.style={sibling distance=60 pt}
+		]
+		\node {8}
+		child {node {5}
+			child {node {5}
+				child {node {1}}
+				child [missing]	
+			}
+			child {node {3}}
+		}
+		child {node {2}
+			child {node {2}}
+			child {node {1}}
+		};
+		\end{tikzpicture}\end{center}
+	
+	\subsection{Heapify:}
+	
+	\begin{enumerate}
+		\item n \- size(A) \- 1
+		\item for i = floor(n/2) down to 1
+		\item bubble-down(A, i)
+	\end{enumerate}
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=200 pt},
+		level 2/.style={sibling distance=100 pt},
+		level 3/.style={sibling distance=60 pt}
+		]
+		\node {1}
+		child {node {6}
+			child {node {2}
+				child {node {1}}
+				child {node {10}}	
+			}
+			child {node {8}
+				child {node {20}}
+				child [missing]	
+			}
+		}
+		child {node {7}
+			child {node {14}}
+			child {node {5}}
+		};
+		\end{tikzpicture}\end{center}
+	
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=200 pt},
+		level 2/.style={sibling distance=100 pt},
+		level 3/.style={sibling distance=60 pt}
+		]
+		\node {1}
+		child {node {6}
+			child {node {10}
+				child {node {1}}
+				child {node {2}}	
+			}
+			child {node {8}
+				child {node {20}}
+				child [missing]	
+			}
+		}
+		child {node {7}
+			child {node {14}}
+			child {node {5}}
+		};
+		\end{tikzpicture}\end{center}
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=200 pt},
+		level 2/.style={sibling distance=100 pt},
+		level 3/.style={sibling distance=60 pt}
+		]
+		\node {1}
+		child {node {20}
+			child {node {10}
+				child {node {1}}
+				child {node {2}}	
+			}
+			child {node {6}
+				child {node {8}}
+				child [missing]	
+			}
+		}
+		child {node {7}
+			child {node {14}}
+			child {node {5}}
+		};
+		\end{tikzpicture}\end{center}
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=200 pt},
+		level 2/.style={sibling distance=100 pt},
+		level 3/.style={sibling distance=60 pt}
+		]
+		\node {1}
+		child {node {20}
+			child {node {10}
+				child {node {1}}
+				child {node {2}}	
+			}
+			child {node {6}
+				child {node {8}}
+				child [missing]	
+			}
+		}
+		child {node {14}
+			child {node {7}}
+			child {node {5}}
+		};
+		\end{tikzpicture}\end{center}
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=200 pt},
+		level 2/.style={sibling distance=100 pt},
+		level 3/.style={sibling distance=60 pt}
+		]
+		\node {20}
+		child {node {10}
+			child {node {1}
+				child {node {1}}
+				child {node {2}}	
+			}
+			child {node {6}
+				child {node {8}}
+				child [missing]	
+			}
+		}
+		child {node {14}
+			child {node {7}}
+			child {node {5}}
+		};
+		\end{tikzpicture}\end{center}
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=200 pt},
+		level 2/.style={sibling distance=100 pt},
+		level 3/.style={sibling distance=60 pt}
+		]
+		\node {20}
+		child {node {10}
+			child {node {2}
+				child {node {1}}
+				child {node {1}}	
+			}
+			child {node {6}
+				child {node {8}}
+				child [missing]	
+			}
+		}
+		child {node {14}
+			child {node {7}}
+			child {node {5}}
+		};
+		\end{tikzpicture}\end{center}
+	
+	Overall we bubbled down 2, 6, 7, 6 and then 1\\
+	
+	\subsection*{Heapsort}
+	
+	Use heapsort to sort the following array:\\
+	A: [2520, 1982, 34]800, 34000, 322,159,2845, 9]\\
+	\begin{enumerate}
+		\item H $\leftarrow$ Heapify(A)
+		\item call delete-max(H) n times and store the result in A.
+	\end{enumerate}
+	
+	\section*{Stack}
+	Q: How can we simulate a stack using a priority queue (heap).\\
+	
+	A stack should support push and pop\\
+	
+	\begin{verbatim}
+
+	Stack {
+	- max-heap H
+	- priority P
+	}
+	
+	Push(e) {
+	    H.heapinsert(p,e);
+	    p = p + 1;
+	}
+	Pop() {
+	    H.deletemax();
+	    p = p-1;
+	}
+	\end{verbatim}
+	
+	Q: Given K sorted lists, where the combination of all k lists has n elements, combine them into 1 sorted list O(nlogk time. Hint: use priority queues.\\
+	
+	First idea (use heapsort) \\
+	\begin{itemize}
+		\item use heapify O(n)
+		\item using delete-max n times gives O(nlog(n)) time which is a bit too much
+	\end{itemize}
+	
+	\begin{tabular}{c | c | c | c | c | c}
+		1 & 7 & 12 & 19 & & \\ \hline
+		2 & 9 & 14 & 18 & 21 & 23 \\ \hline
+		3 & 8 & 16 & & & \\ \hline
+		5 & 10 & 17 & 70 & 72 & \\ \hline
+	\end{tabular}
+	
+	Look the the first collumn to create a min-heap. Then delete-min and add on the next element onto the min-heap.\\
+	
+	Note: Always have k items in our heap(height logk) and repeat n times for a total running time of O(nlogk) time\\
+
+	
+	
+	
+	
+\end{document}

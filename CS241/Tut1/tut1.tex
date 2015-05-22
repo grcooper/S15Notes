@@ -1,0 +1,111 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{mips}
+
+\title{\vspace{-15ex}CS 241 Tutorial 1\vspace{-1ex}}
+\date{May 15th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	Fibonacci Numbers $f_n = f_{n-1} + f_{n-2}$\\
+	where $f_0 = 1$ and $f_1 = 1$ and $n \geq 2$\\
+	
+	\myt{Topics}
+	\begin{enumerate}
+		\item MIPS Loops
+		\item Printing and using the stack
+		\item How to create and use procdedures
+	\end{enumerate}
+	
+	\subsubsection*{1)}
+	\$1 containts $n \geq 0$, find $f_n$ and place it in \$3
+	
+	\lstset{language=[mips]Assembler}
+	\begin{lstlisting}
+	; $3 = f_n
+	; $4 = f_n-1
+	add $3, $0, $0 ; begin $3 at 0
+	lis $4
+	.word 1 ; begin $4 at 1
+	add $5, $0, $4 ; store 1 somewhere
+	loop: beq $1, $0, ___ ; brance if our counter is 1
+	add $4, $3, $4 ; put the next fib number in 4
+	sub $1, $1, $5 ; n -= 1
+	sub $3, $4, $3 ; 
+	beq $0, $0, loop
+	jr $31 ; return
+	\end{lstlisting}
+	
+	\subsubsection*{2)}
+	Convert problem 1 into a procedure name fib, apart from \$3, upon return, every register should have the ssame value upon return as it had when the procedure was called.\\
+	
+	\begin{lstlisting}
+	fib: sw $4, -4($30) ; name our procedure
+	sw $5, -8($30) ; store all of our used values in RAM
+	sw $1, -12($30)
+	lis $4
+	.word 12
+	sub $30, $30, $4 ; State how far we have used RAM
+	add $3, $0, $0 ; begin $3 at 0
+	lis $4
+	.word 1 ; begin $4 at 1
+	add $5, $0, $4 ; store 1 somewhere
+	loop: beq $1, $0, ___ ; brance if our counter is 1
+	add $4, $3, $4 ; put the next fib number in 4
+	sub $1, $1, $5 ; n -= 1
+	sub $3, $4, $3 ; 
+	beq $0, $0, loop
+	lis $4
+	.word 12
+	add $30, $30, $4 ; Restore the last used memory location
+	lw $4, -4($30) ; restore all of our memory
+	lw $5, -8($30)
+	lw $1, -12($30)
+	jr $31 ; return
+	\end{lstlisting}
+	
+	\subsection*{Printing to Stdout and using the stack}
+	- \$1 contains $n \geq 1$
+	- using fib, print the first n fibonacci numbers in reverse
+	- assume print procedure "print" uses \$1 as input
+	
+	\begin{lstlisting}
+	lis $4
+	.word fib
+	lst $5
+	.word print
+	list $6
+	.word 4
+	sw $31, -4($30)
+	sub $30, $30, $6
+	add $7, $0, $0
+	lis $8
+	.word 1
+	loop: beq $1, $7, endloop 
+	add $7, $7, $8
+	jalr $4, ; call fib
+	sw $3, -4($30) ; store the result of fib in memory
+	sub $30, $30, $6 ; add 4 to register 30
+	beq $0, $0, loop
+	endloop: 
+	loop2: beq $1, $0, endloop2
+	add $30, $30, $6
+	lw $1 , -4($30)
+	jalr $5
+	sub $7, $7, $8
+	beq $0, $0, loop2
+	endloop2:
+	add $30, $30, $6
+	lw $31, -4($30)
+	jr $31
+	\end{lstlisting}
+	
+\end{document}

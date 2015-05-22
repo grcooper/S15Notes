@@ -1,0 +1,76 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}M239 Tutorial 1\vspace{-1ex}}
+\date{May 12th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	Alan Arroyo\\
+	MC5486\\
+	amarroyo@uwaterloo.ca\\
+	Tutorial Center\\
+	Tuesday 10:30-12:30\\
+	
+	$${n \choose k} = \frac{n\!}{k\!(n-k)\!}$$
+	
+	Number of ways we can choose k elements from a set of size n.
+	
+	n! is the number of ways to arrange n objects
+	
+	$2^n$ is the number of binary strings length n
+	
+	$2^n$ is the number of subsets of \{1, 2, ... n\}
+	
+	\subsection*{Problem 1}
+	Given $0 \leq r \leq k \leq n$ how many subsets of $[n] = \{1,...n\}$ have exactly r elements in common with \{1,..k\}
+	
+	\{1,2,3,4, ..., k, k+1,k+2,...n\}
+	Every considered set is of the form $R \cup S$ where $R \subseteq \{1,...k\} |R| = r$ and $S \subseteq \{k+1, ... n\}$\\
+	Number of ways to construct R = ${k \choose r}$\\
+	Number of ways to constrct S = $2^{n-k}$\\
+	Answer = ${k \choose r} \times 2^{n-k}$\\
+	
+	\subsection*{Problem 3}
+	For integers $0 \leq r \leq k \leq n$. Give a combinatorial proof of the following identity ${n \choose k}{k \choose r} = {n \choose r}{n-r \choose k-r}$
+	
+	$S = \{(X,Y); X \leq Y \leq [n]; |Y| = k, |X|=r\}$
+	Lets count S into two different ways
+	\begin{enumerate}
+		\item Find all possible Y's and then consturct $X \leq Y$ Number of possible y's = ${n \choose k}$, once y is fixed, how many $X \leq Y$ have $|X| = r, {k \choose 4}$. Total = ${n \choose k}{k \choose r}$
+		\item Find all possible $X \leq [n]$ with $|X| = r$, ${n \choose r}$. Then find all Y's $Y \leq [n]$ $X \leq$ and $|Y| = k$ Total: ${n \choose r}{n-r \choose k-r}$
+	\end{enumerate}
+	
+	\subsection*{Problem 2}
+	Define \\
+	$E_n$ = subsets of [n] with even cardinality\\
+	$O_n$ = subsets of [n] with odd cardinality\\
+	
+	(a) find a bijection between $E_n$ and $O_n$\\
+	$f: E_n \rightarrow O_n$ where $f(s) = S \cup \{n\} if n \notin S$ and $S / \{n\} if n \in S$\\
+	f(S) is in $O_n$ because $|f(S)| = |S| +/- 1$\\
+	$f^{-1}:O_n \rightarrow E_n$ $f^{-1}(s) = S \cup \{n\} if n \notin S$ or $S \ \{n\} if n \in S$\\
+	$f^{-1}(f(S)) = S$\\
+	
+	(b) to determine $|E_n|, |O_n|$\\
+	$|E_n| = |O_n|$\\
+	$E_n \cup O_n = $ \{subsets of [n]\}\\
+	$|E_n| = $ 1/2 \{subsets of [n]\}\\
+	$= 1/2 \times 2^n = 2^{n-1}$\\
+	
+	(c) Using (a) show $\sum_{k=0}^{n}{n \choose k} = 2^n$\\
+	$$\sum_{k=0}^{n}(-1)^k{n \choose k} = 0$$
+	$$\sum_{k is even, 0 \leq k \leq n}{n \choose k} + \sum_{k odd, 0 \leq k \leq n}{n \choose k}$$
+	$$|E_n| = |O_n|$$
+	
+	
+	
+	
+\end{document}

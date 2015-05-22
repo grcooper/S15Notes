@@ -1,0 +1,80 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{mips}
+
+
+\title{\vspace{-15ex}CS251: Intro to Computer Organization and Design\vspace{-1ex}}
+\date{May 4th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	\subsection*{Guiding Principals}
+	\begin{itemize}
+		\item Abstraction to simplify design
+		\item Moores Law: Expect Rapid change in technology
+		\begin{itemize}
+			\item IC resources doubles every 18-24 months
+			\item \# of transistors can fit on a circuit board will double
+		\end{itemize}
+		\item Improvement via Parallelism
+		\item Improve Performance via Pipelining
+		\item Improve Performance via Prediction
+	\end{itemize}
+	
+	\subsection*{Big Picture:}
+	\begin{itemize}
+		\item Computer
+		\item Control -> registers
+		\item Datapath
+		\item Processor
+		\item Memory
+		\item Input
+		\item Output
+	\end{itemize}{}
+	
+	\subsection*{Instruction Set Architecture}
+	To connect to the hardware you must speak its lanuage (machine language/bytecode\\
+	
+	\subsection*{Basic MIPS}
+	\$s1: f \$s2: g \$s3: h \$s4: i \$s5: j \$s6 = TEMP \$s7 = TEMP\\
+	
+	$f = (g + h) - (i + j)$\\
+	\lstset{language=[mips]Assembler}
+	\begin{lstlisting}
+	add $s6, $s2, $s3
+	add $s7, $s4, $s5
+	sub $s1, $s6, $s7
+	\end{lstlisting}
+	
+	\subsection*{Registers}
+	Mips: \$0 does not write\\
+	
+	\subsection*{Instructions}
+	\begin{itemize}
+		\item R-format: results and registers
+		\item I-format: use immediate values as well
+		\item J-format: used for branching or jumps
+	\end{itemize}
+	
+	\lstset{language=[mips]Assembler}
+	\begin{lstlisting}
+	beq $s1, $s2, 15
+	\end{lstlisting}
+	
+	This will jump 15 ahead if \$s1 == \$s2, also I-format with the 15\\
+	
+	\myt{Program Counter (PC)} This is the line number you are on and it will always increase by 4 bytes for each instruction.
+	
+	
+	
+	
+\end{document}
