@@ -36,6 +36,54 @@
 	So $[x^n]\frac{1}{(1-x)^k}$ is the number of k tuples ($a_1...a_k) \in N_0^k$ where they sum to n.\\
 	$\iff$ the number of non-negative integer solutions to $a_1 + a_2 + ,,, + a_k = n$\\
 	
+	In general, any solution $(a_1, ... a_k)$ corresponds to an arrangement of n 0's and k-1 1's\\
+	$0^{a_1} | 0^{a_2} | ... | 0^{a_k}$\\
+	So there are ${n+k-1 \choose k-1}$ of them. So $[x^n]\frac{1}{(1-x)^k} = {n+k-1 \choose k-1}$\\
+	
+	myt{Example:} How many ways can n identical pieces of sushi be eaten so Al eats at most 5, Bob eats at least 3 and Cam eats an even number?\\
+	
+	Model the problem as $(a,b,c) \in A \times B \times C$ where:\\
+	$$A = \{0,1,2,3,4,5\}$$
+	$$B = \{3,4,5,6 ...\}$$
+	$$C = \{0,2,4,6 ...\}$$
+	
+	Define w(a,b,c) = a + b + c. Using $\alpha(a) = a$ for all A,B,C we can apply the product lemma.\\
+	Then 
+	$$\Phi_A(x) = 1 + x + x^2 + x^3 + x^4 + x^5 = \frac{1-x^6}{1-x}$$
+	$$\Phi_B(x) = x^3 + x^4 + x^5 + x^6 ... = \frac{x^3}{1-x}$$
+	$$\Phi_C(x) = 1 + x^2 + x^6 + ... = \frac{1}{1-x^2}$$
+	
+	So
+	$$\Phi_{A\times B \times C}(x) = \Phi_A(x) \Phi_B(x) \Phi_C(x) = \frac{x^3(1-x^6)}{(1-x)^2(1-x^2)}$$
+	The number of ways is $[x^n]\frac{x^3(1-x^6)}{(1-x)^2(1-x^2)}$\\
+	
+	\section*{Integer Compositions}
+	\subsection{Definition}
+	A k-tuple $(a_1, ... a_k)$ of positive integers is a \underline{composition} of n if $n=a_1 + ... a_k$ Such a composition is said to have k parts.\\
+	
+	\myt{example} Compositions of 5 include (1,3,1), (2,3), (1,1,1,2), (2,1,1,1), (5)\\
+	
+	\subsection*{notes}
+	\begin{enumerate}
+		\item Each part is at least 1
+		\item Order of the parts matter
+		\item The number 0 has 1 composition which has 0 parts ()
+	\end{enumerate}
+	
+	\myt{example:} How many compositions of n have k parts?\\
+	$[n=4, k=3 : (1,1,2), (1,2,1), (2,1,1)]$\\
+	
+	The set of all compositions of k parts (disregardig n) is $N \times N \times N ... N = N^k$, one composition has the form $(a_1,...a_k)$\\
+	
+	Define $w(a_1, ... a_k) = a_1 + ... a_k$\\
+	Use w(a) = a for each N. \\
+	$$\Phi_N(x) = x^1 + x^2 + x^3 + ... = \frac{x}{1-x}$$
+	By Product Lemma
+	$$\Phi_{N^k}(x) = (\Phi_N(x))^k = \frac{x^k}{(1-x)^k}$$
+	Our answer is:
+	$$[x^n]\frac{x^n}{(1-x)^n}$$
+	
+	
 	
 	
 \end{document}
