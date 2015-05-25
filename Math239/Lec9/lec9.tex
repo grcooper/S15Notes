@@ -1,0 +1,103 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}Math 239 - Lecture 9\vspace{-1ex}}
+\date{May 25th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	\section*{Integer Compositions}
+	
+	n=5\\
+	(1,2,3), (4,1)\\
+	
+	\subsection*{How many compositions of n have k parts?}
+	
+	$$N \times N \times ... \times N = N^k$$
+	$$w(a_1, a_2, ... a_k) = a_1 + a_2 + ... + a_k$$
+	$$\Phi_{N^k}(x) = (\Phi_N(x))^k = (\frac{x}{1-x})^k$$
+	
+	Our answer is $[x^n]\Phi_{N^k}(x) = [x^n]\frac{x^j}{(1-x)^k}$\\
+	$= {(n-k)+k-1 \choose k-1} = {n-1 \choose k-1}$\\
+	
+	\subsubsection*{Combinatorial Interpretation}
+	
+	$00|00|....|0$\\
+	n 0's\\
+	k-1 1's\\
+	
+	0000000\\
+	1's have to be in between 0's, no duplicates in the same spot.\\
+	
+	There are n-1 spots to put k-1  1's $\implies {n-1 \choose k-1}$\\
+	
+	\subsubsection*{Example}
+	
+	How many compositions of n have 2k parts, where the first k parts are at least 5 and hte last k parts are multiples of 3?
+	
+	Define A = \{5,6,7,...\}, B=\{3,6,9,12...\}\\
+	No 0 because parts are $\geq$ 1\\
+	
+	$A^k \times B^k$ enumerates all comps of our property (Cartesian product)\\
+	$A^k \times B^k = \{(a_1, ...a_k,b_1...b_k) | a_i \in A$ $b_i \in B\}$\\
+	
+	Using w(a) = a for A, B\\
+	$$\Phi_A(x) = x^5 + x^6 + x^7 + ... = \frac{x^5}{1-x}$$
+	$$\Phi_B(x) = x^3 + x^6 + x^9 + ... = \frac{x^3}{1-x^3}$$
+	
+	By Product Lemma, 
+	$$\Phi_{A^k \times B^k}(X) = (\Phi_A(x))^k(\Phi_B(x))^k$$
+	$$= \frac{x^{5k}}{(1-x)^k} \cdot \frac{x^{3k}}{(1-x^3)^k}$$
+	$$= \frac{x^{8k}}{(1-x)^k(1-x^3)^k}$$
+	Our answer is:
+	$$= [x^n]\frac{x^{8k}}{(1-x)^k(1-x^3)^k}$$
+	Explicit Formula:
+	$$= [x^{n-8k}]\frac{1}{(1-x)^k(1-x^3)^k}$$
+	$$= [x^{n-8k}](\sum_{m \geq 0}{m+k-1 \choose k-1}x^m)(\sum_{p \geq 0}{p+k-1 \choose k-1}x^{3p})$$
+	$$= [x^{n-8k}](\sum_{m \geq 0}\sum_{p \geq 0}{m+k-1 \choose k-1}{p+k-1 \choose k-1}x^{m+3p}$$
+	$$= \sum_{(m,p) \in N_0 \times N | m + 3p = n - 8k}{m+k-1 \choose k-1}{p+k-1 \choose k-1}$$
+	
+	\subsection*{General Method}
+	How many compositinos of n have certain properties?\\
+	\begin{enumerate}
+		\item Define a set S of all compositions which satisfy these properties (disregard n)
+		\item Find $\Phi_S(X)$ with weight function being the sum of all parts
+		\item Answer is $[x^n]\Phi_S(x)$
+	\end{enumerate}
+	
+	\subsubsection*{Example}
+	How many compositions of n are there?
+	(number of parts not fixed)\\
+	n = 2 (2), (1,1)\\
+	n = 3 (3), (1,2), (2,1), (1,1,1)\\
+	n = 4 (4), (1,3), (2,2), (3,1) (1,1,2), (1,2,1), (2,1,1), (1,1,1,1)\\
+	
+	Partition the set of all compositions according to the number of parts (elements)\\
+	
+	The set of all compositions $S = N^0 \cup N^1 \cup N^2 \cup N^3 ... = \bigcup_{k \geq 0}N^k$\\
+	This is a disjoint union, so we can use the sum lemma. The weight function of a composition is the sum of al parts.\\
+	
+	We have $\Phi_{N^k})x_ = (\frac{x}{1-x})^k$\\
+	By Sum Lemma:\\
+	$$\Phi_s(x) = \sum_{k \geq 0}\Phi_{N^k}(x) = \sum_{k \geq 0}(\frac{x}{1-x})^k$$
+	$$= \frac{1}{(1 - \frac{x}{1-x})}$$
+	
+	We can do this since the constant term of $\frac{x}{1-x}$ is 0.\\
+	
+	$$= \frac{1-x}{1-x-x} = \frac{1-x}{1-2x}$$
+	Our answer is:
+	$$[x^n]\frac{1-x}{1-2x} = [x^n]\frac{1}{1-2x} - [x^n]\frac{x}{1-2x}$$
+	$$ = 2^n - [x^{n-1}]\frac{1}{1-2x}$$
+	$2^{n-1}$ for n greater than or equal to 1\\
+	1 if n = 0\\
+	
+	
+	
+\end{document}
