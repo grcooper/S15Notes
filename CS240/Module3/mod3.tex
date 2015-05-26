@@ -16,20 +16,20 @@
 	\section*{Selection}
 	Given an array A$[a...n-1]$ and $0 \leq k \leq n-1$ return the kth largest element in A.\\
 	
-	\subsection{1) Selection-sort Idea:}
+	\subsection*{1) Selection-sort Idea:}
 	Scan A k times, deleting max each time.\\
 	Cost: $\Theta(kn)$\\
 	\subsection{2)}
 	Sort A, return A[n-k]\\
 	Cost: $\Theta(nlogn)$\\
 	
-	\subsection{3)}
+	\subsection*{3)}
 	Scan the array once, and keep k largest seen so far in the min-heap.\\
 	Cost: $\Theta(nlogk)$\\
 	Eg: [6,5,3,8,7,4], k =3\\
 	We put in 6, 5 then 3 into the min heap. After we look at the rest of the elements and keep the min heap the size of k and add new elements if an element in the array is larger than the root of the min-heap. Continue through the array and at the end pick the root of the min heap.
 	
-	\subsection{4)}
+	\subsection*{4)}
 	Heapify(A) then call deleteMax k times.\\
 	Cost: $\Theta(n + klogn)$ For median selection (k = n/2) then it is the same as sorting so $\Theta(n)$\\
 	
@@ -133,8 +133,110 @@
 	A = [0...x...]\\
 	Define T(n,k) an average cost for selecting kth item from a size n array.\\
 	
-	$$T(n,k) = cn + \frac{1}{n}T(n-1, k-1)x + \frac{1}{n}(n-2, k-2) + ...$$
+	$$T(n,k) = cn + \frac{1}{n}T(n-1, k-1)x + \frac{1}{n}(n-2, k-2) + ... \frac{1}{n}T(n-1, k)$$
+	$$cn + \frac{1}{n}(\sum_{i=1}^{k-1}T(n-i-1, k=i=1) + \sum_{i=k+1}^{n-1}T(o,k))$$
 	Put in summation notation.\\
+	
+	Define T(n) = max T(n,k) $0 \leq k \leq n-1$\\
+	
+	\myt{Observation}:
+	$[\_\_\overset{n/2}{|}\_\_X\_\_\overset{3n/4}{|}\_\_]$
+	pivot ends up in between the two divisions. At least 1/2 of all the n1 problem instances will have the pivot at position n/4 $\leq$ i $<$ 3n/4\\
+	
+	For these instances, recursive call has length at most floor($\frac{3n}{4}$), no matter what k is.\\
+	
+	$T(n) \leq $:\\
+	if $n \geq 2$\\
+	cn + 1.2(T(n) + T(floor($\frac{3n}{4}))$\\
+	if $n = 1$\\
+	d\\
+	
+	$$T(n) \leq 2cn + T(floor(\frac{3n}{4})) \leq 2cn + T(\frac{3n}{4})$$
+	$$\leq 2cn + 2c(\frac{3n}{4}) + 2c(\frac{9n}{16}) + ... + d$$
+	$$= d + 2cn \sum_{i=0}^{\infty}(\frac{3}{4})^i \leq d 2cn \times 4 \in O(n)$$
+	$T(n) \in \Omega(n)$ Since we have to parition at least once $T(n) \in \Omega(n)$\\
+	
+	Worst case runtime is $\Theta(n^2)$\\
+	
+	Your enemy could make your algorith mrun slowly by a "Bad" order input.\\
+	Another approach: Randomized quickSelect.\\
+	- Pick Pivot at random\\
+	- No ordering of the input on its own is guaranteed ot be bad
+	
+	\myt{The expected runtime:} with prob at least 1/2 the pivot will randomly fall between roof(n/4) and floor(3n/4), so the analysis is the same as for the average case: $\Theta(n)$\\
+	
+	\subsubsection*{Finding a Pivot}
+	\myt{Idea:} generate a good pivot deterministically (median of medians), assume all keys are distinct\\
+	\begin{enumerate}
+		\item Divide the array into x = n/5 groups of 5 elements each
+		\item find the median of each group
+		\item Recursively select the median among the medians of these groups
+		\item Partition with the median found in Step 3 as a pivot
+		\item Recurse in appropriate part of the array, $k \neq i$
+	\end{enumerate}
+	Step 1 + Step 2: $\Theta(n)$\\
+	Step 3: $T(\frac{n}{5})$\\
+	Step 4: $\Theta(n)$\\
+	Step 5: T(?)\\
+	
+	The recurrence relation is T(n) $\leq$
+	
+	\subsection*{QuickSort A[0...n-1]}
+	\begin{verbatim}
+	if n <= 1 return
+	p = choose_pivot(A)
+	i = partition(A,p)
+	QuickSort(A[0...i-1])
+	QuickSort(A[i+1 ... n-1])
+	\end{verbatim}
+	
+	\subsubsection*{Worst-Case:}
+	Pivot ends up at one end or the other after positioning.\\
+	T(n) = cn + T(n-1) $\in \Theta(n^2)$\\
+	
+	\subsubsection*{Best Case}
+	T(n) = T(floor($\frac{n-1}{2}$)) + T(roof($\frac{n-1}{2}$) + cn $<$ 2T(n/2) + cn $\Theta$(nlogn)\\
+	
+	What if our partition always splits n/10 and 9n/10\\
+	T(n) = \\
+	if $n \leq 1$\\
+	d\\
+	if $n > 1$\\
+	T(n/10) + T(9n/10) + cn\\
+	
+	RECURSION TREE NO ON THIS PAGE\\
+	
+	$$T(n) \leq cn \cdot log_{\frac{10}{9}}(n) + cn \in \Theta(nlogn)$$
+	
+	\subsubsection*{Average Case}
+	$[\_\_\overset{n/2}{|}\_\_X\_\_\overset{3n/4}{|}\_\_]$\\
+	
+	i, n-i-1 average sizes of two subproblems, taking average cost over all n possibilitys of i.\\
+	
+	$$T(n) = cn + \frac{1}{n}\sum_{i=0}^{n-1}(T(i) + T(n-i-1))$$
+	$$ = cn + \frac{1}{n} \cdot 2 \sum_{i=0}{n-1}T(i), n \geq 2$$
+	
+	NEW STUFF
+	
+	$$nT(n) = cn^2 + 2(T(0) + T(1) + ... + T(n-1))$$
+	$$(n-1)T(n-1) = c(n-1)^2 + 2(T(0) + T(1) + ... + T(n-2))$$
+	$$nT(n) - (n-1)T(n-1) = 2cn - c + 2T(n-1)$$
+	$$nT(n) = (n+1)T(n-1) + 2cn - c$$
+	$$\frac{T(n)}{n+1} = \frac{T(n-1)}{n} + \frac{2cn - c}{n(n+1)}$$
+	$$ < \frac{T(n-1)}{n} + \frac{2c}{n+1}$$
+	
+	$$\frac{T(n-1)}{n} \leq \frac{T(n-2)}{n-1} + \frac{2c}{n}$$
+	$$\frac{T(n-2)}{n-1} \leq \frac{T(n-3)}{n-2} + \frac{2c}{n-1}$$
+	$$\frac{T(n)}{n+1} \leq \frac{T(n-1){n} + \frac{2c}{n+1} \leq \frac{T(n-2)}{n-1} + \frac{2c}{n} + \frac{2c}{n+1}$$
+	$$\frac{T(n-3)}{n-2} + \frac{2c}{n-1} + \frac{2c}{n} + \frac{2c}{n + 1} ...$$
+	$$\frac{T(1)}{2} + \frac{2c}{3} + \frac{2c}{4} + .. + \frac{2c}{n+1} = $$
+	$$= \frac{d}{2} + 2c\sum_{i=3}^{n+1}\frac{1}{i} = \frac{d}{2} + 2c(H_{n+1} - H_{2})$$
+	$$\in O(logn)$$
+	$$\frac{T(n)}{n+1} \in O(logn) \ implies T(n) \in O(logn)$$
+	
+	
+	
+	
 	
 	
 \end{document}
