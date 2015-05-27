@@ -13,7 +13,126 @@
 \begin{document}
 	\maketitle
 	
+	\section*{QuickSelect Example}
 	
+	\subsection*{Q1}
+	Find the 3rd smallest element in A\\
+	Pivot = A[0]\\
+	A = \\
+	\begin{tabular}{|c | c | c | c | c | c | c | c | c | c|}
+		\hline
+		8 & 17 & 10 & 1 & 6 & 20 & 2 & 9 & 7 & 13 \\ \hline
+	\end{tabular}\\
+	\begin{tabular}{|c | c | c | c | c | c | c | c | c | c|}
+		\hline
+		\underline{8} & \underline{17} & 10 & 1 & 6 & 20 & 2 & 9 & \underline{7} & 13 \\ \hline
+	\end{tabular}\\
+	\begin{tabular}{|c | c | c | c | c | c | c | c | c | c|}
+		\hline
+		8 & 7 & 10 & 1 & 6 & 20 & 2 & 9 & 17 & 13 \\ \hline
+	\end{tabular}\\
+	\begin{tabular}{|c | c | c | c | c | c | c | c | c | c|}
+		\hline
+		8 & 17 & \underline{10} & 1 & 6 & 20 & \underline{2} & 9 & 7 & 13 \\ \hline
+	\end{tabular} \\
+	\begin{tabular}{|c | c | c | c | c | c | c | c | c | c|}
+		\hline
+		8 & 7 & 2 & 1 & 6 & 20 & 10 & 9 & 17 & 13 \\ \hline
+	\end{tabular}\\
+	Place Pivot\\
+	\begin{tabular}{|c | c | c | c | c | c | c | c | c | c|}
+		\hline
+		6 & 7 & 2 & 1 & 8 & 20 & 10 & 9 & 17 & 13 \\ \hline
+	\end{tabular}\\
+	
+	Recurse on the left hand side (6,7,2,1)\\
+	pivot = A[0]\\
+	\begin{tabular}{|c | c | c | c|}
+		\hline
+		6 & \underline{7} & 2 & \underline{1} \\ \hline
+	\end{tabular}\\
+	\begin{tabular}{|c | c | c | c|}
+		\hline
+		6 & 1 & 2 & 7 \\ \hline
+	\end{tabular}
+	\begin{tabular}{|c | c | c | c|}
+		\hline
+		2 & 1 & 6 & 7 \\ \hline
+	\end{tabular}
+	
+	Recurse on left hand side (2, 1)\\
+	
+	Since the pivot is at index 3, it correspons to the 3rd smallest element, we are done.\\
+	
+	\subsection*{Q2)}
+	Assume A has distinct elements.\\
+	\begin{verbatim}
+	Bogo(A){
+		shuffle(A) //O(n)
+		if A is sorted{
+			return A;
+		}
+		else {
+			return Bogo(A);
+		}
+	}
+	\end{verbatim}
+	
+	Best case is O(n)\\
+	Worst case is O($\infty$)\\
+	May not terminate\\
+	
+	$$T_{avg}(n) = 1 \cdot cn + \underset{A is sorted}{(\frac{1}{n!} \cdot d)} + \underset{A is not sorted}{((1-\frac{1}{n!}))T_avg(n)}$$
+	$$T_{avg}(n)[1-(1-\frac{1}{n!})] = cn + \frac{1}{n!} \cdot d$$
+	$$T_{avg}(n) = cn \cdot n! + d \in O(n \cdot n!)$$
+	
+	EE[x] = $\sum_{x \in X}P_r(x) \cdot RunningTime(X)$\\
+	 
+	\subsection*{Q3)}
+	
+	Toss identical balls at random into buckets (or bins), one at a time, uniformly at random. How many tosses can we expect to make such that every bucket contains at least 1 ball.\\
+	
+	- Define a toss in which a ball falls into an empty bucket as a hit and a non-empty bucket as a miss\\
+	- Partition the tosses into stages\\
+	-- The $i^{th}$ stage consists of the tosses after the $(i-1)^{th}$ hit until (And including) the $i^{th}$ hit.\\
+	
+	Ex. 4 Buckets\\
+	Toss sequence: 2$|$,2,3$|$,4$|$,3,3,2,4,1$|$\\
+	
+	During the $i^{th}$ stage.\\
+	- (i-1) non-empty buckets \\
+	- (b - i + 1) empty buckets (b is the bumber of buckets) \\
+	- Pr(throwing in empty bucket) = $\frac{b-i+1}{b}$\\
+	
+	Define $n_i$ = number of throws in stage i\\
+	$$n = \sum_{i = 1}^{b}n_i$$
+	$$EE[n] = EE[\sum_{i=1}^{b}n_i]$$
+	$$= \sum_{i=1}{b}EE[n_i]$$
+	the above by linearity of expectation\\
+	$n_i \approx$ geometric dist.\\
+	EE[$n_i]$ = 1/p\\
+	$$= b\sum_{i=1}^{b} \frac{1}{b-i+1}$$
+	$$= b\sum_{i=1}^{b}\frac{1}{i} \in \Theta(blnb)$$
+	
+	\subsection*{Q4}
+	Argue that any comparison based sorting algorithm requires at least 7 comparisons to S numbers\\
+	
+	- An algorithm performs actions as the result of different comparisons.\\
+	
+	If (A[i] $<$ A[j]) then do stuff, else something else\\
+	
+	- elements, assume worst case that we have a permutation for each leaf in a tree, therefore 5! leaves\\
+	- height of any binary tree on 5! leaves will be log(5!) $\approx$ 6.8 $<$ 7\\
+	
+	
+	
+	
+	
+	\section*{Expected Time Analysis}
+	
+	\section*{Probability Review}
+	
+	\section*{Intro to Lower Bounds}
 	
 	
 	
