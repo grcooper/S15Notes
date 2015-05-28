@@ -227,16 +227,105 @@
 	
 	$$\frac{T(n-1)}{n} \leq \frac{T(n-2)}{n-1} + \frac{2c}{n}$$
 	$$\frac{T(n-2)}{n-1} \leq \frac{T(n-3)}{n-2} + \frac{2c}{n-1}$$
-	$$\frac{T(n)}{n+1} \leq \frac{T(n-1){n} + \frac{2c}{n+1} \leq \frac{T(n-2)}{n-1} + \frac{2c}{n} + \frac{2c}{n+1}$$
+	$$\frac{T(n)}{n+1} \leq \frac{T(n-1)}{n} + \frac{2c}{n+1} \leq \frac{T(n-2)}{n-1} + \frac{2c}{n} + \frac{2c}{n+1}$$
 	$$\frac{T(n-3)}{n-2} + \frac{2c}{n-1} + \frac{2c}{n} + \frac{2c}{n + 1} ...$$
 	$$\frac{T(1)}{2} + \frac{2c}{3} + \frac{2c}{4} + .. + \frac{2c}{n+1} = $$
 	$$= \frac{d}{2} + 2c\sum_{i=3}^{n+1}\frac{1}{i} = \frac{d}{2} + 2c(H_{n+1} - H_{2})$$
 	$$\in O(logn)$$
 	$$\frac{T(n)}{n+1} \in O(logn) \ implies T(n) \in O(logn)$$
 	
+	\section*{QuickSort}
 	
+	\subsection*{Avg. Case Analysis of Quick Sort}
+	Assume pivot is at index i\\
+	$$T(n) = cn + T(i) + T(n-i - 1)$$
+	How many sequences do we have? $->$ n!\\\
+	$$T(n) = \frac{1}{n!}(\sum_{i=1}^{n}(cn + T(i) + T(n-i-1)) \cdot (n-1)!$$
+	$$= cn + frac{1}{n}(\sum_{i=1}^{n}T(i) + T(n-i-1)$$
+	$$= cn + \frac{1}{n}\sum_{i=1}^{n}T(i) + \frac{1}{n}\sum_{j=1}^{n}T(j)$$
+	$$T(n) = cn + \frac{2}{n}\frac{2}{n}\sum_{i=1}^{n}T(i)$$
+	$$nT(n) = cn^2 + 2 \sum_{i=1}^{n}T(i)$$
+	$$(n-1)T(n-1) = c(n-1)^2 + 2\sum_{i=0}^{n-2}T(i)$$
+	$$nT(n) - (n-1)T(n-1) = 2cn - c + 2T(n-1)$$
+	$$nT(n) = 2cn - c + (n+1)T(n-1)$$
+	$$\frac{T(n)}{n+1} = \frac{T(n-1)}{n} + \frac{2c}{n+1}$$
+	$$\frac{T(n)}{n+1} \leq \frac{T(n-2)}{n-1} + \frac{2c}{n+1} = \frac{2c}{n}$$
+	$$\frac{T(n)}{n+1} = \frac{T(n-3)}{n-1} + \frac{2c}{n+1} + \frac{2c}{n} + \frac{2c}{n-1}$$
+	$$...$$
+	$$...$$
+	$$\frac{T(n)}{n+1} \leq \frac{2c}{n+1} + \frac{2c}{n} + \frac{2c}{n-1} + ... \frac{2c}{2} + 2c$$
+	$$\frac{T(n)}{n+1} \leq 2cln(n)$$
+	$$T(n) \leq (n+1)(n(n) 2c) \in \Theta(nlogn)$$
 	
+	\subsection*{More Notes on Quicksort}
+	\begin{verbatim}
+	Q-sort(A,L,R){
+		if(n < 2) break
+		
+		piv <- partition(A,L,R)
+		Q-sort(A,L,piv=1)
+		Q-sort(A,piv+1, R)
+	}
+	\end{verbatim}
+	M(n) = memory\\
+	$$M(n) = 2M(\frac{n}{2}) + C$$
+	Two recursive calls each require its own stream on the stack space\\
+	$$M(n) \in \Theta(n)$$
 	
+	\begin{verbatim}
+	Tail_Rec_Q-sort(A,L,R){
+		if(R-L) < 2 Break;
+		piv <- partition(A,L,R)
+		if(a < (R-L)/2){
+			Tail_Rec_Q-sort(A,L,piv-1)
+			L=Piv+1
+		} else {
+			Tail_Rec_Q-sort(A, piv+1, R)
+			R=Piv-1
+		}
+	}
+	\end{verbatim}
 	
+	$$M(n) \leq M(\frac{n}{2} + c) \in \Theta(logn)$$
 	
+	\section*{Comparison Based Model}
+	Sort objects (POTATOES) by mutual comparison\\
+	
+	Assume $P_1, P_2, P_3 ... P_n$\\
+	Assume the cost fora comparison is 1,everything else is free.\\
+	
+	Each comparison divides the number of possibilities by 2.\\
+	Starts with n! permuations, then $\frac{n!}{2} ...$\\
+	- Binary tree\\
+	-- Each node is a comparison\\
+	-- each leaf is a permutation\\
+	- A binary tree with n! leaves\\
+	
+	A binary tree with n! leaves\\
+	- Even if it is full, the height is at least $\Omega(logn)$\\
+	- ot am ne for wordst (eg, O(n!))\\
+	
+	\section*{Counting Sort}
+	n integers all smaller than m\\
+	size m\\
+	C:\\
+	\begin{tabular}{| c | c | c | c | c | c |}
+		\hline
+		0 & 0 & 0 & 0 & 0 & 0 \\ \hline	
+	\end{tabular}
+	\begin{tabular}{| c | c | c | c | c | c |}
+		\hline
+		1 & 2 & 3 & 1 & 0 & 1 \\ \hline	
+	\end{tabular}
+	
+	\begin{enumerate}
+		\item count the number of occurances in array c
+		\item In new array L find left boundaries L[i] = L[i-1] + C[i-1]
+	\end{enumerate}
+	
+	L:
+	\begin{tabular}{| c | c | c | c | c | c |}
+		\hline
+		0 & 1 & 3 & 6 & 8 & 8 \\ \hline	
+	\end{tabular}
 \end{document}
