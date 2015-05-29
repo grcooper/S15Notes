@@ -1,0 +1,115 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}CS241 Tutorial 3\vspace{-1ex}}
+\date{May 29th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	\section*{Topics}
+	\begin{itemize}
+		\item Outputting bytes
+		\item outputting isntructions
+		\item MERL
+		\item Relocating
+	\end{itemize}
+	
+	\section*{Q1}
+	Write psuedocode for a function output\_word which takes a 32\-bit integer and outputs each of its 4 bytes to standard output. Assume the existence of a function output\_byte which takes an int and outputs the low\-order byte if the integer can be represented in 8 bits\\
+	
+	\begin{verbatim}
+	Void output_word(int word){
+		char c;
+		c = word >> 24;
+		output_byte(c);
+		c = word >> 16;
+		output_byte(c);
+		c = word >> 8l
+		output_byte(c);
+		c = word;
+		output_byte(c);
+	}
+	\end{verbatim}
+	
+	\begin{verbatim}
+	0110
+	 >>1
+	____
+	0011
+	
+	0110
+	 <<1
+	____
+	1100
+	
+	1100
+	>>1
+	____
+	1110
+	
+	
+	1100
+	<<1
+	____
+	1000
+	\end{verbatim}
+	
+	\section*{Q2}
+	Write a function assemble\_add which assembles add instructions of the form add \$d, \$s, \$t given d, s and t and returns an int representing the binary encoding of the add instruction.
+	
+	
+	\begin{verbatim}
+	int assemble_add(int d, int s, int t){
+		return  (s << 21) | (t < 16) | (d << 11) | 32;
+	}
+	\end{verbatim}
+	
+	\underline{MERL} Mips executible relactable linkable\\
+	Stick notes:
+	\begin{itemize}
+		\item REL 0x1 loc
+		\item ESD 0x5 val len
+		\item ESR 0x11 loc len
+	\end{itemize}
+	
+	
+	\section*{Q3}
+	\begin{verbatim}
+	lis $6
+	.word 0x18
+	sw $31, -4($30)
+	lis $31
+	.word 4
+	sub $30, $30, $31
+	lis $3
+	.word proc
+	
+	lis $11
+	.word 1
+	
+	loop:
+	beq $2, $0, end
+	jalr $3
+	sub $2, $2, $11
+	beq $0, $0, loop
+	
+	end:
+	add $3, $1, $0
+	
+	lis $31
+	.word 4
+	add $30, $30, $31
+	lw $31, -4($30)
+	jr $31
+	proc:
+	add $1, $1, $6
+	jr $31
+	\end{verbatim}
+	
+\end{document}

@@ -1,0 +1,122 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}Math 239 - Lecture 9\vspace{-1ex}}
+\date{May 29th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	\section*{Binary Strings}
+	
+	\subsection*{General Questions}
+	
+	\subsubsection*{How many binary strings of length n have some propertise?}
+	
+	\myt{Approach:} let S by the set of all strings with these properties.\\
+	Define weight function w($\sigma$) to be the length of $\sigma$. 
+	Find generating series $\Phi_S(x)$ with respect to w.\\
+	Our answer is $[x^n]\Phi_S(x)$ (number of strings in S with weight n)\\
+	
+	Example:\\
+	S = \{01, 001, 010, 01100\}\\
+	Length: 2, 3, 3, 5\\
+	$\Phi_S(x) = x^2 + x^3 + x^3 + x^5$\\
+	
+	T = \{e, 0, 00, 000, 0000, ...\}\\
+	$\Phi_T(x) = 1 + x + x^2 + x^3 + x^4 + ... = \frac{1}{1-x}$\\
+	
+	\subsection*{Two Operations}
+	
+	\subsubsection*{Concatenation of sets of strings}
+	If A, B are sets of strings, then AB = \{ab $| a \in A, b \in B\}$\\
+	
+	Example:\\
+	A = \{0,11\}\\
+	B = \{1,11\}\\
+	AB = \{01, 011, 111, 1111\}\\
+	This is similar to the cartesian product\\
+	
+	$A^k = AA...A = \{a_1, a_2, ...a_k | a_i \in A\}$\\
+	Example:\\
+	A = \{0,11\}\\
+	$A^5$ includes 00000, 01111011\\
+	
+	\subsubsection*{Start (*) operator}
+	
+	$A^* = A^0 \cup A^1 \cup A^2 ... = \bigcup_{n\geq 0}A^n$\\
+	
+	Example:\\
+	A = \{0,1\}\\
+	01101 $\in \{0,1\}^5$ which is in $\{0,1\}^*$\\
+	
+	Any string of length n is in $\{0,1\}^n$ which is in $\{0,1\}^*$ So $\{0,1\}^*$ includes all binary strings\\
+	
+	Example: \\
+	A = $\{0\}\{00\}^*$ strings of odd length with only 0's\\
+	$\{00\}^*$ = \{e, 00, 0000, 000000, ...\} even length\\
+	
+	B = $\{0,111\}^*$ strings where blocks of 1s have lengths divisible by 3.\\
+	
+	C = $\{0\}^*(\{1\}\{0\}^*)^*$\\
+	Take any string, break it just before each 1. We have a number of copies of \{1\}\{0\}$^*$ except $\{0\}^*$ at the beginning\\
+	
+	This is the set of all strings. These are "decompositions" of strings\\
+	
+	\section*{Generating Series on Strings}
+	
+	Example:\\
+	A=\{1,11\}, B = \{00, 000\}, $w(\sigma)$ = length of $\sigma$\\
+	
+	$\Phi_A(x) = x + x^2$\\
+	$\Phi_B(x) = x^2 + x^3$\\
+	
+	AB = w(ab) = w(a) + w(b)\\
+	
+	Assuming concat works like the cartesian product,
+	
+	$\Phi_{AB}(x) = \Phi_A(x)\Phi_B(x)$\\
+	
+	AB = \{100,1000,1100,11000\}\\
+	
+	Example:\\
+	
+	B = \{0,111\}$^* = \bigcup_{k \geq 0}\{0,111\}^k$\\
+	$\Phi_{\{0,111\}^k}(x) = (\Phi_{\{0,111\}}(x))^k$\\
+	$ = (x + x^3)^k$\\
+	
+	By the sum lemma, $\Phi_B(x) = \sum_{k \geq 0}\Phi_{\{0,111\}^k}(x) = \sum_{k \geq 0}(x+x^3)^k$\\
+	$ = \frac{1}{1-(x+x^3)}$\\
+	
+	\section*{Unambiguity of Strings}
+	
+	Example:\\
+	A = \{1,11\}\\
+	B = \{1,11\}\\
+	
+	$A \times B = \{(1,1), (1,11), (11, 1), (11,11)\}$\\
+	AB = \{11,111,1111\}\\
+	
+	$\Phi_{A \times B}(x) = x^2 + 2x^3 + x^4$\\
+	$\Phi_{AB}(x) = x^2 + x^3 + x^4$\\
+	
+	Definition: AB is \underline{ambiguous} if there exists distinct pairs. $(a_1, b_1), (a_2, b_2) \in A \times B$ such that $a_1b_1 = a_2b_2$\\
+	
+	It is unabigious otherwise (each string is uniquely generated)\\
+	
+	When AB is ambiguous, $\Phi_{A\times B}(x) \neq \Phi_{AB}(x)$ an ambigous string appears in $A \times B$ multiple times but only one time in AB.\\
+	
+	When AB is unambigious, there is a binjection between $A \times B$ and AB ((a,b) $\rightarrow$ ab) so then $\Phi_{AB}(x) = \Phi_{A\times B}(x)$ Product lemma appleis
+	
+	
+	
+	
+	
+	
+\end{document}
