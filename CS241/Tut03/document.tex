@@ -81,6 +81,9 @@
 	
 	\section*{Q3}
 	\begin{verbatim}
+	beq $0, $0, 2
+	.word filelen
+	.word codelen
 	lis $6
 	.word 0x18
 	sw $31, -4($30)
@@ -88,6 +91,7 @@
 	.word 4
 	sub $30, $30, $31
 	lis $3
+	Rel1: 
 	.word proc
 	
 	lis $11
@@ -110,6 +114,13 @@
 	proc:
 	add $1, $1, $6
 	jr $31
+	
+	codelen:
+	.word 0x1
+	.word Rel1
+	
+	
+	file len: 
 	\end{verbatim}
 	
 \end{document}
