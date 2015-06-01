@@ -1,0 +1,79 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}Math 239 - Lecture 12\vspace{-1ex}}
+\date{June 1st, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	\section*{Ambiguity}
+	
+	AB works like $A \times B$ if it is unambiguous. $A \cup B$ is unambigious if $A \cap B = \emptyset$\\
+	
+	Gemerating Series: \\
+	A = \{1,11\} B = \{00,000\}\\
+	$$\Phi_{AB}(x) = \Phi_A(x)\Phi_B(x)$$
+	$$= (x +x^2)(x^2 + x^5)$$
+	
+	S = \{0,111\}*\\
+	
+	$$\Phi_S(x) = \sum_{n \geq 0}\Phi_{\{0,111\}^n}(x)$$
+	$$ = \sum_{n \geq 0}(x + x^3)^n = \frac{1}{1-(x+x^3)}$$
+	
+	\subsection*{Theorems}
+	Theorem (sum and product lemmas for strings) Let A, B be sets of strings.\\
+	
+	\begin{enumerate}
+		\item If $A \cap B = \emptyset$ then $\Phi_{A\cup B}(x) = \Phi_{A}(x) + \Phi_{b}(x)$
+		\item If AB is unambiguous, then $\Phi_{AB}(x) = \Phi_A(x)\Phi_B(x)$
+		\item If $A^*$ is unambiguous, then $\Phi_{A^*}(x) = \frac{1}{1-\Phi_A(x)}$
+	\end{enumerate}
+	
+	\subsection*{Proofs}
+	\begin{enumerate}
+		\item Sum Lemma
+		\item There is a bijection between $A \times B$ and AB when AB is unambiguous, (a,b) $\rightarrow$ ab. (The inverse is possible due to the unambiguity of AB). The product lemma applies.
+		\item Since $A^*$ is unambiguous by sum lemma, $\Phi_{A^*}(x) = \sum_{n \geq 0}\Phi_{A^n}(x) = \sum_{n \geq 0}(\Phi_A(x))^n = \frac{1}{1 - \Phi_A(x)}$ Since the constant term of $\Phi_A(x)$ is 0. If const term is not 0, then $\epsilon \in A$ ln$A^*$, we acn get $\epsilon = \epsilon\epsilon = \epsilon\epsilon\epsilon = ...$
+	\end{enumerate}
+	
+	
+	\section*{Basic Decompositions}
+	
+	\subsection*{3 basic unambiguous decomposition rules for the sets of al strings}
+	
+	\begin{enumerate}
+		\item \{0,1\}$^*$ cut any string after every bit, only one way
+		\item $\{0\}^*(\{1\}\{0\}^*)^*$ cut any string just before each 1. $00 | 1 | 10 | 1000$
+		\item Block decomposition $\{0\}^*(\{1\}\{1\}^*\{0\}\{0\}^*)^*\{1\}^*$ $00 | 1111 00 | 100 | 111 | 11100| 10 | 111$ Cut off any string after each block of 0's
+	\end{enumerate}
+	
+	\section*{Restrictions on Substrings}
+	
+	Example: Let S be the set of all strings with no 3 consectutive 0's. Start with $\{0\}^*(\{1\}\{0^*\})^*$ where can we find 000?\\
+	
+	In $\{0\}^*$ remove all instances of 000 in $\{0\}^*$ to get $\{\epsilon, 0, 00 \}$ So S = $\{\epsilon, 0, 00 \}(\{1\}\{\epsilon,0,00 \})^*$\\
+	
+	This is unambiguous since we are removing elements from an unambigious expression.\\
+	
+	$$\Phi_S(x) = (1 + x + x^2) \frac{1}{1-(x(1+x + x^2))}$$
+	$$ = \frac{1 + x + x^2}{1 - x - x^2 - x^3}$$
+	
+	The number of strings in S of length n is $[x^n]\frac{1+ x + x^2}{1 - x - x^2 - x^3}$\\
+	
+	In general, start with one of the 3 basic decompositions. Remove parts of it that violate our conditions\\
+	
+	If we start with block decomp, $\{0\}^* \rightarrow \{\epsilon, 0, 000 \}$\\
+	$\{0\}\{0\}^* \rightarrow \{0\}\{\epsilon, 0 \} \rightarrow \{0,00\}$
+	
+	S = $\{\epsilon, 0, 00 \}(\{1\}\{1\}^*\{0,00\}^*)^*\{1\}^*$\\
+	$\Phi_S(x) = (1+X+x^2)\frac{1}{1 - X \frac{1}{1-x}(x + x^2)} \frac{1}{1-x}$\\
+	$= (1 + x + x^2) \frac{1-x}{1 - x - (x)(x + x^2)} \frac{1}{1-x} = \frac{1 + x + x^2}{1 - x - x^2 - x^3}$
+	
+\end{document}
