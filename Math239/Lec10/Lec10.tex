@@ -1,0 +1,68 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}Math 239 Lec 10\vspace{-1ex}}
+\date{May 27th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	How many compositions of n are there where each part is odd? (any number of parts)\\
+	
+	Define $N_{odd} = \{1,3,5,7...\}$\\
+	Let $S = N_{odd} \cup N_{odd} \cup ... = \bigcup_{k \geq 0}N_{odd}^k$\\
+	Define the weight function of a composition to be the sum of its parts\\
+	
+	$$\Phi_{N_{odd}}(x) = x + x^3 + x^5 + ... = \frac{x}{1-x^2}$$
+	$$\Phi_{N_{odd}^k}(X) = (\Phi_{N_{odd}}(x))^k = (\frac{x}{1-x^2})^k$$
+	 by product lemma
+	$$\Phi_S(x) = \sum_{k \geq 0}\Phi_{N_{odd}^k}(x) = \sum_{k\geq 0}(\frac{x}{1-x^2})^k$$
+	$$= \frac{1}{1-\frac{x}{1-x^2}} = \frac{1-x^2}{1-x-x^2}$$
+	
+	Let A(x) = $\sum_{n \geq 0}a+nx^n = \frac{1-x^2}{1-x-x^2}$\\
+	$[a_n - a_{n-1} - a_{n-2} = 0] n \geq 3$\\
+	$a_0 = 1$ $a_1 = 1$ $a_2 = 1$\\
+	$\iff a_n = a_{n-1} + a_{n-1} + a_{n-2}$ for $n \geq 3$ Fibbonacci recurence\\
+	1,1,1,2,3,5,8,13,21,34...
+	$a_0, a_1, a_2$\\
+	Let $S_n$ be the set of all compositions of n where each part is odd. The recurrence implies that $|S_n| = |S_{n-1}| + |S_{n-2}|$ for $n \geq 3$\\
+	Find a bijection between $S_n$ and $S_{n-1} \cup S_{n-2}$\\
+	
+	Define f: $S_n \rightarrow S_{n-1} \cup S_{n-2}$ where for each $(a_1,...a_k) \in S_n$\\
+	f($a_0,...a_k$) = \\
+	$(a_1, ... a_k-1)$ if $a_k = 1$\\
+	$(a_1, .. a_{k-1}, a_{k-2})$ if $a_k \geq 3 \leftarrow $ in $S_{n-2}$\\
+	The inverse $f^{-1}: S_{n-1} \cup S_{n-2} \rightarrow S_n$ where for each $(b_1, ... b_l) \in S_{n-1} \cup S_{n-2}$\\
+	
+	$f^{-1}(b_1...b_l)^{-1} =$\\
+	$(b_1,...b_l, 1)$ if $b_1 + ... + b_l$ = n - 1\\
+	$(b_1, ..., b_{l-1},b_{l + 2})$ if $b_1 + ... b_l = n - 2$\\
+	$\implies$ f is a bijection\\
+	
+	Recusively build $S_n$ based on $S_{n-1}$ and $S_{n-2}$\\
+	Add 1 part of 1 to any $S_{n-1}$\\
+	Add 2 to the last part of any $S_{n-2}$\\
+	
+	$S_6 = $ \{(5,1), (1,1,3,1), (1,3,1,1), (3,1,1,1), (1,1,1,1,1,1), (3,3), (1,5), (1,1,1,3)\}\\
+	from $S_4$\\
+	
+	\section*{Binary Strings}
+	
+	A binary string is a sequence of 0's and 1's\\
+	Terminology:
+	\begin{itemize}
+		\item The length of a string is the total number of 0's nad 1's in the string
+		\item There is one string of length 0 and that is the empty (null string) "$\epsilon$"
+		\item The concentration of a and b is ab, a = 001, b = 10, ab = 00110
+		\item b is a substring of S if s = abc for some strings a,c (and possibly $\epsilon$)
+		\item A block is a maximal non-empty substring of all 0's or all 1's
+	\end{itemize}
+	
+	
+\end{document}
