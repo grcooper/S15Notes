@@ -1,0 +1,110 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{tikz,ifthen,amsmath,amssymb,fancyhdr,comment,lastpage}
+
+\title{\vspace{-15ex}Module 4 - Dictionaries and Balanced Search Trees\vspace{-1ex}}
+\date{June 2nd, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	\section*{Dictionaries}
+	\begin{itemize}
+		\item An ADT
+		\item Data (key, value) pairs
+		\item operations: search, insert, delete
+	\end{itemize}
+	
+	Data Structures for Dictionaries:
+	\begin{itemize}
+		\item unsorted array or linked list
+		\begin{itemize}
+			\item search: O(n)
+			\item insert: O(1)
+			\item Delete: O(n)
+		\end{itemize}
+		\item sorted array
+		\begin{itemize}
+			\item search - binary search O(logn)
+			\item insert O(n)
+			\item delete O(n)
+		\end{itemize}
+		
+	\end{itemize}
+	
+	\subsection{BST}
+	
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=200 pt},
+		level 2/.style={sibling distance=100 pt},
+		level 3/.style={sibling distance=60 pt}
+		]
+		\node {20}
+		child {node {10}
+			child {node {5}
+				child {node {1}}
+				child {node {8}}
+			}
+			child {node {15}
+				child [missing]
+				child {node {16}}
+			}
+		}
+		child {node {50}
+			child [missing]
+			child {node{70}
+				child {node {60}}
+				child {node {80}}
+			}	
+		}
+		;
+		\end{tikzpicture}\end{center}
+	
+	Insert 6\\
+	
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=200 pt},
+		level 2/.style={sibling distance=100 pt},
+		level 3/.style={sibling distance=60 pt}
+		]
+		\node {20}
+		child {node {10}
+			child {node {5}
+				child {node {1}}
+				child {node {8}
+					child {node{6}}
+					child [missing]	
+				}
+			}
+			child {node {15}
+				child [missing]
+				child {node {16}}
+			}
+		}
+		child {node {50}
+			child [missing]
+			child {node{70}
+				child {node {60}}
+				child {node {80}}
+			}	
+		}
+		;
+		\end{tikzpicture}\end{center}
+	
+	Delete in a BST\\
+	\begin{itemize}
+		\item if n is a leaf - just delete it
+		\item if n is a node with one child, replace it with its child
+		\item if n has two children, replace with the predecessor (rightmost on the left) or sucessor (left most)
+	\end{itemize}
+	
+\end{document}
