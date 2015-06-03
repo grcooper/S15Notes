@@ -1,0 +1,47 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}Math 239 Tutorial 5\vspace{-1ex}}
+\date{June 4th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	\section*{Q?}
+	S is triples ($a_1, a_2, a_3$) $\in N \times N \times N^n$\\
+	sth, $a_1 < a_2 < a_3$\\
+	w($a_1, a_2, a_3)$ = $a_1, a_2, a_3$\\
+	
+	2,4,7 $\rightarrow$ 2,2,3
+	f: S $\rightarrow$ N x N x N\\
+	$a_1, a_2, a_3 \rightarrow a_1, a_2 - a_1, a_3 - a_2$\\
+	g : N x N x N $\rightarrow$ S\\
+	$b_1, b_2, b_3 \rightarrow b_1, b_1 + b_2, b_1 + b_2 + b_3$\\
+	
+	$a_1, a_2, a_3 \rightarrow a_1, a_2 - a_1, a_3 - a_2$\\
+	$\rightarrow a_1, a_2, a_3$\\
+	
+	$w^*(b_1, b_2, b_3) = 3b_1, 2b_2, b_3$\\
+	$w(a_1, a_2, a_3) = w^*(F(a_1, a_2, a_3))$\\
+	$a_1 + a_2 + a_3 = w^*(a_1, a_2 - a_1, a_3 - a_2)$\\
+	$ = 3a_1 + 2(a_2 - a_1) + (a_3 - a_1)$\\
+	$ = a_1 + a_2 + a_3$\\
+	
+	N x N x N\\
+	$\sum_{n \in N}(x)^{w_2(n)} = (x + x^2 + x^3 + ..)(x^2 + x^3 + x^4 + ...)(x^3 + x^4 + x^5 + ...)$\\
+	$ = \frac{x}{(1-x)} \frac{x^2}{1-x^2}\frac{x^3}{(1-x^3)}$\\
+	
+	\section*{Q1}
+	Find the number of ocmpositions of n into 4 parts wehre exactly 2 parts are even\\
+	(even)$(frac{x^2}{1-x^2})^2(\frac{x}{1-x^2})^2$ (odd)\\
+	
+	Becomes\\
+	$[x^n]{4 \choose 2}(\frac{x^2}{1-x^2})^2(\frac{x}{1-x^2})^2$\\
+	
+\end{document}

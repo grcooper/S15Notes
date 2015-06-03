@@ -1,0 +1,76 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}Math 239 Lecture 13\vspace{-1ex}}
+\date{June 3rd, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	\section*{Restrictions on Substrings}
+	
+	Block Decomposition: $\{1\}^*(\{0\})\{0\}^*\{1\}\{1\}^*)^*\{0\}^*$\\
+	
+	Example: Let S be the set of all strings where every block has length at least 2.\\
+	
+	Start with block decomp, remove places were we find blocks of length 1.\\
+	
+	$\{0\}\{0\}^* = \{0, 00, 000, 0000, ...\} \rightarrow \{00\}\{0\}^*$\\
+	$\{1\}\{1\}^* \rightarrow \{11\}\{1\}^*$\\
+	$\{1\}^* \rightarrow \{\epsilon, \{11\}\{1\}^*\}$ ... $ \{1\}^* = \{\epsilon, 1, 11, 111 ... \}$\\
+	$\{0\}^* \rightarrow \{ \epsilon, \{00\}\{0\}^* \}$\\
+	
+	So S = $\{\epsilon, \{11\}\{1\}^* \}(\{00\}\{0\}^*\{11\}\{1\}^*)^*\{\epsilon, \{00\}\{0\}^* \}$\\
+	$$\Phi_S(x) = (1 + \frac{x^2}{1-x})(\frac{1}{1 - (\frac{x^2}{1-x} \frac{x^2}{1-x})})(1 + \frac{x^2}{1-x}) = \frac{1-x+x^2}{1-x-x^2}$$
+	
+	Example: Let S be the set of all strings where any even block of 0's cannot be followed by an odd block of 1's\\
+	
+	Startint with a block decomposition, the only place with 0's followed by 1's is $\{0\}\{0\}^*\{1\}\{1\}^*$\\
+	
+	Break into 2 cases \\
+	$\rightarrow$ even 0's \{00\}\{00\}$^*$\\
+	$\rightarrow$ odd 0's $\{0\}\{00\}^*\{1\}\{1\}^*$\\
+	
+	$S_0 S = \{1\}^*(\{00\}\{00\}^*\{11\}\{11\}^* \cup \{0\}\{00\}^*\{1\}\{1\}^*)^*\{0\}^*$\\
+	
+	$\Phi_S(x) = \frac{1}{1-x}\frac{1}{1 - (\frac{x^2}{1-x^2}\frac{x^2}{1-x^2} + \frac{x}{1-x^2}\frac{x}{1-x})}\frac{1}{1-x} = \frac{1+2x+x^2}{1-3x^2 - x^3}$\\
+
+	
+	\section*{String Recursion}
+	Example: Let S be the set of all strings.\\
+	S = \{0,1\}S $\cup \{\epsilon \}$\\
+	
+	$\Phi_S(x) = (x+x)\Phi_S(x) + 1 \implies \Phi_S(x) = frac{1}{1-2x}$\\
+	$[x^n]\Phi_S(x) = 2^n$\\
+	
+	Example: Let S be all the strings with no 000 (Three consecutive zeros)\\
+	
+	\begin{tabular}{c c | c | c c }
+		$\epsilon$, 0, 00 & 1 & $\in$ S && \\ \hline	
+	\end{tabular}
+	
+	S = \{1, 01, 001\}S\\
+	This does not apply to strings with no 1's\\
+	$\Phi_S(x) = (x + x^2 + x^3)\Phi_S(x) + 1 + x + x^2$\\
+	$\Phi_S(x) = \frac{1+x+x^2}{1-x-x^2 - x^3}$\\
+	
+	Example: Let S be the set of all strings with no 1010 as a substring.\\
+	
+	Let T be the strings with exactly 1 copy of 1010 at the right end.\\
+	
+	\begin{enumerate}
+		\item $\{\epsilon \} \cup S\{0,1\} = S \cup T$\\
+				$(\subseteq) \epsilon \in S$ For any $\sigma \in$ S, $\sigma \{0,1\}$ either has no 1010 (in which case it is in S), or it has exactly one copy of 1010 at the very right end (so it is in T).\\
+				$(\subseteq) (other way)$ A string in S is either $\epsilon$ of by cutting the last bit it is still in S. For a string in T, cutting the last bit destroys the only copy of 1010 in the string so the remaining string is in S.\\
+	\end{enumerate}
+	
+	
+	
+	
+\end{document}
