@@ -1,0 +1,115 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{tikz,ifthen,amsmath,amssymb,fancyhdr,comment,lastpage}
+
+\title{\vspace{-15ex}Tutorial 5 CS240\vspace{-1ex}}
+\date{June 3rd, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	Topics:
+	\begin{itemize}
+		\item lower bounds
+		\item counting sort / radix sort
+		\item  - applications
+	\end{itemize}
+	
+	\section*{Q1)}
+	
+	\begin{itemize}
+		\item Supposed we have n blue jugs and red jugs
+		\item for each blue jug there is a corresponding red jug with the same capacity
+		\item the capacities are unique among jugs of the same colour
+		\item FIND: a set of pairs such that every blue jub is paired with a red jug having the same capacity
+		\item Only allow comparisons between a red and blue jug
+		\item GOAL: Show $\Omega(nlogn)$ comparisons are needed.
+	\end{itemize}
+	
+	\begin{tabular}{ c | c | c | c |}
+		\hline
+		B: & 5 & 3 & 8 \\ \hline
+		R: & 3 & 8 & 5 \\ \hline
+	\end{tabular}
+	
+	$B_1 \rightarrow R_3$\\
+	$B_2 \rightarrow R_1$\\
+	$B_3 \rightarrow R_2$\\
+	
+	Proof: Label blue jugs with B = \{1,2, ... n\} and red jugs R = \{1,2, ... n\}\\
+	$\rightarrow$ A solution has the form:\\
+	A = \{(i, $\pi(i)), i \in B, \pi$ is a permutation of R \}\\
+	
+	Decision making:
+	for i, j in B and R respectively,
+	if $i < j$ go to left path\\
+	if $i = k$ go to middle path\\
+	if $i > j$ go to the right path\\
+	
+	$\rightarrow$ Suppose that our tree has height h\\
+	\begin{itemize}
+		\item at most $3^n$ leaves
+		\item at least n! leaves
+	\end{itemize}
+	$$3^n \geq n! \geq (\frac{n}{e})^n \implies h \geq nlog_3(\frac{n}{e}) \in \Omega(nlogn)$$
+	$(\frac{n}{e})^n$ comes from Stirling's approximation.\\
+	
+	\section*{Q2) - match psuedocode from slides}
+	Use countsort to sort:
+	
+	B = (6,1,2,0,10,6,6,2,9,1,6,7,0)\\
+	Range $[0-10]$\\
+	
+	inc(C[B[i]])\\
+	
+	C = (0,0,0,0,0,0,0,0,0,0,0)\\
+	
+	C = (0,0,0,0,0,0,1,0,0,0,0)\\
+	C = (0,1,0,0,0,0,1,0,0,0,0)\\
+	C = (0,1,1,0,0,0,1,0,0,0,0)\\
+	... Increment at the corresponding index\\
+	Eventually becomes:\\
+	C = (2,2,2,0,0,0,4,1,0,1,1)\\
+	
+	I[0] = 0 : I[k] = I[k-1] + I[k-1]\\
+	
+	I = (0,2,4,6,6,6,10,11,11,11)\\
+	
+	A is the sorted array, same amount of elements as B\\
+	
+	A[I[B[i]]] = B[i]\\
+	Increase(I[B[i]])\\
+	
+	A = (0,0,0,0,0,0,0,0,0,0,0)\\
+	A = (0,0,1,0,2,0,6,0,0,0,10)\\
+	.. Repeat procedure
+	A = (0,0,1,1,2,2,6,6,6,6,7,9,10)\\
+	
+	\section*{Q3)}
+	Use Radix Sort to Sort (LSD)\\
+	A = (2751, 68, 215, 155,214,313,135,38,351,51)\\
+	Sort individual digits using any stable sort.\\
+	
+	1st: (2751,351,51,313,214,215,155,135,68,38)\\
+	2nd: (313,214,215,215,135,38,2751,351,51,155,68)\\
+	3rd: (051, 068, 135,155,214,215,313,351,2751)\\
+	4th: (051, 068, 135,155,214,215,313,351,2751)\\
+	Things stay the same in the 4th iteration, btu it is not always this way.\\
+	
+	\section{Q4)}
+	Unsorted array H of n non-negative elements. All of the elements are smaller than $n^3$, sort A in $\Theta(n)$\\
+	
+	$\Theta(m(n+b))$, b is the base, m is the number of digits. We need to pick a base such m(n + b) = $\Theta(n)$\\
+	
+	We are going to pick base n numbers. Therefore we only need 3 digits to represent them $log_n(n^3)$\\
+	
+	$\Theta(m(n + b)) \implies \Theta(3 \times 2n) \in \Theta(n)$\\
+	
+	
+\end{document}

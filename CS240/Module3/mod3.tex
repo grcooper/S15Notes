@@ -5,6 +5,7 @@
 
 \usepackage{mathtools}
 \usepackage{amssymb}
+\usepackage{tikz,ifthen,amsmath,amssymb,fancyhdr,comment,lastpage}
 
 \title{\vspace{-15ex}CS 240 Module 3\vspace{-1ex}}
 \date{May 4th, 2015}
@@ -402,6 +403,109 @@
 	LSD for n numbers $\leq$ n of R = 10, m = log$_{10}^n \in \Theta(logn)$\\
 	m(n + R) $\in \Theta(nlogn)$\\
 	
+	\section*{Binary Search Trees (review)}
+	
+	Given n (positive) integers of value at most $n^5$ how can we sort in O(n)?\\
+	
+	Radix sort $->$ Base R = n $->$ m(n+R) $\in \Theta(n)$\\
+	
+	\subsection*{Height of a BST}
+	
+	
+	\subsubsection*{Worst Case}
+	$h \in \Theta(n)$\\
+	
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=200 pt},
+		level 2/.style={sibling distance=100 pt},
+		level 3/.style={sibling distance=60 pt}
+		]
+		\node {10}
+		child {node {9}
+			child {node {8}
+				child {node {7}
+					child {node {6}
+						child {node {5}
+							child {node {4}
+							child [missing]
+						}
+						child [missing]
+					}
+					child [missing]
+				}
+				child [missing]
+			}
+			child [missing]
+		}
+		child[missing]
+	};
+	\end{tikzpicture}\end{center}
+	
+	\subsubsection*{Best Case}
+	
+	%% FIX THIS
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=200 pt},
+		level 2/.style={sibling distance=100 pt},
+		level 3/.style={sibling distance=60 pt}
+		]
+		\node {20}
+			child {node {15}
+				child {node {10}
+					child {node {5}}
+				child {node {14}}
+			}
+			child {node {17}
+				child{node {16}}
+				child{node {19}}
+			}
+		}
+			child{node {25}
+				child{node {23}
+					child {node {22}}
+					child {node {24}}
+				}
+				child{node {28}
+					child {node {27}}
+					child {node {30}}
+				}
+			}
+		;
+	\end{tikzpicture}\end{center}
+	
+	\subsubsection*{Average Case}
+	$$H(n) = 1 + \frac{1}{n}\sum_{i = 0}^{n-1}max\{H(i), H(n-i-1)\}$$
+	$$= 1 + \frac{1}{n}(\sum_{i=1}^{floor(frac{n}{2} - 1)}H(n-i-1) + \sum_{i=floor(\frac{n}{2}}^{n-1}H(i))$$
+	$$ = 1 + \frac{1}{n}(\sum_{j=n-floor(\frac{n}{2})}^{n-1} H(j) + \sum_{i = floor(\frac{n}{2})}^{n-1} H(i)$$
+	$$ H(n) \leq 1 + \frac{2}{n}\sum_{i = floor(\frac{n}{2})}^{n-1} H(i)$$
+	$$= 1 + \frac{2}{n}(\sum_{i = floor(\frac{n}{2})}^{\frac{3n}{4}}H(i) + \sum_{i = \frac{3n}{4} + 1}^{n-1} H(i))$$
+	$$H(n) \leq 1 + \frac{2}{n} \times \frac{n}{4} \times H(\frac{3n}{4}) + \frac{2}{n} \times \frac{n}{4} \times H(n)$$
+	$$H(n) \leq 1 + \frac{1}{2}H(\frac{3n}{4}) + \frac{1}{2}H(n)$$
+	$$H(n) \leq 2 + H(\frac{3n}{4})$$
+	$$H(n) \leq 2 + 2 + H(\frac{9n}{16})$$
+	$$\leq 2 + 2 + .... + 2 = 2 \times log_{\frac{4}{3}}^n \in O(logn)$$
+	
+	\subsection*{Balanced BSTs}
+	\begin{itemize}
+		\item The goal is to have height $\Theta(logn)$ ALWAYS
+		\item For that, we consider balance-factor$->$BF
+		\item BF(x) = height(x $->$ right) - height(x $->$ left)
+		\item height(null) = -1
+	\end{itemize}
+	
+	We call a node x
+	\begin{itemize}
+		\item left heavy if bf(x) $<$ 0
+		\item right heavy if bf(x) $>$ 0
+		\item balanced if BF = 0
+	\end{itemize}
+	
+	\subsection*{AVL Tree}
+	An AVL tree is a BST such that the BF of all nodes is either -1, 0 and 1
 	
 \end{document}
 
