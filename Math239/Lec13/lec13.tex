@@ -1,0 +1,102 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}Math 239 Lecture 13\vspace{-1ex}}
+\date{June 5th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	\section*{String Recursion}
+	S = strings with no 1010\\
+	T = Strings with one 1010 at the right\\
+	
+	$\{ \epsilon \} \cup S\{ 0,1 \} = S \cup T$\\
+	
+	S$\{ 1010 \}$ = T\\
+	
+	$\subseteq$ IF we add 1010 to a string in S, it has at least 1 copy of 1010 if it is the only copy, then it is in T. For those strings in S that ends with 10, there are 2 copies of 1010: $\_\_\_\_\_101010$. In this case it is in T$\{ 10 \}$.
+	
+	$\subseteq$ (Other way). Any string in T or T\{10\} ends with 1010. By removing the last 4 bits we destroy all copies of 1010 in the string so it is in S\{1010\}\\
+	
+	Generating Series:
+	\myt{1}: 1 + $\Phi_S(x) \cdot 2x = \Phi_S(x) + \Phi_T(x)$\\
+	\myt{2}: $\Phi_S(x) \cdot x^4 = \Phi_T(x) + \Phi_T(x) \cdot x^2$\\
+	\myt{2 $\implies$} $\Phi_T(x) = \frac{x^4}{1+x^2}\Phi_S(x)$\\
+	
+	\myt{SUb into 1}: 1 + $\Phi_S(x) \cdot 2x = \Phi_S(x) + \frac{x^4}{1+x^2}\Phi_S(x)$\\
+	$\Phi_S(x) = \frac{1}{1 + \frac{x^4}{1+x^2} - 2x} = \frac{1+x^2}{1 - 2x + x^2 - 2x^3 + x^4}$\\
+	
+	\section*{Coefficients of Rational Expressions}
+	\myt{Goal:} Find explicit formula for $[x^n]f(x)/g(x)$\\
+	
+	\myt{Example} 
+	$$A(x) = \sum_{n \geq 0}a_nx^n$$
+	where 
+	$$A(X) = \frac{ 4-11x}{1-7x+10x^2}$$
+	$$1-7x+10x^2 = (1-2x)(1-5x)$$
+	
+	By partial fractions there exists constants $C_1, C_2$ such that:
+	$$A(x) = \frac{C_1}{1-2x} + \frac{C_2}{1-5x}$$
+	
+	Solving ives $C_1 = 1, c_2 = 3$\\
+	So:
+	$$A(x) = \frac{1}{1-2x} + \frac{3}{1-5x}$$
+	$$= 2^n + 3 \cdot 5^n$$
+	So
+	$$ [x^n]A(x) = [x^n]\frac{1}{1-2x} + [x^n]\frac{3}{1-5x}$$
+	
+	\myt{Example}:
+	$$A(x) = \frac{-1 + 8x - 4x^2}{(1-2x)^3} = \frac{c_1}{1-2x} + \frac{C_2}{(1-2x)^2} + \frac{C_3}{(1-2x)^3}$$
+	$$C_1 = -1, C_2 = -2, C_3 = 2$$
+	$$A(x) = \frac{-1}{1-2x} + \frac{-2}{(1-2x)^2} \frac{2}{(1-2x)^3}$$
+	
+	SIDE NOTE:
+	$$(\frac{1}{(1-x)^k} = \sum_{n \geq 0}{n+k-1 \choose k-1}x^n)$$
+	
+	Continuing
+	$$[x^n]A(x) = (-1)2^n - 2{n+2-1 \choose 2-1} \cdot 2^n + 2{n + 3 - 1 \choose 3-1}2^n$$
+	$$ = (-1)2^n - 2 \cdot {n+1 \choose 1}2^n + 2{n+2 \choose 2}2^n$$
+	$$ = (-1)2^n - 2(n+1)2^n + 2\frac{(n+2)(n+1)}{2}2^n$$
+	$$ = (-1)2^n - 2(n+1)2^n + (n^2 + 3n + 2)2^n$$
+	$$ = (n^2 + n - 1)2^n$$
+	
+	\myt{Expand}
+	$${n+k-1 \choose k-1} = \frac{(n+k-1)!}{(k-1)!n!} = \frac{(n+k-1)(n+k-2)...(n+1)}{(k-1)!}$$
+	
+	This numerator is a polynomial in n of deg k-1.\\
+	In general:
+	$$[x^n]\frac{C}{1-rx)^k} = P(n) \cdot r^n$$
+	Where P(n) has degree k-1\\
+	
+	Generalize more:
+	$$A(x) = \frac{f(x)}{g(x)}$$
+	deg(f(x)) $<$ deg(g(x)) and g(x) = (1-$r_1x)^{e_1}(1-r_2x)^{e_2}...(1-r_kx)^{e_k}$\\
+	Then:
+	$$A(x) = \frac{C_{1,1}}{1-r_1x} + ... + \frac{C_{1,e_{1}}}{(1-r_1x)^{e_1}} + ... + \frac{C_{k,1}}{1-r_kx} + \frac{C_{k,e_{k}}}{(1-r_kx)^{e_k}}$$
+	
+	Then,
+	$$[x^n]A(x) = P_1(n)r_i^n + ... + P_k(n)r_k^n$$
+	
+	Where $P_i(n)$ is a polynomial in n of degree $e_i - 1$\\
+	
+	\myt{example:} 
+	$$A(x) = \frac{1-2x}{(1+3x)^2(1-5x)^3}$$
+	$$[x^n]A(x) = (An + B)(-3^n) + (Cn^2 + Dn + E)5^n$$
+	For constants A,B,C,D and E\\
+	
+	Characteristic Polynomial\\
+	$$g(x) = (1-r_1x)^{e_1} ... (1-r_kx)^{e_k}$$
+	Define:
+	$$g*(x) = (x-r_1)^{e_1} ... (x-r_k)^{e_k}$$
+	Switch 1-rx to x-r\\
+	Then $r_1,...r_k$ are roots of g*(x) with multiplicatives $e_1,...e_k$ g*(x) is the char polynomial\\
+		
+		
+\end{document}
