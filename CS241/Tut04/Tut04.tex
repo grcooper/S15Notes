@@ -1,0 +1,38 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}CS 241 Tutorial 4\vspace{-1ex}}
+\date{June 5th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	Topics:
+	\begin{itemize}
+		\item MERL to Asm Translation
+		\item Unlinking MERL files
+	\end{itemize}
+	
+	\begin{tabular}{l r r}
+		cookie & 1000 0002 &\\
+		len    & 60 &\\
+		clen & 20 &\\
+		00...0c & 1c & .wrd rel2\\
+		10 & 14 &\\
+		Rel1: 14 & 14 & .word rel1\\
+		18 & 20 &\\
+		rel2: 1c & 0 &\\
+		REL & 14 &\\
+		REL & 0c &\\
+		ESR & 1c def &\\
+		ESE & 14 abc &\\
+	\end{tabular}
+	
+	
+\end{document}
