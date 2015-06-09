@@ -1,0 +1,72 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}Math 239 - Tutorial 5\vspace{-1ex}}
+\date{June 9th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	\section*{Binary String}
+	$$AB = \{\sigma_1, \sigma_2 | \sigma_1 \in A, \sigma_2 \in B \}$$
+	$$A \cup B \{\sigma | \sigma \in A or \sigma \in B \}$$
+	$$A^* \{\epsilon \} \cup A \cup AA \cup AAA ...$$
+	
+	\subsection*{Ambiguous vs unambiguous}
+	ambigiuos expression\\
+	$$\{00\}\{1,01\}$$
+	$$= \{01, 001, 0001 \}$$
+	
+	\section*{2}
+	Prove that $\{0,1\}^* \{000011\} \{0,1\}^*$ is ambigious\\
+	
+	000011000011 $\epsilon$\\
+	
+	\section*{1}
+	Let S = $(\{1 \}(\{0\}\{1\}^*\{0\})^*\{1\}\{0\}^*)^*$\\
+	
+	\subsection*{a) Find Binary strings at most 4}
+	
+	$\epsilon, 11, 110, 1100, 1001, 1111$\\
+	
+	\subsection*{b) Assuming S is unambiguous find $\Phi_S(x)$}
+	
+	$$\Phi_S(x) = \Phi_{A^*}(x) = \frac{1}{1- \Phi_A(x)}$$
+	$$\Phi_A(x) = \Phi_{\{1\}(\{0\}\{1\}^*\{0\})^*\{1\}\{0\}^*}(x)$$
+	$$ = \Phi_{\{1\}}(x) \cdot \frac{1}{1 - \Phi_{\{0\}\{1\}^*\{0\}}} \cdot \Phi_{\{1\}}(x) \frac{1}{1 - \Phi_{\{0\}}(x)}$$
+	$$ = x \cdot \frac{1}{1- \frac{x^2}{1-x}} \cdot x \frac{1}{1-x}$$
+	$$ = \frac{x^2}{1-x} \cdot \frac{1}{\frac{1-x-x^2}{1-x}}$$
+	$$ = \frac{x^2}{1-x-x^2}$$
+	
+	$$\Phi_{\{0\}\{1\}^*\{0\}}(x) = \frac{x^2}{1-x}$$
+	
+	\section*{3}
+	Find the unambigious decompositions of the following sets of strings\\
+	
+	\subsection*{a) strings that begin and end with the same bit}
+	$$\{0\}\{0,1\}^*\{0\} \cup \{1\}\{0,1\}^*\{1\} \cup \{\epsilon,1 ,0 \}$$
+	
+	\subsection*{b) The set of binary strings where no block is divisible by 3}
+	
+	$$(\{0,00\}\{000\}^*\{1,11\}\{111\}^*)$$
+	
+	$$\{0,00\}\{000\}^*$$
+	
+	$$= \{0, 0, 0000, 00000\}$$
+	
+	$$\{\epsilon \} \cup (\{1,11\}\{111\}^*)(\{0,00\}\{000\}^*\{1,11\}\{111\}^*)^*(\{\epsilon \} \cup \{0,00\}\{000\}^*) \textbackslash \{\epsilon \}$$
+	
+	\subsection*{c) Strings where the length of each block of 1's has the same parity as the length of 0's imediately following it, and the string does not end with 1}
+	
+	$$\{0\}^*(\{11\} \{11\}^*\{00\}\{00\}^* \cup \{1\}\{11\}^*\{0\}\{00\}^*)^*)$$
+	
+	
+	
+	
+\end{document}
