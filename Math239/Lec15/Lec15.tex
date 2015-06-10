@@ -1,0 +1,249 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{tikz,ifthen,amsmath,amssymb,fancyhdr,comment,lastpage}
+
+\title{\vspace{-15ex}Math 239 Lecture 15\vspace{-1ex}}
+\date{June 10th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	\section*{Counting Binary Trees}
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=200 pt},
+		level 2/.style={sibling distance=100 pt},
+		level 3/.style={sibling distance=60 pt}
+		]
+		\node {}
+		child {node {}
+			child {node {}
+				child {node {}}
+				child {node {}}
+			}
+			child {node {}
+				child [missing]
+				child {node {}}
+			}
+		}
+		child {node {}
+			child [missing]
+			child {node{}
+				child {node {}}
+				child {node {}}
+			}	
+		}
+		;
+	\end{tikzpicture}\end{center}
+
+	\myt{Definition: } A binary tre is either:
+	\begin{enumerate}
+		\item an emtpy tree $\epsilon$
+		\item a root vertex with a left branch anda right branch ech of which is a binary tree
+	\end{enumerate}
+	
+	\subsection*{how many binary trees have n nodes?}
+	for 3 nodes:\\
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=200 pt},
+		level 2/.style={sibling distance=100 pt},
+		level 3/.style={sibling distance=60 pt}
+		]
+		\node {}
+		child {node {}
+		}
+		child {node {}
+		}
+		;
+	\end{tikzpicture}\end{center}
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=200 pt},
+		level 2/.style={sibling distance=100 pt},
+		level 3/.style={sibling distance=60 pt}
+		]
+		\node {}
+		child {node {}
+			child {node {}}
+		}
+		child [missing]
+		;
+	\end{tikzpicture}\end{center}
+\begin{center}\begin{tikzpicture}[
+	level distance=45 pt,
+	every node/.style={circle,draw},
+	level 1/.style={sibling distance=200 pt},
+	level 2/.style={sibling distance=100 pt},
+	level 3/.style={sibling distance=60 pt}
+	]
+	\node {}
+	child {node {}
+		child [missing]
+		child {node {}}
+	}
+	child [missing]
+	;
+	\end{tikzpicture}\end{center}
+\begin{center}\begin{tikzpicture}[
+	level distance=45 pt,
+	every node/.style={circle,draw},
+	level 1/.style={sibling distance=200 pt},
+	level 2/.style={sibling distance=100 pt},
+	level 3/.style={sibling distance=60 pt}
+	]
+	\node {}
+	child[missing]
+	child {node {}
+		child {node {}}
+		child[missing]
+	}
+	;
+	\end{tikzpicture}\end{center}
+	\begin{center}\begin{tikzpicture}[
+	level distance=45 pt,
+	every node/.style={circle,draw},
+	level 1/.style={sibling distance=200 pt},
+	level 2/.style={sibling distance=100 pt},
+	level 3/.style={sibling distance=60 pt}
+	]
+	\node {}
+	child[missing]
+	child {node {}
+		child[missing]
+		child {node {}}
+	}
+	;
+	\end{tikzpicture}\end{center}
+	
+	Let T be the set of all binary trees of any size. For each t $\in$ T, define weight functions w(t) to be the number of nodes in T. Let T(x) be the generating series fo T with respect to w. The answer to our question is $[x^n]t(x)$\\
+	
+	For any non-empty tree t, we can decompose it into 3 parts, root node r, the left tree $t_1$, the right tree $t_2$. $t_1$, $t_2 \in T$. This belongs to the cartesian product $r \times T \times T$\\
+	
+	Let S = $\{\epsilon \} \cup \{r \} \times T \times T$\\
+	
+	Then each tree t $\in$ T corresponds to one element of S in a bijection.\\
+	
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=200 pt},
+		level 2/.style={sibling distance=100 pt},
+		level 3/.style={sibling distance=60 pt}
+		]
+		\node {}
+		child {node {}
+			child {node {}
+				child {node {}}
+				child {node {}}
+			}
+			child {node {}}
+		}
+		child {node {}
+			child {node {}}
+			child {node {}}
+		}
+		;
+	\end{tikzpicture}\end{center}
+	
+	becomes
+	
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=200 pt},
+		level 2/.style={sibling distance=100 pt},
+		level 3/.style={sibling distance=60 pt}
+		]
+		\node {0}
+		;
+	\end{tikzpicture}\end{center}
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=200 pt},
+		level 2/.style={sibling distance=100 pt},
+		level 3/.style={sibling distance=60 pt}
+		]
+		\node {}
+		child {node {}
+			child {node {}
+			}
+			child {node {}}
+		}
+		child {node {}
+		}
+		;
+		\end{tikzpicture}\end{center}
+		\begin{center}\begin{tikzpicture}[
+			level distance=45 pt,
+			every node/.style={circle,draw},
+			level 1/.style={sibling distance=200 pt},
+			level 2/.style={sibling distance=100 pt},
+			level 3/.style={sibling distance=60 pt}
+			]
+			\node {}
+			child {node {}
+			}
+			child {node {}
+			}
+			;
+		\end{tikzpicture}\end{center}
+	
+	$$T \rightleftarrows (r, t_1, t_2)$$
+	$$w(r, t_1, t_2) = 1 + w(t_1) + w(t_2) = w(t)$$
+	
+	We can appy product lemma
+	$$\Phi_S(x) = 1 + x \cdot t(x) \cdot t(x)$$
+	Due to the bijection t(x) = $\Phi_S(x)$\\
+	$$\implies t(x) = 1 + xt(x)^2$$	
+	$$0 = xt(X)^2 - t(x) + 1$$
+	$$= 4x(xt(x)^2 - t(x) + 1)$$
+	$$= 4x^2t(x)^2 - 4xt(x) + 4x$$
+	$$= (4x^2t(x)^2 - 4xt(x) + 1) - 1 + 4x$$
+	$$= (2xt(x) - 1)^2 - 1 + 4x$$
+	so:
+	$$(2xt(x)-1)^2 = 1 - 4x = ((1-4x)^{1/2})^2$$
+	from A2:
+	$$2xt(x) - 1 = +/-(1-4x)^{1/2}$$
+	$$= +/-(1-2\sum_{n\geq 0}\frac{1}{n+1}{2n \choose n}x^{n+1})$$
+	Constant term is -1 so we pick - over +, which means:
+	$$2xt(x) - 1 = -1 + 2 \sum_{n \geq 0}\frac{1}{n+1}{2n \choose n}x^{n+1}$$
+	$$\implies t(x) = \sum_{n\geq 0}\frac{1}{n+1}{2n \choose n}x^n$$
+	
+	So the number of binary trees iwth n nodes is $\frac{1}{n+!}{2n \choose n}$\\
+	(n = 3, $\frac{1}{4}{6 \choose 3} = \frac{1}{4}\frac{6 * 5 * 4}{3 * 2} = 5)$\\
+	
+	\myt{Catalan number: $\frac{1}{n+1}{2n \choose n}$}\\
+	
+	\section*{Graph Theory}
+	
+	\myt{Definition: } A graph G is a pair of sets (V, E) (or (V(G), E(G)) where V is a set of objects called vertices and E is a set of unordered pairs of V called edges.\\
+	
+	Example: Define G = (V,E) where\\
+	V = \{a,b,c,d\}, E = \{\{a,b\}, \{b,c\}, \{c,d\}, \{a,d\} \}\\
+	
+	Graphical Representation of G.\\
+	See notes.\\
+	
+	In graph theory, we mainly care about the "structure" of the graphs, e.g. what are the vertices, which pairs for edges\\
+	
+	Terminologies:
+	\begin{itemize}
+		\item Two vertices u,v are adjacent if \{u,v\} is an edge Example above, a is adjacent to b and d but not c
+		\item If u is adjacent to v, then u is a neighbour of v, the set of all neighbours of u is the neighbourhood, denoted by N(v). Example: N(a) = \{b,d\}
+		\item An edge, e = \{u,v\} is incident with u and v, e joins u and v
+	\end{itemize}
+	
+	
+	
+\end{document}
