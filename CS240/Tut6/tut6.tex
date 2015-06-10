@@ -1,0 +1,46 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}CS 240 Tutorial 6\vspace{-1ex}}
+\date{June 10th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	\section*{AVLTRees, 2-3 trees}
+	\section*{Augumenting data-structures}
+	
+	Recall rotations, they are on the slides. Went over some additions/deletions from AVL trees, see notes\\
+	
+	\section*{Q2)}
+	We have a sequence of n elements S = $\{a_1, a_2, ... a_n\}$ and we have 3 operations we would like to support\\
+	\begin{itemize}
+		\item Add(S,b) $-> \{a_1, a_2, ...a_n, b\}$
+		\item Update(S,i$\delta$) $-> \{a_1, a_2, ... a_{i-1}, \delta, a_{i+1}, ... a_n\}$
+		\item ps(S,i) $-> \sum_{k=1}^{i}a_i$
+		\item each operation should take $\Theta(logn) time$
+	\end{itemize}
+	
+	Idea: Augument an AVL tree, but what data should we add?
+	\begin{itemize}
+		\item index (i)
+		\item value ($a_i$)
+		\item balance factor
+		\item partial sum of the left subtree
+	\end{itemize}
+	
+	\subsection*{Partial sum, PS(T, i)}
+	\begin{verbatim}
+	if T.i == k return T.ai
+	else if k < T.i 
+	else 
+	\end{verbatim}
+	See example on seperate page.\\
+	
+	
+\end{document}
