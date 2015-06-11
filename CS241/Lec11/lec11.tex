@@ -1,0 +1,119 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}CS241 Lecture 11\vspace{-1ex}}
+\date{June 10th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	See notes for NFA\\
+	
+	\section*{NFA Trace: caba}
+	
+	\begin{tabular}{c | c | c}
+		read & unread & states \\ \hline
+		$\epsilon$ & caba & \{1\} \\
+		c & aba & \{2,6\} \\
+		ca & ba & \{3,5\} \\
+		cab & a & \{4,5\} \\
+		caba & $\epsilon$ & \{6\} \\
+	\end{tabular}
+	
+	Build a DFA via the subset construction, see note\\
+	
+	\myt{Accepting:} any set that includes an accepting state from the original NFA.\\
+	
+	\myt{Obvious Fact:} Every DFA is implicitly an NFA.\\
+	
+	\myt{Also:} every NFA can be converted to a DFA for the same language\\
+	
+	\myt{So:} DFA's and NFA's accept the same class of languages\\
+	
+	\section*{$\epsilon$-NFA's}
+	What if we let ourselves change states without reading a character?\\
+	
+	$\epsilon$-transitions: state $\overset{\epsilon}{\rightarrow}$ state\\
+	- "free pass" to a new state without reading a character\\
+	- makes it easy to glue smaller automata together\\
+	
+	See picture of $\epsilon$-NFA on notes\\
+	
+	\begin{tabular}{c | c | c}
+		Read & Unread & states \\ \hline
+		$\epsilon$ & caba & \{1,2,6\} \\
+		c & aba & \{3,6\} \\
+		ca & ba & \{4,7\} \\
+		cab & a & \{5, 7\} \\
+		caba & $\epsilon$ & \{6\} \\
+	\end{tabular}
+	
+	$\therefore$ By the same renaming trick as before, every $\epsilon$-NFA has an equivalent DFA.\\
+	$\therefore$ NFA's recognize the same class of languages as DFA's\\
+	- The converstion can be automated\\
+	
+	If we can find an $\epsilon$-NFA for every regular expression, then we have one direction of kleene's theorem. (Regular expression $->$ $\epsilon$-NFA $->$ DFA)\\
+	
+	\section*{Regular Expression Types}
+	\begin{enumerate}
+		\item $\emptyset$ - $\epsilon$-NFA: non-accepting starting state.
+		\item $\epsilon$ - $\epsilon$-NFA: Single accepting starting state.
+		\item a - $\epsilon$-NFA: non-accepting starting state $\overset{a}{\rightarrow}$ accepting state
+		\item $E_1|E_2$ - $\epsilon$-NFA: See paper
+		\item $E_1E_2$ - $\epsilon$-NFA: See paper, E1's accepting states go to E2 and are no longer accepting.
+		\item $E^*$ - $\epsilon$-NFA: See Paper
+	\end{enumerate}
+	
+	$\therefore$ every regular expression has an equivalent $\epsilon$-NFA, and $\therefore$ an equivalent DFA. and the conversion can be automated ie. can write tools to convert regular expressions to DFA's.\\
+	
+	\section*{Scanning}
+	Is C a regular language? Well,
+	C keywords:
+	\begin{itemize}
+		\item ids
+		\item literals
+		\item operators
+		\item commends
+		\item punctiation
+	\end{itemize}
+	$\therefore$ sequences of these are also regular since the above are all regular\\
+	
+	So we can use finite automata to do scanning (tokenization). Ordinary DFA's answer yes/no to $w \in L$?\\
+	We need: \\
+	- Input string w\\
+	- break into $w_1, w_2, ... w_n$ such that each $w_i \in L$ else error\\
+	- output each $w_i$\\
+	
+	\myt{Consider:} L = \{valid c tokens\} is regular.
+	Let $M_L = $ some machine, be the DFA that recognizes L\\
+	Then, $M_L$ (with $\epsilon$ transitions going from end states to start state) recognizes $LL^*$\\
+	
+	Add an action to each $\epsilon$ move (See seperate paper)\\
+	- The machine is now non-deterministic because $\epsilon$ moves are always optional.\\
+	
+	\myt{SO:} does this scheme represent a unique decomposition w = $w_1, w_2 ... w_n$?\\
+	
+	\myt{NO!} Consider the id portion: (See paper)\\
+	input abab could be interpreted as 1,2,3 or 4 tokens\\
+	
+	What do we do about this?\\
+	- Decide to take the $\epsilon$ move only if there is no other choice.\\
+	$\implies$ always return the longest possible next token\\
+	- could mean that valid matches are missed \\
+	- consider L = \{aa, aaa\}, w = aaaa\\
+	-- If you take the longest token first, aka aaa, then you will only be left with a which is not a token.\\
+	-- The a left over cannot be matched :( poor a.\\
+	
+	
+	
+	
+	
+	
+	
+\end{document}

@@ -241,4 +241,351 @@
 	-- -- if $\exists$ a sibling with an extra key (more than 'a' keys)\\
 	-- -- -- take the key from parent and parent gets a key from the sibling.\\
 	
+	\subsection*{(a-b) B-tree}
+	\begin{itemize}
+		\item each internal node has at least a and at most b children
+		\item the root has at least 2 and at most b children
+		\item minimum number of key value pairs in a node is at least a-1 and at most b-1 except root which has at least 1 key value pair.
+	\end{itemize}
+	if $a = roof(\frac{M}{2})$
+	$b = M$ - order M B-tree\\
+	M = S $\implies$ a = 2 and b = 3\\
+	at least 1 kvp and at most 2 kvp\\
+	This particular B-tree is a 2-3 tree\\
+	
+	a = 2 and b = 2\\
+	at least 1 kvp/node and at most 1 kvp/node\\
+	This is just a regular bst\\
+
+	\subsubsection*{Insertion in a B-tree}
+	
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=200 pt},
+		level 2/.style={sibling distance=100 pt},
+		level 3/.style={sibling distance=60 pt}
+		]
+		\node {20}
+		child {node {6,12}
+			child {node {4,5}
+			}
+			child {node {7,9,10}
+			}
+			child {node {18}}
+		}
+		child {node {28}
+			child {node {25,26}}
+			child {node{32}}
+		}	
+		
+		;
+		\end{tikzpicture}\end{center}
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=150 pt},
+		level 2/.style={sibling distance=50 pt},
+		level 3/.style={sibling distance=30 pt}
+		]
+		\node {20}
+		child {node {6,9,12}
+			child {node {4,5}
+			}
+			child {node {7}
+			}
+			child {node {10}}
+			child {node {18}}
+		}
+		child {node {28}
+			child {node {25,26}}
+			child {node{32}}
+		}	
+		
+		;
+		\end{tikzpicture}\end{center}
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=150 pt},
+		level 2/.style={sibling distance=100 pt},
+		level 3/.style={sibling distance=60 pt}
+		]
+		\node {9,20}
+		child {node {6}
+			child {node {4,5}
+			}
+			child {node {7}
+			}
+		}
+		child {node {12}
+			child{node {10}}
+			child {node {18}}
+		}
+		child {node {28}
+			child {node {25,26}}
+			child {node{32}}
+		}	
+		
+		;
+	\end{tikzpicture}\end{center}
+	
+	\begin{verbatim}
+	insert as BST
+	if node is overloaded
+	-- split send midkey to parent
+	\end{verbatim}
+	
+	b-max number of kvps in a node\\
+	-- following the right link take log(b)\\
+	-- insertion takes O(hxlog(b))\\
+	
+	\subsubsection*{Deletion from a B-tree}
+	\begin{verbatim}
+	delete as usual from BST
+	if there exists an underloaded node x
+	-- if there exists a direct sibling of x with extra keys
+	-- -- borrow a key through parent
+	-- else (when direct siblings have no extra keys)
+	-- -- merge them 
+	-- -- take parent down
+	\end{verbatim}
+	Missed the example :(\\
+	
+	a = 2, b = 4\\
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=100 pt},
+		level 2/.style={sibling distance=40 pt},
+		level 3/.style={sibling distance=20 pt}
+		]
+		\node {7,24,50}
+		child {node {3}
+			child {node {1}
+			}
+			child {node {5}
+			}
+		}
+		child {node {13,18}
+			child{node {10}}
+			child {node {15}}
+			child {node {20}}
+		}
+		child {node {35}
+			child {node {30}}
+			child {node{40}}
+		}	
+		child {node {90}
+			child {node {70}}
+			child {node {100}}
+		}
+		
+		;
+	\end{tikzpicture}\end{center}
+	insert(16)\\
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=100 pt},
+		level 2/.style={sibling distance=40 pt},
+		level 3/.style={sibling distance=20 pt}
+		]
+		\node {7,24,50}
+		child {node {3}
+			child {node {1}
+			}
+			child {node {5}
+			}
+		}
+		child {node {13,18}
+			child{node {10}}
+			child {node {15,16}}
+			child {node {20}}
+		}
+		child {node {35}
+			child {node {30}}
+			child {node{40}}
+		}	
+		child {node {90}
+			child {node {70}}
+			child {node {100}}
+		}
+		
+		;
+		\end{tikzpicture}\end{center}
+	insert(80)
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=100 pt},
+		level 2/.style={sibling distance=40 pt},
+		level 3/.style={sibling distance=20 pt}
+		]
+		\node {7,24,50}
+		child {node {3}
+			child {node {1}
+			}
+			child {node {5}
+			}
+		}
+		child {node {13,18}
+			child{node {10}}
+			child {node {15,16}}
+			child {node {20}}
+		}
+		child {node {35}
+			child {node {30}}
+			child {node{40}}
+		}	
+		child {node {90}
+			child {node {70,80}}
+			child {node {100}}
+		}
+		
+		;
+		\end{tikzpicture}\end{center}
+	insert(60)
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=100 pt},
+		level 2/.style={sibling distance=40 pt},
+		level 3/.style={sibling distance=20 pt}
+		]
+		\node {7,24,50}
+		child {node {3}
+			child {node {1}
+			}
+			child {node {5}
+			}
+		}
+		child {node {13,18}
+			child{node {10}}
+			child {node {15,16}}
+			child {node {20}}
+		}
+		child {node {35}
+			child {node {30}}
+			child {node{40}}
+		}	
+		child {node {90}
+			child {node {60,70,80}}
+			child {node {100}}
+		}
+		
+		;
+		\end{tikzpicture}\end{center}
+	insert(85)
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=100 pt},
+		level 2/.style={sibling distance=40 pt},
+		level 3/.style={sibling distance=20 pt}
+		]
+		\node {7,24,50}
+		child {node {3}
+			child {node {1}
+			}
+			child {node {5}
+			}
+		}
+		child {node {13,18}
+			child{node {10}}
+			child {node {15,16}}
+			child {node {20}}
+		}
+		child {node {35}
+			child {node {30}}
+			child {node{40}}
+		}	
+		child {node {70,90}
+			child {node {60}}
+			child {node {80,85}}
+			child {node {100}}
+		}
+		
+		;
+		\end{tikzpicture}\end{center}
+	
+	Height of a B-tree of order n\\
+	\begin{tabular}{c | c | c | c | c }
+		level & nodes per level & links/node & kvp/node &  kvp on level \\ \hline
+		0 & 1 & $\geq$ 2 & $\geq$ 1 & $\geq$ 1 \\
+		1 & 2 & $roof(\frac{n}{2})$ & $roof(\frac{n}{2}) - 1$ & $2(roof(\frac{n}{2}) - 1)$ \\
+		2 & $2(roof(\frac{n}{2}))$ & $roof(\frac{n}{2})$ & $roof(\frac{n}{2}) - 1$ & $2\frac{n}{2}(\frac{n}{2} - 1)$ \\
+	\end{tabular}
+	$$n \geq 1 + 2 (\frac{m}{2} - 1)\sum_{i = 0}^{h - 1}(\frac{m}{2})^i$$
+	$$= 1 + 2(\frac{m}{2} - 1)(\frac{(\frac{m}{2})^h-1}{(\frac{m}{2} - 1)})$$
+	$$= (\frac{m}{2}^h - 1)$$
+	$$n \geq (\frac{m}{2})^h - 1$$
+	$$log(h+1) \geq hlog(\frac{n}{2})$$
+	$$\implies h \in O(\frac{logn}{logm})$$
+	
+	insertion, selection, search\\
+	O(logb * h) = O(logM * h)\\
+	= O(logm * $\frac{logn}{logm}) = O(logn)$\\
+	
+	In RAM $\rightarrow$ number of primitive operations $\rightarrow$ O(logn) search/insert/delete\\
+	if data is huge\\
+	$\rightarrow$ does not fit in RAM \\
+	$\rightarrow$ need disk access\\
+	$\rightarrow$ we need to minimize number of disk accessses\\
+	
+	In AVL trees\\
+	$\rightarrow$ might needl ogn disk access (height of the tree)
+	$\rightarrow$ if all M items in cache node fit in a block $\rightarrow frac{logn}{logm}$ disk accesses height of he tree\\
+	
+	pre-emptive splitting:\\
+	\begin{itemize}
+		\item when inserting, split any node with main number of key value pairs
+	\end{itemize}
+	
+	(2,4)
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=80 pt},
+		level 2/.style={sibling distance=40 pt},
+		level 3/.style={sibling distance=20 pt}
+		]
+		\node {8,15,20}
+		child {node {1,3,4}
+		}
+		child {node {9}
+		}
+		child {node {16,17}
+		}	
+		child {node {27,77}
+		}
+		;
+	\end{tikzpicture}\end{center}
+insert(10)
+	\begin{center}\begin{tikzpicture}[
+		level distance=45 pt,
+		every node/.style={circle,draw},
+		level 1/.style={sibling distance=100 pt},
+		level 2/.style={sibling distance=50 pt},
+		level 3/.style={sibling distance=20 pt}
+		]
+		\node {15}
+		child {node {8}
+			child {node {1,3,4}}
+			child {node {9,10}}
+		}
+		child {node {20}
+			child {node {16,17}}
+			child {node {22, 77}}
+		}
+		;
+	\end{tikzpicture}\end{center}
+
+	\subsection*{Red/Black Trees}
+	\begin{itemize}
+		\item less structures than AVL
+		\item Less "rotation"
+		\item if insert/delete and search are equaly likely, red/black tree is better
+		\item if search is more likely, AVL has a better time
+	\end{itemize}
 \end{document}

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  9 JUN 2015 09:48
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  11 JUN 2015 09:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -626,19 +626,75 @@ Underfull \hbox (badness 10000) in paragraph at lines 238--243
 
  []
 
+[4]
+Underfull \hbox (badness 10000) in paragraph at lines 250--255
 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 256--259
+
+ []
+
+
+Overfull \hbox (37.34677pt too wide) in paragraph at lines 331--331
+ [] 
+ []
+
+[5]
+Underfull \hbox (badness 10000) in paragraph at lines 339--342
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 353--354
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 355--356
+
+ []
+
+[6]
+Underfull \hbox (badness 10000) in paragraph at lines 386--387
+
+ []
+
+[7] [8]
+Underfull \hbox (badness 10000) in paragraph at lines 526--529
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 530--535
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 536--539
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 540--541
+
+ []
+
+[9] 
 AED: lastpage setting LastPage
-[4] (./module4.aux) ) 
+[10] (./module4.aux) ) 
 Here is how much of TeX's memory you used:
- 13178 strings out of 493117
- 258870 string characters out of 6135433
- 299603 words of memory out of 5000000
- 16381 multiletter control sequences out of 15000+600000
- 12403 words of font info for 48 fonts, out of 8000000 for 9000
+ 13844 strings out of 493117
+ 273125 string characters out of 6135433
+ 327394 words of memory out of 5000000
+ 17046 multiletter control sequences out of 15000+600000
+ 12572 words of font info for 49 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  55i,14n,69p,388b,1415s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2014/texmf-dist/fonts/type1/public/ams
-fonts/cm/cmbx12.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsf
+</usr/local/texlive/2014/texmf-dist/fonts/type1/public/am
+sfonts/cm/cmbx12.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/ams
+fonts/cm/cmex10.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsf
 onts/cm/cmmi12.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfo
 nts/cm/cmmi6.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfont
 s/cm/cmmi8.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/
@@ -647,11 +703,12 @@ cm/cmr12.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm
 mr6.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8
 .pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.
 pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pf
-b>
-Output written on module4.pdf (4 pages, 105533 bytes).
+b></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb
+>
+Output written on module4.pdf (10 pages, 142912 bytes).
 PDF statistics:
- 60 PDF objects out of 1000 (max. 8388607)
- 43 compressed objects within 1 object stream
+ 88 PDF objects out of 1000 (max. 8388607)
+ 63 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  13 words of extra memory for PDF output out of 10000 (max. 10000000)
 

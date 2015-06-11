@@ -37,10 +37,30 @@
 	\subsection*{Partial sum, PS(T, i)}
 	\begin{verbatim}
 	if T.i == k return T.ai
-	else if k < T.i 
-	else 
+	else if k < T.i return ps(T.left, k)
+	else return T.ai + t.ps + ps(T.right, k)
 	\end{verbatim}
 	See example on seperate page.\\
+	
+	\subsection*{Update(T,k $\delta$)}
+	\begin{verbatim}
+	if k == t.i {
+	-- old <- T.ai
+	-- T.ai <- delta
+	-- return old
+	}
+	if k > Ti {
+		return Update(T.right, k, delta)
+	}
+	else {
+	-- old <- update(t.left, k, delta)
+	-- T.ps <- T.ps - old + delta
+	-- return old
+	}
+	\end{verbatim}
+	
+	\subsection*{Add(S,b)}
+	
 	
 	
 \end{document}
