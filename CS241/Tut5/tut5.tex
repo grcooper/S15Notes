@@ -1,0 +1,97 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}CS241 Tutorial 5\vspace{-1ex}}
+\date{June 12, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	Topics:
+	\begin{itemize}
+		\item Regular Languages
+		\item DFA's
+		\item Regular Expressions
+	\end{itemize}
+	
+	\section*{Regular Language Review}
+	\myt{Alphabet($\Sigma$)} - finite set of symbols\\
+	\myt{Word(over $\Sigma$)} - finite sequence of symbols from $\Sigma$\\
+	\myt{Language} - Set of words\\
+	
+	Regular Language is a language where either:\\
+	\begin{itemize}
+		\item R = \{\}
+		\item R = \{w\} for some word w
+		\item R = $R_1 \cup R_2$
+		\item R = $R_1 \cdot R_2$
+		\item R = $R_1^* = \bigcup_{i=0}^{\infty}R^i$ where $R^0 = \{\epsilon \}$ and for i $>0,R^i = R \cdot R^{i-1}$
+	\end{itemize}
+	
+	\section*{DFA's}
+	\begin{itemize}
+		\item $\Sigma$ - input/alphabet
+		\item Q - finite set of states
+		\item $q_0 \in Q$ - start state
+		\item $A \subseteq$ Q - set of accepting states
+		\item $\delta:$ Q x $\Sigma \rightarrow$ Q - transition function
+	\end{itemize}
+	
+	\section*{Regular Expressions}
+	\begin{itemize}
+		\item Concatentation (ab)
+		\item Alternation (a|b)
+		\item Repetition ($a^*$)
+	\end{itemize}
+	
+	\section*{Practice with DFA's}
+	\subsection{1)}
+	$\Sigma \{a,b,c\}$\\
+	L = \{One a, and an even number of c's\}\\
+	See notes for picture\\
+	
+	\subsection*{2)}
+	$\Sigma = \{0,1\}$\\
+	L = \{strings ending in 1011\}\\
+	
+	\subsection*{3)}
+	$\Sigma = \{0,1,2,3\}$\\
+	L = \{integers whose digit sum is 3\}\\
+	
+	\section*{Practice with Regular Expressions}
+	\subsection*{1)}
+	$\Sigma \{0,1\}$\\
+	L = \{Second letter is 0, and 5th is 1\}\\
+	
+	Regular language
+	\{0,1\}\{0\}\{0,1\}\{0,1\}\{1\}\{0,1\}$^*$\\
+	or Regular expression:\\
+	$(0|1)0(0|1)(0|1)1(0|1)^*$\\
+	
+	\subsection*{2)}
+	$\Sigma = \{x,y\}$\\
+	L = \{xx,xy,yx,yy\}\\
+	
+	Regular Expression:\\
+	$(x|y)(x|y)$\\
+	
+	\subsection*{3)}
+	$\Sigma = \{G,A,C,T\}$\\
+	L = \{strings containing GACAT\}\\
+	
+	Regular Expression:\\
+	(G|A|C|T)*GACAT(G|A|C|T)*\\
+	
+	\subsection*{4)}
+	$\Sigma$ = \{0,1,2\}\\
+	L = \{$x \in \Sigma^* | $x contains even zeros and at least one 1\}\\
+	
+	$2^*(02^*02^*)^*(1|02^*1(1|2)^*0)(1|2)^*(0(1|2)^*0(1|2)^*)^*$\\
+	
+	
+\end{document}
