@@ -1,0 +1,147 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}Math239 Tutorial 6 \vspace{-1ex}}
+\date{May 4th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	\section*{1)}
+	Find an explicit formula for $a_n$ where $\{a_n \}){n=0}^{\infty}$ defined by:\\
+	$a_n - a_{n-1} - 8a_{n-2} + 12a_{n-3} = 0$\\
+	$a_0 = 1$\\
+	$a_1 = 13$\\
+	$a_2 = 23$\\
+	
+	Solution:\\
+	
+	The characteristic polynomial is:\\
+	$$p(x) = 12-8x-x^2+x^3$$
+	Observe that p(2) = 0\\
+	Hence:\\
+	$$(x-2)|p(x)$$
+	
+	Once cna show\\
+	p(x) = (x-2)(x-2)(x+3)\\
+	
+	$\therefore$ the roots of p(x) are x = 2 with multiplicity 2, x-3 with multiplicity 1\\
+	
+	The general for of the solution is:\\
+	$$a_n = (\alpha + \beta n)2^n + 8(-3)^n$$
+	Substituting the given values of $a_0, a_1$ and $a_2$ we get\\
+	$$a_0 = 1 = \alpha + \gamma$$
+	$$a_1 = 13 = 2\alpha + 2\beta - 3\gamma$$
+	$$a_2 = 23 = 4\alpha + 8\beta + 9\gamma$$
+	$\alpha = 2$\\
+	$\beta = 3$\\
+	$\gamma = -1$\\
+	
+	The explicit formula for $a_n$ is\\
+	$$a_n = (2+3n)2^n - (-3)^n$$
+	
+	\section*{2)}
+	Let $\{b_n \}^{\infty}_{n=0}$\\
+	Define $b_n = \sqrt{5}(\frac{3 + \sqrt{5}}{2})^n - \sqrt{5}(\frac{3-\sqrt{5}}{2})^n$\\
+	And let B(x) = $\sum_{n=0}^{\infty}b_nx^n$ find a rational expression for B(x)\\
+	
+	Solution:\\
+	$$B(x) = \sum_{n=0}^{\infty}b_nx^n$$
+	$$= \sum_{n=0}^{\infty}(\sqrt{5}(\frac{3 + \sqrt{5}}{2})^n - \sqrt{5}(\frac{3-\sqrt{5}}{2})^n)x^n$$
+	$$=\sqrt{5}\sum_{n=0}^{\infty}(\sqrt{5}(\frac{3 + \sqrt{5}}{2})^nx^n - \sqrt{5}\sum_{n=0}^{\infty}(\frac{3-\sqrt{5}}{2})^n)x^n$$
+	$$=\sqrt{5} \cdot \frac{1}{1-(\frac{3+\sqrt{5}}{2})x} - \sqrt{5} \cdot \frac{1}{1-(\frac{3-\sqrt{5}}{2})x}$$
+	$$= \sqrt{5}(\frac{\sqrt{5}x}{1-3x+x^2})$$
+	$$= \frac{5x}{1-3x+x^2}$$
+	
+	\section*{3}
+	Let $A_n$ be the nxn matrix which is tridiagonal with parameters 1,-2, 3\\
+	ie $A_1$ = [1]\\
+	$A_2$ =
+	\begin{tabular}{|c c|}
+		1 & -2 \\
+		3 & 1\\
+	\end{tabular}
+	$A_3 = $
+	\begin{tabular}{| c c c |}
+		1 & -2 & 0\\
+		3 & 1 & -2 \\
+		0 & 3 & 1 \\
+	\end{tabular}
+	Define $a_n = det(A_n)$. Find a recursive formula for $a_n$, along wiht enough initial conditions to full determine $\{a_n\}^{\infty}_{n=1}$ then find an explicit formula for $a_n$\\
+	
+	Solution\\
+	$a_n = det(A_n)$\\
+	
+	$A_n$ = 
+	\begin{tabular}{| c | c c c c|}
+		1 & -2 & 0 & ... & 0 \\ \hline
+		3 & & & & \\
+		0 & & & & \\
+		... & & $A_{n-1}$ & & \\
+		0 & & & & \\
+	\end{tabular}
+	
+	$$a_n = det(A_n)$$
+	$$= 1 \cdot det(A_{n-1}) - 3 det(A_{n-2})$$
+	$$ = 1 \cdot det(A_{n-1}) - 3 \cdot(-2)(det(A_{n-2}))$$
+	$$= a_{n-1} + 6a_{n-2}$$
+	
+	The something I can't read are:\\
+	$a_1 = det[1] = 1$\\
+	$a_2 = det$
+	\begin{tabular}{|c c|}
+		1 & -2 \\
+		3 & 1 \\
+	\end{tabular}
+	$= 1^2 + 6 = 7$\\
+	
+	The characteristic polynomial is:\\
+	$p(x) = x^2 - x - 6$\\
+	$= (x-3)(x+2)$\\
+	The roots of p(x) are \\
+	x = 3, mult 1\\
+	x = -2, mult 1\\
+	
+	The general form of the stuff??? is \\
+	$a_n = \alpha3^n + \beta(-2)^n$\\
+	$a_1 = 1 = 3\alpha - 2\beta$\\
+	$a_2 = 7 = 9\alpha + 4\beta$\\
+	
+	The solution is\\
+	$a_n = \frac{3}{5} \cdot 3^n + \frac{2}{5}(-2)^n$\\
+	
+	\section*{4)}
+	
+	For k $\in N$, a k-ary tree is a root tree in which any vertex has up to k outgoing edges.\\
+	
+	Let $t_n$ be the number of k-ary trees on n vertices. Let T(x) = $\sum_{n=0}^{\infty}t_nx^n$, and T be the set of all k-ary trees\\
+	
+	a) Show that T(x) = 1 + xT(x)$^k$\\
+	
+	Solution:\\
+	Note that any k-ary tree is either empty, or has a root.\\
+	
+	If such tree $\tau$ on n vertices has a root r, consider the following construction\\
+	
+	Let $\gamma_1,...\gamma_k$ be the children of r. Remove r from $\tau$ and defin $r_1,.. r_k$ to be the roots of the connected components of the resulting graph. You are left with k k-ary trees with roots $r_1,...r_k$\\
+	
+	The same procedure works in reverse)\\
+	
+	If we define $\phi$ in the following way:\\
+	$\phi: $\\
+	$\epsilon \rightarrow \epsilon$\\
+	$\tau \rightarrow $as defined earlier\\
+	$\phi$ is a bijection map between\\
+	T and $\{\epsilon \} \cup \{r\} \times $ T$^k$\\
+	
+	Define w($\tau$) = n\\
+	
+	This tells us that the generating function for T(x) = 1 + xT(x)$^k$\\
+	
+\end{document}

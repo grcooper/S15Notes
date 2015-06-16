@@ -1,16 +1,16 @@
 CS251 Midterm List
 
-- Assignment Questions
+- Assignment Questions (Done A1)
 - Read course notes
 - Read course slides
 - Read needed chapters from book
-	- Skim Chapter 1, read 1.6
-	- Appendix B, B.1-3 and B.7-10
-	- 2.4, 3.1, 3.2
-	- 2.6
+	- Skim Chapter 1, read 1.6 (DONE, MIPS OVERVIEW)
+	- Appendix B, B.1-3 and B.7-10 (CS241 Review)
+	- 2.4, 3.1, 3.2 (DONE)
+	- 2.6 (DONE)
 	- B.5 (REQUIRED AND MENTIONED TWICE)
-	- 3.3
-	- 3.5
+	- 3.3 (DONE)
+	- 3.5 (DONE)
 	- 4: 4.1-4 Appendix D, D.2
 	- Figure 4.16
 
