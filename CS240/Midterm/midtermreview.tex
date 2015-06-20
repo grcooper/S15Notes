@@ -1,0 +1,216 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}CS240 Midterm Review\vspace{-1ex}}
+\date{June 20th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	Topics:\\
+	\begin{itemize}
+		\item First principals
+	\end{itemize}
+	
+	\section*{First Principals}
+	\subsection*{1)}
+	$$10n^2 + 11n + 12 \in O(n^2)$$
+	When n $\geq$ 1\\
+	$$10n^2 + 11n + 12 \leq 10n^2 + 11n^2 + 12n^2$$
+	$$= 33n^2$$
+	$n_0 = 1, c = 33$\\
+	
+	\subsection*{2)}
+	$$n+ (logn)^2 \in O(nlogn)$$
+	when $n \geq 2$\\
+	$$n + (logn)^2 \leq n + n$$
+	$$\leq 2nlogn$$
+	$c = 2, n_0 = 2$
+	
+	\subsection*{3)}
+	$$10n^2 - 11n - 12 \in \Omega(n^2)$$
+	When $n^2 \geq 11n = n \geq 11$\\
+	$$10n^2 - 11n - 12 \geq 10n^2 - n^2 - 12$$
+	$$= 9^2 - 12$$
+	When $n^2 \geq 12 = n^2 \geq \sqrt{12}$
+	$$\geq 9n^2 - n^2$$
+	$$= 8n^2$$
+	
+	c = 8, $n_0 = 11$\\
+	
+	\subsection*{4)}
+	$$5n + 15logn - 10\sqrt{n} \in \Omega(logn)$$
+	when $n \geq 2$\\
+	$$5n + 15logn - 10\sqrt{n} \geq 5n - 10\sqrt{n}$$
+	when $10\sqrt{n} \leq n = 10 \leq \sqrt{n} = 1oo \leq n$\\
+	$$\geq 5n - n$$
+	$$= 4n$$
+	
+	\subsection*{5)}
+	$$3n^2 10n + 15logn + 2 \in \Theta(n^2)$$
+	$$3n^2 - 10n + 15logn + 2 \leq 3n^2 + 15logn + 2$$
+	if n $\geq 1$\\
+	$$\leq 3n^2 + 15n^2 + 2$$
+	$$\leq 3n^2 + 15n^2 + 2n^2$$
+	$$= 20n^2$$
+	$c_2 = 20$\\
+	
+	$$3n^2 - 10n + 15logn + 2 \geq 3n^2 - 10n$$
+	when $10n \leq n^2 = 10 \leq n$\\
+	$$\geq 3n^2 - n^2$$
+	$$= 2n^2$$
+	
+	$$2n^2 \leq 3n^2 - 10n + 15logn + 2 \leq 20n^2$$
+	when $n \geq 10$
+	$c_1 = 2, c_2 = 20, n_0 = 10$\\
+	
+	\subsection*{6)}
+	$n \in o(n^2)$\\
+	$$n \leq cn^2$$
+	$$1 \leq cn$$
+	$$\frac{1}{2} \leq n$$
+	
+	$n_0 = \frac{1}{c}$\\
+	$c = 0.1$\\
+	
+	\subsection*{7)}
+	$$cos(n) \in o(n)$$
+	$$cos(n) \leq cn$$
+	$$cos(n) \leq 1 \leq cn$$
+	$$\frac{1}{c} \leq n$$
+	
+	$n_0 = \frac{1}{c}$\\
+	
+	\subsection*{8)}
+	
+	$n^n \in w (n^20)$\\
+	
+	$$n^n \geq cn^20$$
+	$$\frac{n^n}{n^20} \geq c$$
+	$$n^{n-20} \geq c$$
+	the below occurs when n $\geq$ 21\\
+	$$n^{n-20} \geq n \geq c$$
+	The inequality holds when $n \geq max(c,21)$\\
+	
+	\section*{Loop Analysis}
+	\subsection*{1)}
+	\begin{verbatim}
+	foo(n,m,k)
+	1. for (i = 1 to n)
+	2. -- for(j = 1 to i)
+	3. -- -- for(l = 1 to m)
+	4. -- -- -- print("hello")
+	5. for(i = 1 to k)
+	6. -- for(j = 1 to 600)
+	7. -- -- print("WORld")
+	\end{verbatim}
+	
+	line 4: $\Theta(1)$\\
+	line 7: $\Theta(1)$\\
+	lines 6-7 $\sum_{i=1}^{600}1 = 600 \in \Theta(1)$\\
+	lines 5-7 $\sum_{n=1}^{k}\Theta(1) = \Theta(k)$\\
+	lines 3-4 $\sum_{l = 1}^m 1 = m$\\
+	lines 2-4 $\sum_{j = 1}^{l = 1}m  = i \cdot m$\\
+	lines 1-4 $\sum_{i=1}^{n} i \cdot m$\\
+	$= m \sum_{i = 1}^{n}i = \frac{m(n(n+1))}{2}$\\
+	
+	Total = $\frac{m(n(n+1))}{2} + 600k$\\
+	$\in \Theta(mn^2 + k)$\\
+	
+	\subsection*{2)}
+	\begin{verbatim}
+	foo2(n,m)
+	1. while (n > m)
+	2. -- n = n/2
+	3. -- for (i = 1 to m)
+	4. -- -- print("x")
+	\end{verbatim}
+	
+	After t iterations\\
+	m' = m\\
+	n' = $\frac{n}{2^t}$\\
+	$\frac{n}{2^2} \leq m$\\
+	
+	$t \geq log(\frac{n}{m}) = log(n) - log(m)$\\
+	
+	Aside:\\
+	$\frac{n}{2^{t-1}} \geq m \geq \frac{n}{2^t}$\\
+	$\frac{2n}{m} > 2^t \geq \frac{n}{m}$\\
+	$log(\frac{2n}{m}) > t \geq log(\frac{n}{m})$\\
+	$= 1+ log(\frac{n}{m})$\\
+	
+	$$\sum_{j=1}^{log(\frac{n}{m})}\sum_{i=1}^{m}1$$
+	$$=\sum_{j=1}^{log(\frac{n}{m})}m$$
+	$$ = mlog(\frac{n}{m})$$
+	
+	\subsection*{3)}
+	\begin{verbatim}
+	foo3(n)
+	1. while(n > 1)
+	2. -- foo3(n-1)
+	3. -- n--
+	4. for(i = 1 to n)
+	5. -- print("y")
+	\end{verbatim}
+	
+	After t iterations\\
+	$$n' = n-t$$
+	$$n-2 \leq 1 < n-t + 1$$
+	$$t = n$$
+	
+	$$T(n) = \sum_{i = 1}^{n}(T(i) + 1) + \sum_{i = 1}^{n}1$$
+	$$ = T(1) + T(2) + ... + T(n-1) + n - 1 + n$$
+	$$T(n-1) = T(1) + T(2) + ... + T(n-2) + n-2 + n-1$$
+	$$T(n) - T(n-1) = T(n-1) + (n-1+n) - (n - 2 + n - 1)$$
+	
+	$$T(n) = 2T(n-1) + \Theta(1)$$
+	$$T(n) = 2(2(T(n-2) + \Theta(1)) + \Theta(1)$$
+	$$2^3T(n-3) + 6\Theta(1)$$
+	$$2^kT(n-k) + \Theta(1)$$
+	$$= 2^kT(1) + \sum_{i=0}^{k-1}2^i$$
+	k = n-1 in this case\\
+	$$= 2^{n-1} \cdot 1 + \sum_{i=0}^{n-2}2^i$$
+	$$= \Theta(2^n)$$
+	
+	\subsection*{4)}
+	\begin{verbatim}
+	foo4(n)
+	1. if (n = 1) return
+	2. for (i = 1 to 5)
+	3. -- foo4(n/3)
+	4. print("HI")
+	\end{verbatim}
+	
+	$$T(n) = 5T(\frac{n}{3}) + 1$$
+	$$T(\frac{n}{3}) = 5(5T(\frac{n}{9}) + 1) + 1$$
+	$$T(n) = 5(5(5T(\frac{n}{27}) + 1) + 1) + 1$$
+	$$5^{log_3n} + 1 + 5 + 25 + 5^{log_3n}$$
+	$$T(n) = S^{log_3n} + 1 + \sum_{i = 1}^{log_2n}5^i$$
+	$$\in \Theta(n^{log_35})$$
+	
+	\section*{True false}
+	\subsection*{1)}
+	$$f(n) \in \Theta(g(n)) \implies f(n) \in o(g(n)) OR f(n) \in w(g(n))$$
+	
+	counter example: \\
+	f(n) = max(1,nsin(n))\\
+	g(n) = max(1, ncos(n))\\
+	
+	\subsection*{2)}
+	The average runtime of $f(n) \in \Theta(n)$,\\
+	- is the worst case runtime O(n)\\
+	- is the worst case runtime $\Omega(n)$\\
+	- is the best case O(n)\\
+	
+	1 is false, 2 is true, 3 is true\\
+	
+	
+	
+	
+\end{document}
