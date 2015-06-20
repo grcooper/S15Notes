@@ -1,0 +1,112 @@
+CS 240 Midterm Checklist
+
+Module 1
+
+Definitions:
+- Problems
+- Algorithm
+- Program
+Different efficiencies
+RAM
+Order Notation & Growth Rates
+How growth rates affect run time
+Complexity of Algorithms
+ - Average
+ - Best
+ - Worst case
+Complexity vs Running Time
+Using Limits with Order Notation
+Relationships between order notations
+Algebra of order notations
+Sequences
+Regular Algorithm Analysis
+Loop algorithm analysis
+Merge Sort
+
+
+Module 2:
+
+Abstract Data Types
+Dynamic arrays
+Stack ADT
+Queue ADT
+Priority Queues ADT
+Heap ADTs
+- Properties
+- Storing in Arrays
+- Insertion
+- Delete Max
+- Building Heaps
+- Heap Sort
+- Selection
+
+
+Module 3:
+
+Selection vs Sorting
+Partition Algorithm
+QuickSelect
+- Algorithm
+- Worst-case
+- Best-case
+- Average-case
+Randomized Algorithms
+- Expected Running time
+- Randomized QuickSelect
+ - Worst Case
+QuickSort
+- Worst Case
+- Best Case
+- Average case
+- Depth of Recursion
+Sorting Lower Bounds
+The Comparison Model
+- Comparison Model Theorem Omega(nlogn)
+Radix Sort
+Count sort
+LSD vs MSD
+
+
+Module 4:
+
+Dictionary ADT
+- search(k)
+- isnert(k,v)
+- delete(k)
+- optional join, isEmpty, size etc...
+- Array or Linked list implementation
+- Ordered array implementation
+Binary Search Trees
+- Search
+- insert
+- delete
+- height
+AVL Trees
+- Balance Factor
+- Rotations
+- search
+- insert
+- delete
+- height
+- Analysis
+2-3 Trees
+- Insert
+- Delete
+- searcj
+B-Trees
+- Ordering Property
+- Height
+- Analysis of B-Tree operations
+- B-tree variations
+ - Max size M
+ - Red-Black Trees
+ - B+ trees
+
+
+
+
+
+
+
+
+

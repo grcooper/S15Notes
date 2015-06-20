@@ -15,35 +15,35 @@ CS251 Midterm List
 	- Figure 4.16
 
 From Course Notes:
-- Big Picture of Computers
-- Basic MIPS Review
-- MIPS vs ARM
-- Truth Tables
+- Big Picture of Computers (DONE)
+- Basic MIPS Review (DONE)
+- MIPS vs ARM (DONE)
+- Truth Tables (DONE)
 	- Logic Gates
 	- Don't Cares
 	- Boolean Algebra Rules
-- Transistors
-- Decoders
-- Encoders
-- Multiplexors
-- ROMS
-- SR Latch
-- DLatch
-- D Flip-Flop
-- Register Files
-- RAM & SRAM & DRAM
-- Three State Buffers
-- Finite State Machines
-	- Controller
-- MIPS Word (What it contains)
-- Characters
-- Representation of Numbers in Binary
+- Transistors (DONE)
+- Decoders (DONE)
+- Encoders (DONE)
+- Multiplexors (DONE)
+- ROMS (REVIEW THIS!!!)
+- SR Latch (DONE)
+- DLatch (DONE)
+- D Flip-Flop (DONE)
+- Register Files (DONE)
+- RAM & SRAM & DRAM (DONE)
+- Three State Buffers (DONE)
+- Finite State Machines (DONE)
+	- Controller (DONE)
+- MIPS Word (What it contains) (DONE)
+- Characters (DONE)
+- Representation of Numbers in Binary (DONE)
 	- Unsigned
 	- Signed
 	- Two's Compliment
-- Addition and Addition Circuit
-- ALU
-- Muliplication and Multiplication Hardware (3 types)
+- Addition and Addition Circuit (done)
+- ALU (DONE)
+- Muliplication and Multiplication Hardware  (3 types) (DONE)
 - Hardware
 - Acuracy
 - Single-Cycle Processor Implementation

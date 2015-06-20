@@ -87,7 +87,9 @@
 	\subsection*{Open addressing}
 	Each key has a set of candidate indices h(k,0), h(k,1), ... h(k,i)\\
 	
-	\subsubsection*{Linear Hashing}
+	\subsubsection*{Linear Probing}
+	Add one to the index until we find an open address.\\
+	
 	h(k,i) = (h(k) + i) mod M\\
 	$\implies$ h(k,0) = k(k)\\
 	h(k,1) = h(k) + 1\\
@@ -112,6 +114,103 @@
 	delete(3)\\
 	search(9)\\
 	
-	We need to mark things as deleted so we do not stop at deleted indexes when we are searching for 9\\
+	We need to mark things as deleted so we do not stop at deleted indexes when we are searching for 9, so that we do not think that they key does not exist as we advance\\
+	
+	Requires that n $\leq$ m $\implies$ $\alpha \leq 1$\\
+	
+	\subsubsection*{Double Hashing or Two Hash function}
+	
+	first candidate h(k,0) = ($h_1$(k)) mod m\\
+	Second candidate h(k,1) = ($h_1(k,1)$ + $h_2(k)$) mod m\\
+	third candidate $h(k,2)$ = ($h_1(k) + 2h_2(k)$) mod m\\ 
+	...\\
+	h(k,i) = ($h_1(k) + ih_2(k))$ mod m\\
+	
+	m = 7, $h_1$(k) = k mod 7, $k_2$(k) = (2k) mod 7\\
+	
+	insert(4)\\
+	- h(k,0) = $h_1(k) = 4 mod 7 = 4$\\
+	insert(9)\\
+	- h(k,0) = $h_1(9) = 2$\\
+	insert(13) \\
+	- h(13,0) = $h_1(13) = 6$\\
+	insert(24) \\
+	- h(k,0) = $h_1(24) = 3$\\
+	insert(16)\\
+	- h(16,0) = $h_1(16) = 2$ THERE IS A COLLISION\\
+	- h(16,1) = $h_1(16) + h_2(16) mod 7 = 2 + 32 mod 7 = 2 + 4 = 6$ Collision again\\
+	- h(16,2) = $h_1(16) + 2h_2(16) = 2 + 2 * 4 = 10 mod 7 = 3$ Collision again\\
+	- h(16,3) = $h_1(16) + 3h_2(16) = 2 + 3 * 4 = 14 mod 7 = 0$ Good to go\\
+	
+	Delete(24)\\
+	- h(24,0) = $h_1(24) = 24 mod 7 = 3$ Found 24, mark as deleted\\
+	Search(16)\\
+	- h(16,0) = 2 $-> 9 \neq 16$ not found\\
+	- h(16,1) = 6 $-> 13 \neq 16$ not found\\
+	- h(16,2) = 3 $-> deleted$ keep searching!\\
+	- h(16,3) = 0 $-> 16 = 16$ we found it!!\\
+	
+	\subsection*{Chaining vs Open Addressing}
+	\subsubsection*{Ease of implementation}
+	chaining is easier to implement
+	\subsubsection*{Space Efficiency, Balance Factor}
+	chaining: $\alpha$ can be larger than 1, so space in the hash table is not wasted, but pointers are taking up memory\\
+	Open addressing: $\alpha$ must be less than one so there are always going to be empty spaces in the table but there are no pointers taking up memory\\
+	
+	\subsubsection{Speed}
+	Double hashing is generally faster than Linear Probing\\
+	
+	\begin{tabular}{c | c | c | c | c}
+		$\alpha$ & 50\% & 60\% & 75\% & 90\% \\ \hline
+		LP - search & 1.5 & 2 & 3 & 5.5 \\
+		LP - Insert & 2.5 & 5 & 8.5 & 55.5 \\
+		DH - Search & 1.4 & 1.6 & 1.8 & 2.6 \\
+		DH - Insert & 1.5 & 2 & 3 & 5.5 \\
+	\end{tabular}
+	
+	\subsection*{Cuckoo Hashing}
+	There are two hash functions $h_1, h_2$ then there are two candidate positions for each key, ie, $h_1(k), h_2(k)$\\
+	
+	To insert a key k\\
+	- Place k at index $h_1(k)$\\
+	- if required remove key k' from $h_1(k)$\\
+	- - place k' in the other candidate index for it\\
+	- - this might require removing another k'' and repeating\\
+	
+	k = 7, $h_1$(k) = k mod 7, $h_2$(k) = 2k mod 7\\
+	
+	insert(8)\\
+	- $h_1$(8) = 1\\
+	insert(13)\\
+	- $h_1$(13) = 6\\
+	insert(9)\\
+	- $h_1$(9) = 2\\
+	insert(15)\\
+	- $h_1$(15) = 1 put 15 at index 1 and kick out 8
+	- $h_2(8)$ = 16 mod 7 = 2 place 8 at index 2 and kick out 9\\
+	- $h_2(9)$ = 18 mod 7 = 4 place 9 at index 4\\
+	
+	Good for search/delete since there are only two indices to check\\
+	Insertion is a bit messy as there might be a loop after kicking out n keys (rehash)\\
+	
+	\section*{Choosing a Hash Function}
+	Goals:
+	\begin{itemize}
+		\item scramble the keys
+		\item effiently computable
+		\item each index is equally likely
+	\end{itemize}
+	
+	If we are hashing our SIN number, the first 3 digits are the same based on certain things such as immigration etc. Last 3 digits would be better because they are seemingly random\\
+	
+	Date of birth:\\
+	Birth year - very bad! very few indexes\\
+	Birth day - better, since there are a possible 365 values\\
+	
+	Phone Numbers\\
+	First three digits is bad b/c everyone is from ontario, many 519\\
+	Last 3 digits is much better\\
+	
+	h(k) = floor(M(kA - floor(kA))), where A usually is $\phi$ and M making M to be a power of 2\\
 	
 \end{document}
