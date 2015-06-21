@@ -1,15 +1,16 @@
 CS 240 Midterm Checklist
 
-Module 1
+Module 1 (DONE)
 
 Definitions:
-- Problems
-- Algorithm
-- Program
-Different efficiencies
-RAM
+- Problems (DONE)
+- Algorithm (DONE)
+- Program (DONE)
+Different efficiencies (DONE)
+RAM (DONE)
 Order Notation & Growth Rates
-How growth rates affect run time
+- Look at more Theta Examples
+How growth rates affect run time (DONE)
 Complexity of Algorithms
  - Average
  - Best
@@ -103,6 +104,16 @@ B-Trees
  - B+ trees
 
 
+Questions:
+How to turn recursive definitions into Theta(f(n)) such as 
+2T(n/2) == Theta(n) from A1 P4
+
+A1 P6c, what the hell?
+
+2 Different Heapify Analysis
+
+Average Case Analysis!!!! - REVIEW
+- Walkthrough full avg case for quick-select
 
 
 
