@@ -1,0 +1,172 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}CS 241 Lecture 14\vspace{-1ex}}
+\date{June 22nd, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	\section*{Top-Down Parsing}
+	
+	$$S \implies \alpha_1 \implies ... \implies \alpha_n \implies w$$
+	
+	Invariant: Consumed input + reverse(stack contents) = $\alpha_i$\\
+	
+	\myt{Example:}\\
+	S $\rightarrow$ AyB\\
+	A $\rightarrow$ ab\\
+	A $\rightarrow$ cd\\
+	B $\rightarrow$ z\\
+	B $\rightarrow$ wx\\
+	
+	For simplicity, we use augumented grammars for parsing, ie. invent two new symbols $\vdash, \dashv$, new start symbol S'\\
+	
+	\begin{enumerate}
+		\item S' $\rightarrow \vdash S \dashv$
+		\item S $\rightarrow$ AyB
+		\item A $\rightarrow$ ab
+		\item A $\rightarrow$ cd
+		\item B $\rightarrow z$
+		\item B $\rightarrow$ wx
+	\end{enumerate}
+	
+	\begin{tabular}{c | c | c | c }
+		Stack & Read Input & Unread Input & Action \\ \hline
+		S' & $\epsilon$ & $\vdash abywx \dashv$ & Pop S'; push $\dashv, S, \vdash$ \\
+		$\dashv S \vdash$ & $\epsilon$ & $\vdash abywx \dashv$ & Match $\vdash$\\
+		$\dashv S$ & $\vdash$ & abywx$\dashv$ & Pop S; Push B,y,A\\
+		$\dashv ByA$ & $\vdash$ & abywx$\dashv$ & PopA; push b,a\\
+		$\dashv Byba$ & $\vdash$ & abywx$\dashv$ & Match a \\
+		$\dashv$ Byb & $\vdash a$ & bywx$\dashv$ &  Match b\\
+		$\dashv$ By & $\vdash ab$ & ywx$\dashv$ & Match y\\
+		$\dashv$ B & $\vdash aby$ & wx$\dashv$ & Pop B; push x,w\\
+		$\dashv$ xw & $\vdash aby$ & wx$\dashv$ & Match w \\
+		$\dashv$ x & $\vdash$abyw & x$\dashv$ & Match x \\
+		$\dashv$ & $\vdash$abywx & $\dashv$ & Match $\dashv$\\
+		& $\vdash$abywx$\dashv$ & $\epsilon$ & Accept\\ 
+	\end{tabular}
+
+	When top of stack (TOS) is a terminal pop and match against input.\\
+	When TOS is a non-terminal A, popA and push $\alpha^R$ ($\alpha$ reversed), where A $\rightarrow \alpha$ is a grammar rule. \\
+	Accept when stack and input are both empty\\
+	
+	\myt{BUT} what if there is $>$1 production with A on the LHS? How can we know which one to pick?\\
+	
+	\begin{itemize}
+		\item Brute force (try all compinations until one works)
+		\item Our solution: Use the next symbol of input (look ahead) to help decide (predictor table)
+	\end{itemize}
+	
+	Construct a predictor table!\\
+	- Given a non-terminal on the stack and input symbol, tell us which production to use.\\
+	
+	\begin{enumerate}
+	\item S' $\rightarrow \vdash S \dashv$
+	\item S $\rightarrow$ AyB
+	\item A $\rightarrow$ ab
+	\item A $\rightarrow$ cd
+	\item B $\rightarrow z$
+	\item B $\rightarrow$ wx
+	\end{enumerate}
+	
+	\begin{tabular}{c | c  c  c  c  c  c  c  c  c c}
+		& $\vdash$ & a & b & c & d & w & x & y & z & $\dashv$ \\ \hline
+		S' & 1 & & & & & & & & & \\
+		S & & 2 & & 2 & & & & & & \\
+		A & & 3 & & 4 & & & & & & \\
+		B & & & & & & 6 & & 5 & & \\ 
+	\end{tabular}
+	
+	Empty cell = parse error\\
+	
+	Descriptive: "Parse error at row,col: expecting one of "chars \\
+	\underline{for which curren top of stack has entries}\\
+	
+	What if $A \rightarrow$ ad, then you would have multiple states in a single table column\\
+	
+	\myt{What if a cell contains more than one entry?}\\
+	THIS DOESN'T WORK...\\
+	
+	A grammar is called LL(1) if each cell of the predictor table has at most one entry. IF we have this situation then this table will work.\\
+	
+	LL(1) = left-to-right scan of input leftmost derivations produced 1 symbol of look ahead.\\
+	That was way to long to be just LL...\\
+	
+	\section*{Automaticall computing the predictor table}
+	
+	Predict(A, a) gives you the rules that apply when A is on the stack and a is the next input character\\
+	
+	Predict(A, a) = \{A $\rightarrow \beta$ $|$ $a \in$ First($\beta$) \}\\
+	First($\beta$) - $\beta \in V^*$ - set of characters that can be the first letter of a derivation starting from $\beta$\\
+	First($\beta$) = \{a $|$ $\beta \implies *a\gamma$ \}\\
+	
+	So Predict(A, a) = \{A $\rightarrow \beta$ $|$ $\beta \implies$ *a$\gamma$ \}\\
+	
+	So really:\\
+	
+	Predict(A,a) = \{A $\rightarrow \beta$ $|$ a $\in$ First($\beta$) \} $\cup$ \{A $\rightarrow \beta$ $|$ Nullable($\beta$), a $\in$ Follow(A) \}\\
+	Nullable($\beta$) = true if and only if $\beta \implies *\epsilon$\\
+	Follow(A) = \{b $|$ S' $\implies$ *$\alpha Ab \beta$ \}\\
+	- Terminal symbols that can come immediately after A in a derivation starting from S'\\
+	
+	\subsection*{Computing Nullable}
+	\begin{verbatim}
+	initialize Nullable[A] = false for all A
+	repeat:
+	-- For each rule B -> B1 ... Bk
+	-- -- if k = 0 or Nullable[Bi] for all i
+	-- -- -- Nullable[B] <- True
+	until nothing changes
+	\end{verbatim}
+	
+	\subsection*{Computing First}
+	\begin{verbatim}
+	initialize First[A] = {} for all A
+	repeat
+	-- for each rule B -> B1...Bk
+	-- -- for i = 1 ... k
+	-- -- -- if Bi is a terminal a
+	-- -- -- -- First[B] += {a}
+	-- -- -- -- break
+	-- -- -- else
+	-- -- -- -- First[B] += First[Bi]
+	-- -- -- -- if not Nullable[Bi] break;
+	until nothing changes
+	\end{verbatim}
+	
+	\subsection*{Computing First*($\beta$)}
+	- first set for a string of symbols\\
+	\begin{verbatim}
+	First*(Y1...,Yn)
+	-- result <- empty
+	-- for i = 1 ... n
+	-- -- if Yi not in Sigma (ie non-terminal)
+	-- -- -- result += First[Yi]
+	-- -- -- if not Nullable[Yi] break;
+	-- -- else (terminal)
+	-- -- -- result += {Yi}
+	-- -- -- break
+	-- return result
+	\end{verbatim}
+	
+	\subsection*{Computing Follow}
+	\begin{verbatim}
+	initialize Follow[A] = {} for all A != S'
+	repeat
+	-- for each rule B -> B1 ... Bn
+	-- -- for i = 1....n-1
+	-- -- -- if Bi is in N
+	-- -- -- -- Follow[Bi] += First*(Bi+1 ... Bn)
+	-- -- -- -- if all Bi+1 ... Bn are nullable (includes i = n)
+	-- -- -- -- -- Follow[Bi] += Follow[B]
+	until nothing changes
+	\end{verbatim}
+	
+\end{document}
