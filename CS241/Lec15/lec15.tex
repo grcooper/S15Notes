@@ -1,0 +1,174 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}Lec 15 CS241\vspace{-1ex}}
+\date{June 24th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	\begin{verbatim}
+	Nullable[A] <- false and A
+	repeat
+	-- for each rule B -> B1 ... Bk
+	-- -- Nullable[B]<- true
+	until nothing changes
+	\end{verbatim}
+	
+	\begin{verbatim}
+	First[A] <- empty and A
+	repeat
+	-- for each B1 ... Bk
+	-- -- for i = 1 ... k
+	-- -- -- if Bi is a terminal a
+	-- -- -- -- First[B] += {a}; break
+	-- -- -- else
+	-- -- -- -- First[B] += First[Bi]
+	-- -- -- -- If not Nullable[Bi] break
+	until nothing changes
+	\end{verbatim}
+	
+	\begin{verbatim}
+	Follow[A] <- empty for all not equal to s'
+	repeat
+	-- for each B -> B1...Bk
+	-- -- for i = 1 ... k
+	-- -- -- if Bi in N
+	-- -- -- -- Follow[Bi] += First*(Bi +1 ... Bk)
+	-- -- -- -- if all of Bi+1 ... Bk Nullable (incl. i = k)
+	-- -- -- -- -- Follow[Bi] += Follow[B]
+	\end{verbatim}
+	
+	Example:\\
+	\begin{enumerate}
+		\item S' $\rightarrow \vdash S \dashv$
+		\item S $\rightarrow$ b S d
+		\item S $\rightarrow$ p S q
+		\item S $\rightarrow$ C
+		\item C $\rightarrow$ l C
+		\item C $\rightarrow \epsilon$
+	\end{enumerate}
+	
+	Nullable\\
+	\begin{tabular}{c | c | c | c | c}
+		Iteration & 0 & 1 & 2 & 3\\ \hline
+		S' & false & false & false & false\\
+		S & false & false & true & true\\
+		C & false & true & true & true\\
+	\end{tabular}
+	
+	First\\
+	\begin{tabular}{c | c | c | c | c}
+		Iteration & 0 & 1 & 2 & 3\\ \hline
+		S' & \{\} & \{$\vdash$\}& \{$\vdash$\} & \{$\vdash$\}\\
+		S & \{\} & \{b,p\}& \{b,p,l\} & \{b,p,l\}\\
+		C & \{\} & \{l\} & \{l\} & \{l\} \\
+	\end{tabular}
+	
+	Follow\\
+	\begin{tabular}{c | c | c | c}
+		Iteration & 0 & 1 & 2\\ \hline
+		S & \{\} & \{$\dashv$, d, q \}& \{$\dashv$, d,q \}\\
+		C & \{\} & \{$\dashv$, d, q \}& \{$\dashv$, d,q \}\\
+	\end{tabular}
+	
+	Predict(A,a) = \{A $\rightarrow$ B $|$ a $\in$ First*(B)\} $\cup$ \{A $\rightarrow$ B $|$ Nullable(B), a $\in$ Follow(A) \}\\
+	
+	Predictor Table\\
+	\begin{tabular}{c | c c c c c c c }
+		   & $\vdash$ & $\dashv$ & b & d & p & q & l \\ \hline
+		S' & \{1\} & & & & & & \\
+		S & & 4 & 2 & 4 & 3 & 4 & 4 \\
+		C & & 6 & & 6 & & 6 & 5\\
+	\end{tabular}
+	
+	For S, we can use rule 4 to make an l, or to make dissapear!\\
+	
+	\myt{A grammar is LL(1) it:}\\
+	\begin{itemize}
+		\item no two distinct productions with the same LHS can generate the same first terminal symbol
+		\item no nullable symbol A has the same terminal symbol a in both its first set and its follow set
+		\item there is only one way to send a nullable symbol to $\epsilon$
+	\end{itemize}
+	
+	Eg:\\
+	E $\rightarrow$ E + T $|$ T\\
+	T $\rightarrow$ T * F $|$ F\\
+	F $\rightarrow$ id\\
+	
+	The above is not LL(1)\\
+	Why?\\
+	- Left recursion.\\
+	- Left recursion is never LL(1), here is why:\\
+	
+	E $\implies$ E + T $\implies$ T + T $\implies$ F + T $\implies$ id + T\\
+	E $\implies$ T $\implies$ F $\implies$ id\\
+	These have the same first symbol!!!!! AHHH OH NOOOOO\\
+	
+	How to fix it:\\
+	Make it right-recursion\\
+	
+	E $\rightarrow$ T + E $|$ T\\
+	T $\rightarrow$ F * T $|$ F\\
+	F $\rightarrow$ id\\
+	(still not LL(1), we need to factor)\\
+	
+	Factor:\\
+	E $\rightarrow$ TE'\\
+	E' $\rightarrow$ $\epsilon | $ + E\\
+	T $\rightarrow$ F T'\\
+	T' $\rightarrow$ $\epsilon | $ * T\\
+	F $\rightarrow$ id\\
+	
+	LL(1) conflicts with left-associativity\\
+	
+	\section*{Bottom Up Parsing}
+	
+	Stack stores partially reduced input read so far.\\
+	w $\impliedby$ $\alpha_k$ $\impliedby$ $\alpha_{k-1}$ $\impliedby$ ... $\impliedby$ $\alpha_1$ $\impliedby$ S\\
+	
+	\myt{Invariant}: Stack and unread input = $\alpha_i$ (or w or s)\\
+	
+	\underline{EX}\\
+	S' $\rightarrow$ $\vdash$ S $\dashv$\\
+	S $\rightarrow$ A y B\\
+	A $\rightarrow$ ab\\
+	A $\rightarrow$ cd \\
+	B $\rightarrow$ z \\
+	B $\rightarrow$ wx\\
+	
+	w = $\vdash$abywx$\dashv$\\
+	
+	\begin{tabular}{c  c  c  c}
+		Stack & Read Input & Unread Input & Action \\ \hline
+		& $\epsilon$ & $\vdash$abywx$\dashv$ & Shift $\vdash$\\
+		$\vdash$ & $\vdash$ & abyw$\dashv$ & shift a\\
+		$\vdash$a & $\vdash$a & bywx$\dashv$ & shift b\\
+		$\vdash$ab & $\vdash$ab & ywx$\dashv$ & REduct A $\rightarrow$ ab, pop b, pop a, push A\\
+		$\vdash$A & $\vdash$ab & ywx$\dashv$ & shift y\\
+		$\vdash$Ay & $\vdash$aby & wx$\dashv$ & shift w\\
+		$\vdash$Ayw & $\vdash$abyw & x$\dashv$ & shift x\\
+		$\vdash$Aywx & $\vdash$abywx & $\dashv$ & reduct B $\rightarrow$ wz; pop x, pop w, push B\\
+		$\vdash$AyB & $\vdash$abywx & $\dashv$ & reduce S $\rightarrow$ AyB, pop B,y,a, Push S\\
+		$\vdash$S $\dashv$ & $\vdash$abywx$\dashv$ & $\epsilon$ & Reduce S' $\rightarrow$ $\vdash$S$\dashv$\\
+		S' & $\vdash$abywx$\dashv$ & $\epsilon$ & Accept\\	
+	\end{tabular}
+	
+	We have a choice at each step:\\
+	\begin{enumerate}
+		\item shift a char from input to stack
+		\item Reduce - TOS is the RHS of a grammar rule - replace it with LHS
+	\end{enumerate}
+	Accept if Stack contains S' when the input is $\epsilon$ (could equiv. $\vdash$S$\dashv$ on empty input) (But that is the same as being at the end of file, so we could accept at $\dashv$)\\
+	
+	How dowe know whether to shift or reduce?\\
+	- Use the next character to help us decide\\
+	- But the problem is still hard\\
+	
+\end{document}
