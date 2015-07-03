@@ -1,0 +1,49 @@
+Major Topics to Study for 241 Midterm:
+
+1. binary + hex
+	- sign magnitude
+	- ones complement
+	- twos complement
+2. the machine
+	- cpu, alu, ram, registers, bus, etc.
+	- how does the cpu work
+	- loading instructions, PC etc.
+	- storing with RAM
+3. ASM Language
+	- instructions, labels
+	- using stack pointers properly
+	- jumping and linking registers
+	- function and procedure templates
+	- I/O
+4. Assembler
+	- tokenizing
+	- lexer
+	- symbol tables
+	- opcode
+	- how does an OS work
+	- machine code vs object code
+5. MERL
+	- relocation + relocation tables
+	- format of a MERL file
+	- loading a MERL file
+	- linking multiple MERL files together
+	- imports, exports, ESD's and ESR's
+6. High Level Languages
+ 	- definitions + types
+ 	- finite languages
+ 	- state machines
+7. DFA's, NFA's
+	- how they both work
+	- regexes
+	- regular languages
+	- 5-tuples
+	- Kleene's Theorem
+	- each nfa must have a corresponding dfa and each dfa is an nfa
+	- epsilon-NFA's
+	- maximal munch algorithm
+8. Parsing
+	- context-free grammars
+	- definitions
+	- derivations
+	- parse trees
+	- inherently ambiguous grammars

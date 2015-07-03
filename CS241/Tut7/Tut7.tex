@@ -1,0 +1,78 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}CS241 Tutorial 7\vspace{-1ex}}
+\date{June 26th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	Topics:\\
+	- Top-Down Parsing
+	
+	Definitions:\\
+	\begin{itemize}
+		\item LL(1): LEft to right scan of input Lefct canonical derivation 1 symbol of lookahead
+		\item Top-down Parser: begins at start symbol and finds a derviation for hte input string
+		\item An LL(1) grammar is a grammar that can be parsed by an LL(1) Parser
+	\end{itemize}
+	
+	\section*{Predict Function}
+	Predict(A,a) = \{A $\rightarrow \gamma$ $|$ a $\in $First($\gamma$) v ($\gamma \implies* \epsilon$ and a $\in $ Follow(A))\}\\
+	First($\gamma$) = \{b $|$ $\gamma \implies b\beta$ for some $\beta$ \}\\
+	Follow(A) = \{C $|$ S'$\implies* \alpha$Ac$\beta$ for some $\alpha,\beta$ \}\\
+	- A grammar is LL(1) if $\forall A,a$ $|$Predict(A,a)$|$ $\leq$ 1\\
+	
+	\begin{enumerate}
+		\item S' $\rightarrow$ $\vdash S \dashv$
+		\item S $\rightarrow$ a X Y b
+		\item S $\rightarrow$ XY
+		\item X $\rightarrow$ pX
+		\item X $\rightarrow$ $\epsilon$
+		\item Y $\rightarrow$ q
+		\item Y $\rightarrow$ $\epsilon$
+	\end{enumerate}
+	
+	\section*{1) Create Predict Table}
+	First($\vdash$ S $\dashv$) = \{$\vdash$\}\\
+	First(aXYb) = \{a\}\\
+	First(XY) = \{p,q\}\\
+	First(pX) = \{p\}\\
+	First($\epsilon$) = \{\}\\
+	First(q) = \{q\}\\
+	
+	Follow(S') = \{\}
+	Follow(S) = \{$\dashv$\}\\
+	Follow(X) = \{b, $\dashv$, q \}\\
+	Follow(Y) = \{b, $dashv$ \}\\
+	
+	\begin{tabular}{c | c | c | c | c | c | c}
+		& $\vdash$ & a & b & p & q & $\dashv$ \\ \hline
+		S' & 1 & & & & & \\
+		S & & 2 & & 3 & 3 & 3 \\
+		X & & & 5 & 4 & 5 & 5\\
+		Y & & & 7 & & 6 & 7 \\
+	\end{tabular}
+	
+	\section*{2) Parsing Example}
+	\begin{tabular}{c | c | c | c }
+		Action & Consumed Input & .$_{Top}Stack_{Bot}$ & Remaining Input \\ \hline
+		Initialize & $\epsilon$ & S' & $\vdash$appqb$\dashv$\\
+		Expand 1 & $\epsilon$ & $\vdash$ S $\dashv$ & $\vdash$appqb$\dashv$\\
+		Match $\vdash$ & $\vdash$ & S$\dashv$ & appqb$\dashv$\\
+		Expand 2 & $\vdash$ & aXYb$\dashv$ & appqb$\dashv$\\
+		...&&&\\ 
+	\end{tabular}
+	Continue above as good practice!
+	
+	\begin{tabular}{c c }
+		1 & S' $
+	\end{tabular}
+	
+\end{document}

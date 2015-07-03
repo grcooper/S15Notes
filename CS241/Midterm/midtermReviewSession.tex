@@ -1,0 +1,192 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{mips}
+
+\usepackage{tikz,ifthen,amsmath,amssymb,fancyhdr,comment,lastpage}
+
+\title{\vspace{-15ex}CS241 Midterm Review Session\vspace{-1ex}}
+\date{June 24th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	\section*{Summary of Topics}
+	\begin{itemize}
+		\item Bits and Bytes
+		\item MIPS Machine Code
+		\item Assembly Language Programming
+		\item MERL and Linking
+		\item Regular Languages
+		\item Context-Free Grammar
+	\end{itemize}
+	
+	\section*{Bits, Bytes and Words}
+	
+	Range of 2's compliment $[-2^{k-1}, 2^{k-1}-1]$\\
+	Unsigned Integers range $[0, 2^k - 1]$\\
+	
+	-25 to an 8-bit two's compliment\\
+	00011001\\
+	flip the bits\\
+	11100110\\
+	00000001\\
+	--------\\
+	11100111\\
+	
+	\section*{Assembly Programming}
+	Input \$1 = n (n $\leq$ n $\leq$ 10)\\
+	Output: \$3 = n!\\
+	\lstset{language=[mips]Assembler}
+	\begin{lstlisting}
+	factorial:
+	sw $2, -4($30)
+	sw $4, -8($30)
+	lis $2
+	.word 8
+	sub $30, $30, $2
+	add $2, $1, $0
+	lis $4
+	.word $1
+	add $3, $0, $4
+	loop: mult $3, $2
+	mflo $3
+	sub $2, $2, $4
+	bne $2, $0, loop
+	lis $2
+	.word 8
+	add $30, $30, $2
+	lw $2, -4($30)
+	lw $4, -8($30)
+	jr $31
+	\end{lstlisting}
+	
+	\section*{Assembly Programs}
+	Hex notation for:\\	
+	\begin{lstlisting}
+	beq $20, $13, -4
+	\end{lstlisting}
+	0001 00ss ssst tttt iiii iiii iiii iiii\\
+	$\rightarrow$\\
+	0001 0010 1000 1101 1111 1111 1111 1100\\
+	
+	\section*{MERL Linking}
+	\myt{HEADER}
+	- Cookie
+	- MERL file length
+	- Code Len + header
+	\myt{MIPS CODE}
+	\myt{HEADER}
+	- Relocation (.word with label)
+	- - 0x01
+	- ESR (External Symbol Reference) .import
+	- - 0x11
+	- ESD (External Symbol Definition) .export
+	- - 0x05
+	
+	\myt{File A}
+	\begin{lstlisting}
+	.import abc
+	.word 0x18
+	.word abc
+	\end{lstlisting}
+	\myt{File B}
+	\begin{lstlisting}
+	.export abc
+	.export def
+	.word def
+	abc: def:
+	\end{lstlisting}
+
+	\myt{Linked MERL File}
+	\begin{lstlisting}
+	.word 0x10000002
+	.word filelen
+	.word codelen
+	.word 0x18
+	.word abc
+	.word def
+	abc: def:
+	.word 0x01
+	.word 0x10
+	.word 0x01
+	.word 0x14
+	.word 0x05
+	.word 0x18
+	.word 0x3
+	.word ascii a
+	.word ascii b
+	.word ascii c
+	.word 0x05
+	.word 0x18
+	.word 0x3
+	.word ascii d
+	.word ascii e
+	.word ascii f
+	\end{lstlisting}
+
+	\section*{Regular Languages}
+	
+	\subsection*{DFA}
+	\begin{itemize}
+		\item $\Sigma$ - Alphabet, set of symbols we can use to form words
+		\item Q - Finite set of states
+		\item $q_0$ - Starting State
+		\item A - finite set of Accepting States
+		\item $\delta$: Q $\times$ $\Sigma$ $\rightarrow$ Q - transition function)
+	\end{itemize}
+	
+	\subsection*{NFA}
+	\begin{itemize}
+		\item $\Sigma$ - Alphabet, set of symbols we can use to form words
+		\item Q - Finite set of states
+		\item $q_0$ - Starting State
+		\item A - finite set of Accepting States
+		\item $\delta$: Q $\times$ $\Sigma$ $\rightarrow$ $2^Q$ - transition function)
+	\end{itemize}
+	
+	\subsection*{Example:}
+	Construct a DFA:\\
+	$\Sigma$ = \{0,1,2,3,4\}\\
+	L1 = \{even integers with no useless leading zeros\}
+	
+	Construct an NFA:\\
+	$\Sigma$ = \{a,b,c,d\}\\
+	L2 = \{words that contain "cab" as a substring and end in "dad"\}\\
+	
+	\subsection*{$\epsilon$-NFA}
+	$\Sigma$ = \{a,b,c,d,0,1,2,3,4\}\\
+	L = L1 and L2\\
+	
+	\subsection*{Regular Expressions Examples}
+	$\Sigma$ = \{a,b,c\}\\
+	L = \{words with an even number of a's\}\\
+	
+	(b$|$c$|$a(b$|$c)*a)*\\
+	
+	$\Sigma$ = \{a,b,c\}\\
+	L = \{all strings with 3 consectutive a's, entually followed by 4 consecutive b's\}\\
+	
+	(a$|$b$|$c)*aaa(a$|$b$|$c)*bbbb(a$|$b$|$c)*
+	
+	\section*{Context Free Grammar}
+	\begin{itemize}
+		\item V - Nonterminals (set)
+		\item $\Sigma$ - Terminals (set)
+		\item R - Production Rules (set)
+		\item S - Starting nonterminal
+	\end{itemize}
+	
+	S$\rightarrow$ AyxxA $|$ xA\\
+	A $\rightarrow$ Ax $|$Ay$|$ $\epsilon$
+	
+	S $\implies$ xA $\implies$ \\
+
+
+\end{document}

@@ -213,4 +213,49 @@
 	
 	h(k) = floor(M(kA - floor(kA))), where A usually is $\phi$ and M making M to be a power of 2\\
 	
+	\section*{Hashing vs BSTs}
+	(on average)\\
+	\begin{tabular}{ c | c | c}
+		Function & Hashing & Binary Search Trees \\ \hline
+		Search & $\Theta(1)$ & $\Theta(Logn)$\\
+		Insert & $\Theta(1)$ & $\Theta(logn)$ \\
+		Delete & $\Theta(1)$ & $\Theta(logn)$\\
+		Indices are Empty & Memory Wasted & No memory wasted (empty pointer) \\
+	\end{tabular}
+	
+	\section*{External Memory}
+	In linear probing, little disk acesses.
+	
+	In a huge hash table there is (L + 1)/2 Disk Acesses (where L is the lenght of the linked list)
+	
+	\section*{Terminology}
+	\begin{itemize}
+		\item L $\rightarrow$ length of hash values in binary
+		\item Directory $\rightarrow$ a table of lenght $2^d$ where d $<$ L, di is called the order of extendible hash table
+		\item Each index in the directory table has a pointer to a page in external memory (Block of size S)
+	\end{itemize}
+	
+	Each block B has a "local depth $k_B$\\
+	- All has values inside the block have the same $k_B$ leading digits $k_B \leq d$\\
+	
+	See slides. I didn't really feel like taking notes here...\\
+	
+	\section*{Extendable Hashing}
+	\begin{itemize}
+		\item S $\rightarrow$ block sizes
+		\item d $\rightarrow$ directory order
+		\item L $\rightarrow$ hash values length in binary
+		\item $K_B \rightarrow$ local depth
+	\end{itemize}
+	
+	insert(15) $\rightarrow$ h(15) = 15 = 01111$_{(2)}$ - the first d = 2 digits are 01\\
+	look for item 01 in directory - bring B2 to the main memory\\
+	
+	insert(16) $\rightarrow$ h(16) = 16 = 10000$_{(2)}$ - 10\\
+	- Bring B3 to memory\\
+	KB = 1 $<$ 2 = d $\rightarrow$ split B3 into two locks with KB incrememneted\\
+	
+	
+	
+	
 \end{document}

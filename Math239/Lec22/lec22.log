@@ -2,8 +2,8 @@ This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**lec19.tex
-(./lec19.tex
+**lec22.tex
+(./lec22.tex
 LaTeX2e <2014/05/01>
 Babel <3.9k> and hyphenation patterns for 78 languages loaded.
 (/usr/local/texlive/2014/texmf-dist/tex/latex/base/article.cls
@@ -154,8 +154,8 @@ Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
 \Gin@req@height=\dimen121
 \Gin@req@width=\dimen122
 )
-(./lec19.aux)
-\openout1 = `lec19.aux'.
+(./lec22.aux)
+\openout1 = `lec22.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 14.
 LaTeX Font Info:    ... okay on input line 14.
@@ -241,50 +241,42 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 15.
 (/usr/local/texlive/2014/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Underfull \hbox (badness 10000) in paragraph at lines 26--27
+Underfull \hbox (badness 10000) in paragraph at lines 17--18
 
  []
 
-<hamilton1.png, id=1, 474.77374pt x 102.3825pt>
-File: hamilton1.png Graphic file (type png)
- <use hamilton1.png>
-Package pdftex.def Info: hamilton1.png used on input line 29.
-(pdftex.def)             Requested size: 237.38629pt x 51.19112pt.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 19.
+(/usr/local/texlive/2014/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 19.
 
-Underfull \hbox (badness 10000) in paragraph at lines 28--30
+<bridge.png, id=1, 315.1775pt x 212.795pt>
+File: bridge.png Graphic file (type png)
+ <use bridge.png>
+Package pdftex.def Info: bridge.png used on input line 26.
+(pdftex.def)             Requested size: 157.58836pt x 106.39723pt.
 
- []
-
-<peterson.png, id=3, 220.825pt x 211.79124pt>
-File: peterson.png Graphic file (type png)
- <use peterson.png>
-Package pdftex.def Info: peterson.png used on input line 32.
-(pdftex.def)             Requested size: 110.41222pt x 105.89536pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 34--35
+Underfull \hbox (badness 10000) in paragraph at lines 28--32
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 38--39
+Underfull \hbox (badness 10000) in paragraph at lines 33--34
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 40--41
+Underfull \hbox (badness 10000) in paragraph at lines 35--36
 
  []
 
 [1
 
-{/usr/local/texlive/2014/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./hamil
-ton1.png> <./peterson.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 42--43
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 44--45
+{/usr/local/texlive/2014/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./bridg
+e.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 45--47
 
  []
 
@@ -299,52 +291,29 @@ Underfull \hbox (badness 10000) in paragraph at lines 50--51
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 52--53
+Underfull \hbox (badness 10000) in paragraph at lines 52--54
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 56--57
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 58--59
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 62--63
-
- []
-
-[2] <subgraph.png, id=21, 769.87625pt x 362.35374pt>
-File: subgraph.png Graphic file (type png)
- <use subgraph.png>
-Package pdftex.def Info: subgraph.png used on input line 65.
-(pdftex.def)             Requested size: 384.93718pt x 181.17642pt.
-
-[3 <./subgraph.png>] (./lec19.aux) ) 
+[2] (./lec22.aux) ) 
 Here is how much of TeX's memory you used:
- 2938 strings out of 493117
- 41237 string characters out of 6135433
- 102713 words of memory out of 5000000
- 6363 multiletter control sequences out of 15000+600000
- 12403 words of font info for 48 fonts, out of 8000000 for 9000
+ 2944 strings out of 493117
+ 41349 string characters out of 6135433
+ 102714 words of memory out of 5000000
+ 6368 multiletter control sequences out of 15000+600000
+ 12096 words of font info for 47 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 37i,6n,26p,470b,190s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2014/texmf-dist/fonts/t
-ype1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2014/texmf-dist/fonts/ty
-pe1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2014/texmf-dist/fonts/typ
-e1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1
-/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/p
-ublic/amsfonts/cm/cmr17.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/pub
-lic/amsfonts/cm/cmr8.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public
-/amsfonts/cm/cmsy10.pfb>
-Output written on lec19.pdf (3 pages, 121899 bytes).
+ 37i,8n,26p,451b,190s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfo
+nts/cm/cmbx12.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfon
+ts/cm/cmmi12.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfont
+s/cm/cmr12.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/
+cm/cmr17.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm
+/cmsy10.pfb>
+Output written on lec22.pdf (2 pages, 59804 bytes).
 PDF statistics:
- 49 PDF objects out of 1000 (max. 8388607)
- 30 compressed objects within 1 object stream
+ 34 PDF objects out of 1000 (max. 8388607)
+ 22 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 16 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 6 words of extra memory for PDF output out of 10000 (max. 10000000)
 
