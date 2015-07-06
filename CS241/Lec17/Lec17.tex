@@ -1,0 +1,212 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}Lec17 CS241\vspace{-1ex}}
+\date{July 6th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	\section*{Context-Sensitive Analysis (also called Semantic Analysis)}
+	What properties of valid programs cannot be enforced by CFG's?\\
+	\begin{itemize}
+		\item Declaration before use
+		\item Scope Correctness
+		\item Type Checking
+		\item etc...
+	\end{itemize}
+	
+	To solve these, we need more complex programs\\
+	The next language class: Context-sensitive languages\\
+	(specified by context-sensitive grammars)\\
+	
+	-Ad hoc approach actually more useful\\
+	- Traverse the parse tree \\
+	
+	Eg. Parse tree\\
+	class Tree \{\\
+	public:\\
+	- string rule;\\
+	- vector$<$Tree *$>$ children;\\
+	\};\\
+	The string rule is the grammar rule "term id" or the token type nad lexeme: "id xyz"\\
+	
+	\subsection*{Traversal Example: Print the tree}
+	\begin{verbatim}
+	void print(Tree &t){
+	-- //print t.rule
+	-- foo(vector<Tree *> i ; iterator i = t.children.begin(); i != t.children.end; ++i){
+	-- -- print (**i);
+	-- }
+	}
+	\end{verbatim}
+	
+	\subsection*{Error Checking}
+	What semantic analysis is needed for WLP4?\\
+	What errors need to be caught?\\
+	\begin{itemize}
+		\item variables and procedures, used but not declared
+		\item variable/procedure duplicates
+		\item scope?
+		\item type errors
+		\item For now, assume that wain is the only procedure
+	\end{itemize}
+	
+	\subsubsection*{Decleration errors}
+	multiple/missing declarations, how do we do this, we've seen this before\\
+	Construct a symbol table!!!!\\
+	\begin{itemize}
+		\item traverse the parse tree to collect all declarations.
+		\item For each node corresponding to rule dcl $\rightarrow$ TYPE ID
+		\item Extract the name and type and add to the symbol table
+		\item if name is alrady in the symboltable, ERROR
+		\item Multiple Declarations now checked
+	\end{itemize}
+	
+	Traverse again!\\
+	\begin{itemize}
+		\item Check for rules of the form factor $\rightarrow$ ID and lvalue $\rightarrow$ ID\\
+		\item if the ID's name is not in the symbol table, then ERROR
+		\item undeclared variables are now checked
+	\end{itemize}
+	
+	The above two passes could be merged.\\
+	
+	\subsection*{Symbol Table Implementation - global variable}
+	map $<$string, string$>$ symbolTable\\
+	(name, type)\
+	But:\\
+	\begin{itemize}
+		\item doesn't take scope into account
+		\item doesnt check procedure declerations
+	\end{itemize}
+	
+	\myt{Issue:}\\
+	\begin{verbatim}
+	int f() {
+	-- int x = 0;
+	-- return 1;
+	}
+	
+	int wain (int a, int b){
+	-- int x = 0;
+	-- return 1;
+	}
+	\end{verbatim}
+	This will give an error (only using the above two passes) and it should be OK!\\
+	
+	Must forbid duplicate definitions in the same procedure, but allow them in different procedures\\
+	
+	\myt{Also:} \\
+	\begin{verbatim}
+	int f() { ... }
+	int f() { ... }
+	\end{verbatim}
+	
+	Must also forbid duplicate procedure definitions\\
+	
+	\myt{Sol'n}:\\
+	\begin{itemize}
+		\item Have a seperate symbol table for each procedure
+		\item Have one "Top-Level" symbol table that collects all procedure names
+	\end{itemize}
+	
+	map $<$string, map$<$string, string$>$ $>$ topSymtable;\\
+	(proc name, procs symboltable)\\
+	When traversing:\\
+	When the rule is \\
+	procedure $\rightarrow$ ...\\
+	main $\rightarrow$ ...\\
+	- these mean there is a new procedure\\
+	- make sure it is not already in the symbol table, and if not, create a new entry\\
+	- if not, create a new entry\\
+	- May want a global variable called "currentPRoc"\\
+	- Tells you which procedure you are currently in\\
+	- keep it up to date\\
+	
+	For vars\\
+	- We store the declared type in the symbol table\\
+	Is there type into for procedures?\\
+	Yes - Signature
+	- Note: All procedures in WLP4 return int, so the signature is the sequence of param types\\
+	- Store signature in top-level table\\
+	
+	map$<$ string, pair$<$vector $<$string$>$, map$<$string,string$>$ $>$ $>$ topSymtbl;\\
+	(proc-name signature, local Symbol table)\\
+	
+	To compute the signature:\\
+	Traverse nodes of the form 
+	- paramlist $\rightarrow$ dcl\\
+	- paramlist $\rightarrow$ dcl COMMA paramlist\\
+	
+	\section*{Types}
+	Why do programming languages have types?\\
+	\begin{itemize}
+		\item Prevent Errors
+		\item allow us to assign an interpretation to the contents of some address and to remember the interpretation.\\
+	\end{itemize}
+	
+	eg. int *a = NULL; a denotes a pair\\
+	a = 7; X attempt to stare an int where a pointer is denoted\\
+	
+	To check type ocrrectness\\
+	\begin{itemize}
+		\item find a type for each var/expr
+		\item ensure the "rules are paplied properly
+	\end{itemize}
+	
+	Another tree traversal:\\
+	\begin{verbatim}
+	string typeOf(Tree &t){
+	-- for each c in t.children, 
+	-- --compute typeOF(c)
+	-- determine typeOF(t) from types of children, based on t.rule
+	}
+	\end{verbatim}
+	
+	\subsection {Example: ID}
+	- get its type from symbol table\\
+	
+	\underline{$<$id.name, $\tau$ $>$ $\in$ declarations}\\
+	id : $\tau$\\
+	
+	\begin{verbatim}
+	string typeof(Tree &t){
+	-- if t.rule == "ID name"
+	-- -- return symtbl.lookup(name)
+	}
+	\end{verbatim}
+	
+	\subsection*{Singleton Productions}
+	expr $\rightarrow$ term\\
+	term $\rightarrow$ factor\\
+	factor $\rightarrow$ id\\
+	
+	\underline{Type of LHS = type of RHS}\\
+	NUM: int ... NULL : int *\\
+	
+	\underline{E : $\tau$}\\
+	(E) : $\tau$\\
+	
+	E has type $\tau$ then (E) has type $\tau$\\
+	
+	
+	
+	
+\end{document}
+
+
+
+
+
+
+
+
+
+

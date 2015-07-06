@@ -1,0 +1,54 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}Math 239 LEcture 24 \vspace{-1ex}}
+\date{July 6th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	Topics:
+	\begin{itemize}
+		\item Spanning Trees
+		\item Bipartite Characterization
+	\end{itemize}
+	
+	\section*{Spanning Trees}
+	Recall: G has a spanning tree if and only if G is connected\\
+	
+	\myt{Theorem:} Let G be a graph with n vertices. If any 2 of the 3 following conditions hold, then G is a tree\\
+	\begin{enumerate}
+		\item G is connected
+		\item G has no cycles
+		\item G has n-1 edges
+	\end{enumerate}
+	
+	\myt{Proof:} \\
+	\begin{itemize}
+		\item 1 + 2: By definition, G is a tree
+		\item 1 + 3: Suppose G is connected with n-1 edges. It has a spanning tree T. Sicne G has n vertices, T has n-1 edges. But G has n-1 edges and T is a subgraph of G, so G = T. So G is a tree
+		\item 2 + 3: Suppose G has no cycles with n-1 edges. Then G is a forest. From before, G has n-k edges, where k is the number of components in G. So n-k = n-1, so k = 1, so G is connected, hance a tree
+	\end{itemize}
+	
+	\myt{Theorem:} If T is a spanning free of G and e is an edge in E(G)\textbackslash E(T), then T + e contains exactly one cycle C. Moreover, if e' is any edge in C, then T + e - e' is also a spanning tree of G\\
+	
+	\myt{Proof:} T + e must ctontain at least 1 cycle. Any cycle in T + e must use e. Such a cycle must use a path between the two endpoints of e in T. There is a unique parth in T between any 2 vertices, so there is only one cycle in T + e. Suppose e' $\in$ E(C). Then e' is not a bridge, so T + e - e' is connected. It also has n-1 edges Sp T + e - e' is a spanning tree.\\
+	
+	\section*{Biparite Chracterization}
+	\myt{Theorem:} A graph G is bipartite if and only if G does not cotnain any odd cycles.\\
+	
+	\myt{Observation:} G is bipartite if and only if every subgraph of G is bipartite\\
+	
+	\myt{Proof:} We prove the contrapositive: G is not bipartite if and only if G contains an odd cycle\\
+	$\impliedby$ Suppose G contains an odd cycle C, Say C = $V_1,V_2,...V_{2k+1}, V_1$. IF C is bipartite iwth bipartition (A,B), then wlog we suppose $V_1 \in$ A. Then $V_2 \in B$, $V_5 \in A$, $V_4 \in B$, ... WE have $V_i$ in A if i is odd, and in B if i is even. So $V_{\geq k+1}, V_i \in A$. There is a contradiction since $V_{2k+1},V_1$ is an edge. So C is not bipartite, hence G is not bipartite.\\
+	$\implies$ SUppose G is not bipartite. Let H be a component og G that is not bipartite. Let T be a spanning tree of H. We know T is bipartite, let (A,B) be its bipartition. Since H is not bipartite, it contains an edge joinging 2 vertices in A or 2 vertices in B. Suppose wlog e=uv where u,v $\in$ A. In T there is a unique, u,v-path say $V_1,V_2...V_k$ where $v_1 = u, V_k = v$ since $V_1 \in A, V_2 \in B, V_3 \in A, V_4 \in B$ etc. Since $V_k \in A$, k is odd. Then $V_1,V_2....V_k, V_1$ is a cycle in H of odd length\\
+	
+	
+	
+\end{document}
