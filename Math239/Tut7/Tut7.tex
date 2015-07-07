@@ -1,0 +1,52 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}Math 239 Tutorial 7\vspace{-1ex}}
+\date{July 7th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	\section*{1) Prove or Disprove}
+	\subsection*{A) The union of the edges of two distinct u,w-walks contains a cycle.}
+	False\\
+	Graph:\\
+	V(G) u,w\\
+	E(G) \{u,w\}\\
+	Walk1: u,w\\
+	Walk2: u,w,u,w\\
+	
+	No cycle since there cannot be a cycle in a graph wiht only two vertices\\
+	\subsection*{B) The union of the dges of two distinct u,w-paths contains a cycle}
+	True\\
+	Path1: u = x1,x2,...xr = w\\
+	Path2: u = y1,y2...ys = w\\
+	Let i be the smallest index in \{1,...r\} so that xi = yi but $x_{i+1} \ne y_{i+1}$ (i exists because Path1 is distint from P2)\\
+	Let j be the first index in \{i+1,i+2,...s\} So that yi = xk for some k $\geq$ i + 1.\\
+	(j exists because s is a candidate)\\
+	By choice of j, every vertex in $y_{i+1}, y_{i+2}...y_{j-1}$ is not in Path1\\
+	Now C := xi = $y_i, y_{i+1}...,y_{j-1},y_j = x_k, x_{k-1}...x_i$\\
+	
+	\section*{2) G graph, every vertex has degree at least 3 $\implies$ G contains a ccle of even length}
+	Let x1,x2...xk be the longest path in G. All the neighbours of x1 are in this path, otherwise we can augment it. Since deg(v1) $\geq$ 3, there exists two neighbours vi, vj, of v1 with 2 $<$ i $<$ j $\leq$ k\\
+	
+	Since either i,j or j-i is even, then either on of the cycles:\\
+	C1 = x1,...xi,x1\\
+	C2 = x1,...xj,x1\\
+	C3 = xi,...xj,x1,xi\\
+	has even length\\
+	
+	\section*{4)Let x,y $\subseteq$ V(G) where x $\cap$ Y = $\emptyset$. Prove that if the cuts induced by X and Y has an even number of edges}
+	
+	E(X,!X) cut induced by X\\
+	E(Y,!Y) cut induced by Y\\
+	E(X$\cup$Y. !(X$\cup$Y)) cut induced by x $\cup$ Y\\
+	$|$E(X$\cup$Y. !(X$\cup$Y))$|$ = $|$E(X,!X)$|$ + $|$E(Y,!Y)$|$ - 2$|$E(X,Y)$|$\\
+	The LHS is even since the 2$|...|$ is even.\\
+	
+\end{document}
