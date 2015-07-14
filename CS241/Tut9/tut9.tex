@@ -1,0 +1,40 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}CS241 Tutorial 9\vspace{-1ex}}
+\date{July 10th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	\section*{Midterm Problems}
+	\subsection*{5c)}
+	\begin{verbatim}
+	unsigned int BCDToINT(unsigned char c){
+	-- return 10 * (c >> 4) + (c&0xf)
+	}
+	\end{verbatim}
+	
+	\subsection*{5d)}
+	\begin{verbatim}
+	unsigned char IntToBCD(unsigned int n){
+	-- return (n/10) << 4 | (n % 10)	
+	}
+	\end{verbatim}
+	
+	\section*{Problems in WLP4 code}
+	\begin{enumerate}
+		\item Semantic - y declared twice
+		\item Semantic - did not declare idx
+		\item Syntax - must declare all variables together at the beginning of the function
+		\item Syntax - no definition of function foo
+		\item Semantic - Can't dereference int y
+		\item Semantic - C requires Declare before use
+	\end{enumerate}
+	
+\end{document}

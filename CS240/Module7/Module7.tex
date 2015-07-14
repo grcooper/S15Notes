@@ -64,5 +64,31 @@
 	Spread factor = $\frac{d_{max}}{d_{min}}$\\
 	height of quad tree $\Theta(log(\frac{d_{max}}{d_{min}})$\\
 	
+	Why are quad-trees not good?\\
+	- We could have two nodes very close to each other, so we have to make many levels for very few nodes\\
+	3 points $\rightarrow$ h + 2 nodes in tree\\
+	4 points $\rightarrow$ 2h + 2 nodes in the tree\\
+	6 points $\rightarrow$ 3h + 2 nodes in the tree\\
+	
+	\section*{kd-trees (cute trees, binary-trees)}
+	
+	We first split the keys in the area vertically, then draw lines out to the left and the right of the new root node, then we split each new sub-region horizontally, then vertically etc building our left/right nodes using the left/right sections and To/bottoms sections\\
+	
+	\subsection*{Complexity of range search in KD-trees}
+	= the number of visited nodes in the tree\\
+	= k + number of unsuccessful region checks
+	$\leq$ k + number of regions that any vertical or horizontal line intersects * 4\\
+	= k + 4Q(n)\\
+	
+	Q(n) = 2Q($\frac{n}{2}$) + 1\\
+	
+	In each quadrant there are $\frac{n}{4}$ parts\\
+	Q(n) = 4Q($\frac{n}{16}$)+2\\
+	= 8Q($\frac{n}{64}$) + 3\\
+	Q(n) = $2^iQ(\frac{n}{2^{2i}}) + i$\\
+	
+	Q(n) = $2^{\frac{1}{2}logn} + \frac{logn}{2}$\\
+	= $\sqrt{n} + \frac{logn}{2}$\\
+	$= O(\sqrt{n})$\\
 	
 \end{document}
