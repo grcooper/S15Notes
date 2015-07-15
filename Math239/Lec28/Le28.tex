@@ -1,0 +1,42 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}Math 239 Lecture 27\vspace{-1ex}}
+\date{July 13, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	\section*{Kuratowski's Theorem}
+	
+	\myt{Definition:} An \underline{Edge SUbdivision} of a graph is obtained by replacing each edge with a path of length at least 1 (or introduce vertices of deg(2) to the edges).
+	
+	\myt{Theorem:} A graph is planar if and only if any edge subdivision of the graph is planar.\\
+	
+	\myt{Kuratowski's Theorem:} A graph is planar if and only if it does not have any edge subdivision of $k_r$ or $k_{3,3}$ as a subgraph\\
+	
+	To prove that a graph is non-planar, find an edge subdivision of $k_5$ or $k_{3,3}$ in the graph. Note: Other than the 5/6 main vertices in $k_5$ / $k_{3,3}$ no edges are repeated and any vertex is used in at most one path.
+	
+	Usually there is a $k_{3,3}$ subdivision.\\
+	
+	\section*{Colouring}
+	
+	\myt{Definition:} A k-colouring of a graph is an assignment of a colour to each vertex using at most k colors so that adjacent vertices receive different colours. A graph that has a k-colouring is k-colourable.\\
+	
+	If a graph is k-colourablem then it is also (k+1) colourable.\\
+	
+	General Question: What is the minimum number of colours needed to colour a graph?\\
+	
+	\myt{Theorem:} $K_n$ is n-colourable, bit not (n-1)-colourable\\
+	\myt{Theorem:} A graph is 2-colouring if and only if it is bipartite\\
+	
+	
+	
+	
+\end{document}

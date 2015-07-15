@@ -1,0 +1,221 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}CS 241 Lecture 20\vspace{-1ex}}
+\date{July 15th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	\section*{Evaluating Expressions}
+	\subsection*{tests}
+	\begin{verbatim}
+	test -> expr1 < expr2
+	
+	code(test) = 
+	code(expr1) ($3 <- expr1)
+	add$6, $3, $0
+	code(expr2) ($3 <- expr2)
+	slt $3, $6, $3
+	\end{verbatim}
+	Treat test $\rightarrow$ expr1 $>$ expr2 the same
+	
+	\begin{verbatim}
+	test -> expr1 != expr2
+	code(test) = 
+	code(expr1) ($3 <- expr1)
+	add $6, $3, $0 ($6,<- expr1)
+	code(expr2) ($3 <- expr2)
+	slt $5, $3, $6 ($5 = $3 < $6)
+	slt $6, $6, $3 ($6 = $6 < $3)
+	add $3, $5, $6 ($3 = $6 OR $7)
+	\end{verbatim}	
+	
+	\begin{verbatim}
+	test -> expr1 == expr2
+	
+	treat as NOT (expr1 != expr2)
+	- as above and then (recall $11 = 1)
+	sub $3, $11, $3 ($3 <- 1 - $3)
+	\end{verbatim}
+	Leaving $<=$ and $>=$ as excercises
+	
+	\subsection*{IF}
+	\begin{verbatim}
+	stmt -> if test { stmts1 } else {stmts2}
+	code(stmt) =
+	code(test) ($3 <- test)
+	beq $3, $0, else
+	code(stmts1)
+	else: beq $0, $0, endif
+		code(stmts2)
+	endif:
+	\end{verbatim}
+	
+	WE need to generate unique labels
+	\begin{itemize}
+		\item keep a counter x
+		\item use x, endifx, truex for label names
+		\item incrememnt x for each new if-statement
+	\end{itemize}
+	
+	\subsection*{While:}
+	\begin{verbatim}
+	stmt -> while(test){stmts}
+	-use a counter Y
+	code(stmt) =
+	loopY:
+	code(test) ($3 <- test)
+	code(stmts)
+	beq $0, $0, loopY
+	doneY: 
+	\end{verbatim}
+
+	Done assn 9\\
+	
+	\myt{Advice:} Generate comments along with mips instructions
+	
+	\section*{Pointers:}
+	Need to do seven?? things\\
+	\begin{enumerate}
+		\item NULL
+		\item Dereferencing
+		\item address-of
+		\item Pointer Comparison
+		\item Pointer Arithmetic
+		\item alloc/dealloc
+		\item assignment through pointers
+	\end{enumerate}	
+	
+	\subsection*{NULL}
+	\begin{itemize}
+		\item could use 0
+		\item Use 1 (not a multiple of 4)
+		\item If 1 is dereferenced, the machine will crash
+	\end{itemize}
+	
+	\begin{verbatim}
+	factor -> NULL
+	code(factor) = add $3, $11, $0 ($3 <- 1)
+	\end{verbatim}
+	
+	\subsection*{Dereference}
+	\begin{verbatim}
+	factor -> *expr
+	code(factor = 
+	code(expr) ($3 <- expr)
+	lw $3, 0($3)
+	\end{verbatim}
+	
+	\subsection*{comparisons}
+	\begin{itemize}
+		\item same as UNSIGNED int comparisons
+		\item (there are no negative pointers)
+		\item use sltu instead of slt
+	\end{itemize}
+	\subsubsection*{Type Checking 1}
+	So when generating code for:\\
+	test $\rightarrow$ expr1 $<$ expr2 etc...\\
+	use slt if expr1, expr2 : int\\
+	use sltu if expr1, expr2 : int*\\
+	- rerun "typeof" (or just on one of them since the types will be the same)\\
+	
+	\subsubsection*{TypeChecking Better}
+	\begin{itemize}
+		\item add a "type" field to each tree node
+		\item make "typed" procedure record each node's type (if it has one) in the node itself
+		\item then the type will be available if needed
+	\end{itemize}
+	
+	\subsection*{Pointer Arithmetic}
+	\begin{verbatim}
+	expr1 -> expr2 + term
+	expr1 -> expr2 - term
+	\end{verbatim}
+	
+	\begin{itemize}
+		\item the exact meaning depends on the types involved
+	\end{itemize}
+	
+	\subsubsection*{Addition}
+	\begin{verbatim}
+	expr1 -> expr2 + term
+	if expr2, term : int as before (just add)
+	if expr2 : int*, term : int
+	- means expr2 + (4 * term)
+	code(Expr1) =
+	code(expr2)
+	push($3)
+	code(term) ($3 <- term)
+	pop($5)
+	mult $3, $4
+	mflo $3
+	add $3, $5, $3
+	
+	if expr2: int term: int* means (4 * expr2 + term)
+	\end{verbatim}
+	
+	\subsubsection*{Subtraction}
+	\begin{verbatim}
+	expr1 -> expr2 - term
+	if expr2 : int, term : int - as before
+	if expr2 : int*, term : int - means expr2 - 4 * term
+	- similar to int* + int case
+	
+	if expr2 : int*, term : int*
+	- means (expr2 - term)/4
+	
+	code(expr1) =
+	code(expr2)
+	push($3)
+	code(term)
+	pop($5)
+	sub $3, $5, $3
+	div $3, $4
+	mflo $3
+	\end{verbatim}
+	
+	\subsection*{Assignment}
+	\subsubsection*{Assnment through pointer dereference}
+	LHS = address at which to store the value
+	RHS = value
+	
+	\begin{verbatim}
+	stmt -> ID = expr - already done
+	*factor = expr
+	code(stmt) = code(factor) ($3 <- factor = the address)
+	push($3)
+	code(expr) ($3 <- expr)
+	pop($5) ($5 <- factor)
+	sw $3, 0($5)
+	\end{verbatim}
+	
+	\subsection*{Address-of}
+	\&lvalue
+	lvalue is ID, or STAR factor
+	\begin{verbatim}
+	if expr = ID
+	code(&ID) = 
+	lis $3
+	.word ____ (look up ID in symtable)
+	add $3, $3, $29
+	
+	if expr = STAR factor:
+	code(&*factor) = code(factor)
+	\end{verbatim}
+	
+	\subsection*{New/Delete}
+	\begin{itemize}
+		\item runtime environment
+		\item allocation module alloc.merl
+		\item link to your assembled output along with print.merl
+		\item MUST link it last
+	\end{itemize}
+	
+\end{document}
