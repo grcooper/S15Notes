@@ -1,0 +1,73 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}CS241 Tutorial 10\vspace{-1ex}}
+\date{July 17th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	Topics:\\
+	\begin{itemize}
+		\item Codegen
+		\item Expressions
+		\item Switch Statement
+		\item Test Code
+	\end{itemize}
+	
+	Convention and Tips\\
+	\begin{itemize}
+		\item store results in \$3
+		\item Store intermediate values on hte stack
+		\item define implementation-level helper functions (e.g push/pop)
+		\item store 4 in \$4 ,1 in \$11, etc
+		\item output comments for debugging
+	\end{itemize}
+	
+	\section*{Expressions}
+	\begin{verbatim}
+	code(factor -> ++lvalue) = 
+	code(lvalue) ; address in $3
+	add $5, $3, $0
+	lw $3, 0($3)
+	add $3, $3, $11
+	sw $3, 0($5)
+	\end{verbatim}
+	
+	\begin{verbatim}
+	code(Factor -> lvalue++) =
+	code(lvalue) ; address in $3
+	add $5, $3, $0
+	lw $3, 0($3)
+	add $6, $3, $11
+	sw $6, 0($5)
+	\end{verbatim}
+	
+	\section*{Switch Statement}
+	\begin{verbatim}
+	switch(expr){
+	-- case(expr){
+	-- -- statements
+	--}
+	-- case(expr){
+	-- -- statements
+	--}
+	...
+	-- default {
+	-- -- statements
+	-- }
+	}
+	\end{verbatim}
+	
+	\begin{verbatim}
+	code (cases -> cases case) = 
+	
+	\end{verbatim}
+	
+\end{document}

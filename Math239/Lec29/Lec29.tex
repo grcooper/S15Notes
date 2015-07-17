@@ -1,0 +1,44 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}Math239 Lecture 29\vspace{-1ex}}
+\date{July 17th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	\section*{Colouring planar graphs}
+	\myt{Theorem:} Every planar graph is 6-colourable.\\
+	
+	\myt{Theorem:} Every planar graph has a vertex of degree at most 5\\
+	
+	\myt{Proof:} Let G be a planar graph with n vertices. Suppose BWOC that every vertex has degree $\geq$ 6. Then the sum of every vertex degree is $\geq$ 6n. So the number of edges is $\geq$ 3n. But by any planar graph has at most 3n-6 edges, contradiction.\\
+	
+	\myt{Proof of 6-colour theorem:} By induction on the number of verices n. \\
+	Base case: When n = 1, the single vertex is 6-colourable.\\
+	Ind. Hyp: Assume every planar graph with n-1 vertices is 6-colourable.\\
+	Ind. Step: Let G be a planar graph with n vertices. Let v be a vertex of deg $\leq$ 5. Let G-v be the graph obtained by removing v and its incident edges. Then G-v is planar with n-1 vertices. By ind. hyp. G-v is 6-colourable. Keep the same colouring for G, and color v with one that is not used in its neighbours. This is possible since v has at most 5 neighbours and there are 6 colours available so G is 6-colourable.\\
+	
+	\myt{Theorem:} Every planar graph is 5-colourable\\
+	
+	Contraction of an edge e is merging the two endpoints of e into one vertex\\
+	
+	\myt{Observation:} If G is planar then G/e is also planar.\\
+	
+	\myt{Proof of 5-colour theorem:} By strong induction on the number of vertices n.\\
+	Base cases: When n $\leq$ 5, any planar graph with n vertices is 5-colourable.\\
+	Ind Hyp: Assume any planar graph with at most n-1 vertices is 5-colourable\\
+	Ind. Step: Let G be a planar graph on n vertices. Let v be a vertex of deg $\leq$ 5. IF v has deg $\leq$ 4, then we use the same argument as the 6-colour theorem to prove that G is 5-colourable.\\
+	
+	Suppose v has deg 5. We claim that two neighbours of v are not adjacent, for otherwise we have a $k_5$ which cannot exist in a planar graph. Let x,y be these two vertices.\\
+	Let H be the graph obtained from G by contracting xv and yv. Then H is planar with n-2 vertices so it is 5-colourable by ind. hyp. Keep this colouring for all vertices in G except v,x,y. Colour x,y with the colour of the contracted vertex in H (This is ok since x,y are not adjacent). Then among the 5 neighbours of v, only $\leq$ 4 colours are used. But there are 5 colours available, so we have on colour for v. So G is 5 colourable.\\
+	
+	\myt{Every planar graph is 4-colourable} : Currently the proof is up to about 800 cases, so there is no point in doing the proof right now\\
+	
+	
+\end{document}
