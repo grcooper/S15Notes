@@ -1,0 +1,258 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}CS241 Lecture 21\vspace{-1ex}}
+\date{July 20th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	\section*{Memory Allocation}
+	- alloc.merl - must be linked LAST\\
+	
+	Add to the prologue:\\
+	\begin{itemize}
+		\item .import init
+		\item .import new
+		\item .import delete
+	\end{itemize}
+	
+	\subsection*{Function init}
+	\begin{itemize}
+		\item sets up allocator's data structures
+		\item call it once in the prologue
+		\item takes a parameter in \$2\\
+		- if calling with mips.array (ie. int wain(int * ...))\\
+		- \$2 = length of the array\\
+		- else \$2 = 0\\
+	\end{itemize}
+	
+	\subsection*{New/Delete}
+	\subsubsection*{New}
+	new: \$1 = \# of words needed\\
+	- returns ptr to memory in \$3\\
+	- if allocation fails, return 0\\
+	\begin{verbatim}
+	code(new int [expr]) = 
+	code(expr) ($3 <- expr)
+	add $1, $3, $0
+	call new
+	bne $3, $0, $1
+	add $3, $11, $0
+	\end{verbatim}
+	
+	\subsubsection*{Delete}
+	delete: \$1 = ptr to mem to be deallocated\\
+	\begin{verbatim}
+	code(delete [] expr) = 
+	code(expr) ($3 <- expr)
+	beq $3, $11, skipY
+	add $1, $3, $0
+	call delete
+	skipY:
+	\end{verbatim}
+	
+	You now have a compiler that handles pointers!!!\\
+	
+	\section*{Procedures}
+	big picture:\\
+	int f(...) \{...\}\\
+	int g(...) \{...\}\\
+	...\\
+	int wain( , ) \{...\}\\
+	
+	Every function is going to have a prologue/epilogue\\
+	
+	\subsection*{Main Prologue/Epilog}
+	\begin{itemize}
+		\item save \$1, \$2 on stack
+		\item import print, init, new, delete
+		\item set \$4, \$11 etc if desired
+		\item set \$29
+		\item call init
+		\item ... CODE
+		\item reset stack and jr \$31
+	\end{itemize}
+	
+	\subsection*{Procedure specific PRologues}
+	\begin{itemize}
+		\item don't need to set .imports, set constants
+		\item set \$29!!!!
+		\item save registers
+		\item ... CODE
+		\item restore registers
+		\item reset stack ptr
+		\item return
+	\end{itemize}
+	
+	\subsection*{Saving and Restoring}
+	\begin{itemize}
+		\item procedure should save and store all regs that it will modify\\
+		\item How do you know which regs?\\
+		- If not sure, save and restore all of them\\
+		- Our code geen scheme doesn't use any registers past 6, and we also use 29 - 31\\
+		- If your scheme uses more regs, just keep track of them
+		\item REMEMBER TO SAVE AND RESTORE REG 29
+	\end{itemize}
+	
+	\subsubsection*{Two Approaches to Saving and restoring}
+	caller-save cs. callee-save\\
+	suppose f calls g\\
+	
+	callee-save: g saves all regs it modifies (this is what we are used to), then f doesn't worry about what g does\\
+	
+	caller-save: f saves all registers that contain critical data, do this before calling g, g does not have to worry as f has taken care of the saving\\
+	
+	Our approach has been: - caller-save for \$31, -callee-save for everything else\\
+	
+	Q: Who saves \$29? Callr or callee?
+	
+	IF \underline{callee-save}\\
+	\begin{itemize}
+		\item save \$29 along with other regs
+		\item if you haven't yet set \$29, need to count back in the stack to find the beginning of the frame
+		\item maybe easier to set \$29 first then save the regs, but we can't set \$29 before we save it!!
+		\item so \underline{AT LEAST} save \$29 first, then set \$29, then save the other registers
+		\item OR let the caller (f) save \$29 before calling g
+	\end{itemize}
+	\begin{verbatim}
+	f(){ ... 
+		...
+		g()
+		...
+	}
+	
+	f:
+	push($29)
+	push($31)
+	lis $5
+	.word g
+	jalr $5
+	pop($31)
+	pop($29)
+	\end{verbatim}
+	
+	\section*{Labels}
+	What if a program looks like:\\
+	\begin{verbatim}
+	int init(...){...}
+	int print(...) {...}
+	int else1(...) {...}
+	\end{verbatim}
+	
+	procedure names match the names of existing labels.\\
+	-won't assemble\\
+	
+	\subsection*{Solution:}
+	\begin{itemize}
+		\item make sure it can't happen
+		\item use a naming scheme for labels that prevents duplication
+		\item for functions, f, g, h, use the labels Ff, Fg, Fh, ie. reserve labels starting with F as denoted functions
+		\item My compiler will not generate any labels that start with an F
+	\end{itemize}
+	
+	\section*{Parameters}
+	\begin{itemize}
+		\item could use regs
+		\item may not be enought
+		\item or push params on stack
+	\end{itemize}
+	
+	\begin{verbatim}
+	factor ->ID(expr1, expr2, ...exprn)
+	code(factor) = 
+	push($29)
+	push($31)
+	code(expr1) ($3 <- expr1)
+	push($3)
+	...
+	code(exprn)
+	push($3)
+	lis $5
+	.word F__
+	jalr $5
+	POP ALL ARGUMENTS
+	pop($31)
+	pop($29)
+	\end{verbatim}
+	
+	\begin{verbatim}
+	procedure -> INT ID (Params) {dcls stmts return expr;}
+	code(procedure) = 
+	sub $29, $30, $4
+	push regs
+	code(dcls) (local vars)
+	code(stmts)
+	code(expr)
+	pop regs
+	add $30, $29, $4
+	jr $31
+	\end{verbatim}
+	
+	What does the stack look like?\\
+	\begin{verbatim}
+	int f(...){
+	...
+	g(...)
+	...
+	}
+	\end{verbatim}
+	
+	\begin{tabular}{|c| c}
+		& g's frame \\
+		local vars & g's frame\\
+		saved regs & g's frame \\ \hline
+		args for g & f's frame \\
+		\$31 & f's frame \\
+		\$29 & f's frame \\
+		& \\ \hline
+		& wain;s frame \\ \hline
+	\end{tabular}
+	
+	Suppose g is :\\
+	\begin{verbatim}
+	int g(int a, int b, int c){
+	int d = 0; int e = 0; int f = 0;
+	...
+	}
+	\end{verbatim}
+	g's symbol table:\\
+	\begin{tabular}{c | c | c }
+		Name & Type & Offset \\ \hline
+		a & int & 0\\
+		b & int & -4\\
+		c & int & -8\\
+		d & int & -12\\
+		e & int & -16\\
+		f & int & -20\\
+	\end{tabular}
+	
+	Params a,b,c below \$29\\
+	Local vrs d,e,f above \$29\\
+	In between are saved regs\\
+	so symbol table offsets are wrong!\\
+	
+	Params should have positive offsets\\
+	Local vars shoudl have negative offsets!\\
+	
+	Fix SymbolTable: Add 4 times number of args to all offsets in symboltable\\
+	
+	\begin{tabular}{c | c | c}
+		Name & Type & Offset \\ \hline
+		a & int & 12 \\
+		b & int & 8 \\
+		c & int & 4 \\
+		d & int & 0 \\
+		e & int & -4 \\
+		f & int & -8 \\
+	\end{tabular}
+	
+	d,e,f are still wrong, we hould push local variables first then save registers!!\\
+	
+\end{document}

@@ -1,0 +1,40 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{graphicx}
+
+\title{\vspace{-15ex}Math 239 Lecture 31\vspace{-1ex}}
+\date{July 22nd, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	\section*{Matchings}
+	\myt{Definition:} An \underline{Alternating path} P with respect to a matching M is a path where consecutive edges alternate between being in M and not in M. An \underline{augmenting path} is an alternating path that starts and ends with unsaturated vertices.\\
+	
+	If there is an augmenting path, we can "switch" edges between the path and M to get a larger matching.\\
+	
+	\myt{Theorem} If there is an augmenting path with respect to M, then M is not a maximum matching.(By switching along the path, we saturate 2 more vertices, and get a matching that has one more edge.)
+	
+	\myt{Theorem} If there is no augmenting path with respect to M, then M is a maximum matching\\
+	
+	\section*{Vertex Cover}
+	
+	\myt{Defintition} A \underline{vertex cover} C of a graph G is a set of vertices such that each edge of G has at least one end in C.\\
+	
+	\myt{General Question:} Given a graph, what is the smallest size of a vertex cover?\\
+	
+	\myt{Theorem:} If M is any matching and C is any cover, then $|M| \leq |C|$.\\
+	
+	\myt{PRoof:} For each edge uv in M, at least one of u or v is in C. For different edges in M, different vertices are in C since matchings use distinct vertices So $|M| \leq |C|$\\
+	
+	\myt{Corollary:} If a mathing M and acover C satisfy $|M| = |C|$ then M is a max matching and C is a min cover\\
+	
+	
+	
+	
+\end{document}
