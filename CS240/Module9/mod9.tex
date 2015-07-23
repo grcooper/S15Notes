@@ -20,5 +20,108 @@
 	
 	01 can either be AB or C.\\
 	
+	July 23rd lecture:\\
+	
+	\section*{LZWCompressor}
+	\subsection{Going through the algorithm}
+	A B C ... $|$ X Y Z A B ...\\
+	w = XYZ $->$ output code $->$ w = A\\
+	k = Y\\
+	
+	We are checking through each step and checking if the strings we encoutner are in the dictionary, if not we build a dictionary of these new strings.\\
+	
+	See slides around slide 24 to see the table/dictionary being built\\
+	
+	Slide 27: With the input 133, we do not know what corresponds to 133. So we know that is must be the same as the previous string we decoded, aka AN, then we know that the next character will be ANA with another character added on. That character will be the first prefix of the string we are appending it to.\\
+	
+	If we fill up our dictionary there are a few thigns we can do:\\
+	\begin{itemize}
+		\item Do nothing
+		\item Replace oldest items
+	\end{itemize}
+	
+	\subsection*{Move to Front (again)}
+	Use move to front to organize our dictionary\\
+	
+	\section*{Burrows-Wheeler Transform}
+	A = "ABRACADABRA"\\
+	
+	becomes
+	
+	A = "AAAAABBCDRR"\\
+	
+	We sort all of the characters, then we can compress very well, similar to compressing binary, blocks of 1's/zeros\\
+	
+	\subsection*{Encoding}
+	See slides for example, slide 36\\
+	
+	another example:\\
+	\begin{verbatim}
+	banana$
+	anana$b
+	nana$ba
+	ana$ban
+	na$bana
+	a$banan
+	$banana
+	\end{verbatim}
+	
+	Sort the above:\\
+	
+	FIG D:
+	\begin{verbatim}
+	$banana
+	a$banan
+	ana$ban
+	anana$b
+	banana$
+	na$bana
+	nana$ba
+	\end{verbatim}
+
+	Take the last element of each sorted array to get:\\
+	Q = "annb\$aa"\\
+	
+	The first a in the above array Q, is followed by \$.\\
+	We write all of these follows out :
+	
+	\begin{verbatim}
+	a $
+	n a
+	n a
+	b a
+	$ b
+	a n
+	a n
+	\end{verbatim}
+	
+	Notice that the values in the second column are sorted!!\\
+	
+	we then transform this to:\\
+	\begin{verbatim}
+	$ b
+	a $
+	a n
+	a n
+	b a
+	n a
+	n a
+	\end{verbatim}
+	We now have the first two columns in the sorted FIG D.
+	
+	Sort and prepend again, we are prepending the array Q from before\\
+	
+	\begin{verbatim}
+	a $ b
+	n a $ 
+	n a n
+	b a n
+	$ b a
+	a n a
+	a n a
+	\end{verbatim}
+	
+	
+	
 	
 \end{document}
