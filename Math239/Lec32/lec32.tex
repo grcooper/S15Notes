@@ -1,0 +1,38 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}Math 239 Lecture 32\vspace{-1ex}}
+\date{July 24th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	\section*{Vertex Covers}
+	If M is a matching and C is a cover then $|M| \leq |C|$.\\
+	
+	\myt{Corollary:} IF M is a matching and C is a cover where $|M| = |C|$, then M is a maximum matching and C is a minimum cover.\\
+	
+	\myt{Proof} Let M' be any matching. Then by previous result $|M'| \leq |C|$. But $|C| = |M|$ so $|M'| \leq |M|$ So M is a max matching.\\
+	
+	Let C' be any cover. Then $|C'| \geq |M|$. But $|M| = |C|$, so $|C'| \geq |C|$ So C is a min cover.\\
+	One way to prove that M is maximum is by providing a cover C where $|M| = |C|$\\
+	
+	\section*{Konig's Theorem}
+	\myt{Theorem:} In a bipartite graph, the size of a maximum matching is equal to the size of a minimum cover.\\
+	
+	\myt{Proof:} Let M be a maximum matching. Let $X_0$, X, Y be the sets obtained at the end of the algorithm. There is no edge joining a vertex in X wit ha vertex in B/Y(if such an edge exists, it extends an alternating path starting from $X_0$ and the vertex in B/Y. Should he been in Y) \\
+	Therefore, Y$\cup$(A/X) is a vertex cover\\
+	
+	\subsection*{XY-Construction Algorithm}
+	
+	\myt{Strategy}: Find all possible alternating paths starting from an unsaturated vertex in A. Any augmenting path that starts in A must end in B.\\
+	
+
+	
+\end{document}

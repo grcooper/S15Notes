@@ -1,0 +1,101 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}CS 241 Tutorial 11\vspace{-1ex}}
+\date{July 24th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	\section*{Extending WLP4}
+	
+	\subsection*{Adding a Boolean type ot WLP4}
+	should be allowed to:
+	\begin{itemize}
+		\item declare bool vars, initialized to true or false
+		\item assign to bool vars
+		\item write expressions with !, \&\&, $||$ that take booleans as operands
+		\item write test expressions using the comparison operators to evaluate boolean values
+		\item use bool vars or expresions as test conditions for if and while statements
+		\item will not allow:
+		\begin{itemize}
+			\item pointer to bool
+			\item arrays of bool
+			\item bool as parameter of wain
+			\item printing bool with println
+			\item returning bool from a procedure
+			\item arithmetic involving int/int*
+			\item boolean expresions involving int/int* and bool
+			\item $<,>,<=, >=,$ between bools
+			\item using 0 and 1 to mean false and true
+		\end{itemize}
+	\end{itemize}
+	
+	\begin{verbatim}
+	int wain(int x, int y){
+	bool a = true;
+	bool b = false;
+	a = x > y;
+	if(a){
+	-- println(x);
+	}
+	else {
+	-- println(y);
+	}
+	b = true;
+	while(b || a) && (x < y)){
+	-- if (true){
+	-- -- b = !((a || b) && a);
+	-- } else {}
+	}
+	return y;
+	}
+	\end{verbatim}
+	
+	\subsection*{Lexical Syntax}
+	bool\\
+	true\\
+	false\\
+	true and false become a BVAL\\
+	
+	dcls $->$ dcls dcl BECOMES NUM SEMI\\
+	dcls $->$ dcls dcl BECOMES NULL SEMI\\
+	
+	\subsection*{Context free syntax}
+	statement $->$
+	
+	type $->$ BOOL\\
+	dcls $->$ dcls dcl BE ... BVAL SEMI\\
+	factor $->$ BVAL\\
+	expr $->$ bexpr $||$ bterm\\
+	term $->$ term \&\& factor\\
+	factor $->$ ! factor\\
+	test $->$ bexpr\\
+	test $->$ test == bexpr\\
+	btest $->$ btest $<$ bexpr\\
+	
+	\subsection*{Context-Sensitive Syntax}
+	
+	\begin{itemize}
+		\item type rules
+		\item sybol table stuff
+	\end{itemize}
+	
+	\begin{verbatim}
+	code(factor1 -> !factor2) =
+	code(factor2)
+	sub $3, $11, $3
+	
+	code(expr1 -> expr2 || term) = 
+	code(expr2)
+	beq $3, $11, endOrX
+	code(term)
+	endOrX
+	\end{verbatim}
+\end{document}
