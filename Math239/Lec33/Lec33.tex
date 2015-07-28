@@ -1,0 +1,55 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}Math 239 Lecture 33\vspace{-1ex}}
+\date{July 28th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	\section*{Hall's Theorem}
+	\myt{Hall's Theorem}: G bipartite (A,B). There is a matching that saturates A if and only if $\forall x \subseteq A$, $\underset{Hall's Condition}{|N(x)| \geq|x|}$\\
+	
+	\myt{Proof:}\\
+	$\implies$ (Done last class, whoops!)\\
+	$\impliedby$ (contrapositive if no matchign saturates A, then $\exists x \subseteq A$ where $|N(X) < |X|$)\\
+	
+	Let M be a maximum matching. By assumption, $|M| < |A|$\\
+	Let C be a minumum cover. By Konig's theorem $|C|=|M|<|A|$\\
+	
+	Note that no edge joins A/C to B/C since none of these vertices are in the cover. So M(A/C) $\subseteq B \cap C$\\
+	So $$|N(A/C)| \leq |B\cap C|$$
+	$$= |C| - |A \cap C|$$
+	$$ < |A| - |A \cap C|$$
+	(since $|C| < |A|$)\\
+	$$= |A/C|$$
+	
+	So $|N(A/C)| < |A/C|$ meaning A/C violates Hall's Condition\\
+	
+	\myt{Corollary:} If G is a k-regular bipartite graph with k $\geq 1$ then G has a perfect matching\\
+	
+	\myt{Proof:} Suppose G has bipartition (A,B). We claim that $|A| = |B|$ : from assignment,\\
+	$$\sum_{v \in A}deg(v) = \sum_{v\in B}deg(v)$$
+	$$\sum_{v \in A}k \in \sum_{v \in B}k$$
+	So k$|A| = k|B|$ since $k \neq 0$, $|A| = |B|$\\
+	
+	Let $x \subseteq A$. Any edge with one end in X must have the other end in N(x). So $\sum_{v \in N(x)}deg(v) \geq\sum_{v \in X}deg(v)$\\
+	Since G is k-regular, $k|N(x)| \geq k|x|$\\
+	
+	Since $k >= 1$, $|N(x)| \geq|X|$ so Hall's condition holds for all $X \leq A$ by Hall's Theorem, there is a matching. Since $|A| = |B|$, this matching is a perfect matching.\\
+	
+	\section*{Final Exam}
+	Aug 5, 12:30 PAC\\
+	Covers everything\\
+	Look at assignment 12\\
+	Practice final\\
+	Posted theorems\\
+	
+	
+\end{document}

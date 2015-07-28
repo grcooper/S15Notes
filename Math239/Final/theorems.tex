@@ -1,0 +1,59 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}Math 239 Theorems and Definitions\vspace{-1ex}}
+\date{July 27th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	\section{Combinatorial Analysis}
+	
+	\subsection*{1.3 Binomial Coefficients}
+	\myt{1.3.1 Theorem:} For non-negative integers n and k, the number of k-element subsets of an n-element set is:\\
+	$$\frac{n(n-1)...(n-k+1)}{k!} = {n \choose k} = {n \choose n - k}$$
+	
+	\myt{1.3.2 Theorem:} For any non-negative integer n,\\
+	$$(1+x)^n = \sum_{k=0}^{n}{n \choose k}x^k$$
+	
+	\myt{1.3.3 Problem:} For any non-negative integers n and k:\\
+	$${n + k \choose n} = \sum_{i = 0}^{k}{n + i - 1 \choose n - 1}$$
+	
+	\subsection*{1.4 Generating Series}
+	
+	\myt{1.4.2 Definition:} Let S be a set of configurations with a weight function w. The generating series for S with respect to w is defined by:\\
+	$$\Phi_S(x) = \sum_{\sigma \in S}x^{w(\sigma)}$$
+	$$ = \sum_{k\geq 0}a_kx^k$$
+	
+	\myt{1.4.3 Theorem:} Let $\Phi_S(x)$ be the generating series for a finit set S with respect to a weight function w. Then,\\
+	\begin{itemize}
+		\item $\Phi_S(1) = |S|$
+		\item the sum of the weights of the elements in S is $\Phi'_S(1)$, and
+		\item the average weight of an element in S is $\Phi'_S(1)/\Phi_S(1)$
+	\end{itemize}
+	
+	\subsection*{1.5 Formal Power Series}
+	\myt{1.5.0 Definition:} For a sequence of $(a_0, a_1, a_2...)$ which are rational numbers, then A(x) = $a_0 + a_1x+a_2x^2 + ...$ is called the formal power series. We say that $a_n$ is the coefficient of $x^n$ and we write $a_n = [x^n]A(x)$.\\
+	Also:\\
+	$$A(x) + B(x) = \sum_{n \geq 0}(a_n + b_n)x^n$$
+	$$A(x)B(x) = \sum_{n \geq 0}(\sum_{k=0}^{n}a_kb_{n-k})x^n$$
+	
+	\myt{1.5.2 Theorem:} Let $A(x) = a_0 + a_1x + a_2x^2 + ...$, $P(x) = p_0 + p_1x +p_2x^2 + ...$ and $Q(x) = 1 - q_1x - q_2x^2 - ...$ be formal power series. Then:\\
+	$$Q(x)A(x) = P(x)$$
+	if and only if for each n $\geq 0$\\
+	$$a_n = p_n + q_1a_{n-1} + q_2a_{n-2} + ... + q_na_0$$
+	
+	\myt{1.5.3 Corollary:} Let P(x) and Q(x) be formal power series. If the constant term of Q(x) is non-zero, then there is a formal power series A(x) satisfying:\\
+	$$Q(x)A(x) = P(x)$$
+	Moreover, the solution A(X) is unique\\
+	
+	
+	
+	
+\end{document}

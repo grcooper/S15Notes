@@ -1,0 +1,169 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}CS 241 Lecture 23\vspace{-1ex}}
+\date{July 27th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	
+	\section{Tail Recursion in WLP4}
+	
+	\begin{verbatim}
+	int f(...) {
+	-- if(...){
+	-- -- if (..){	
+	--	-- } else {}
+	-- } 
+	-- else {}
+	return x;
+	}
+	\end{verbatim}
+	
+	Is the same as:\\
+	
+	\begin{verbatim}
+	int f(...) {
+	-- if(...){
+	-- -- if (..){	
+	--	-- } else {}
+	-- return x;
+	-- } 
+	-- else {
+	-- return x;
+	--}
+	}
+	\end{verbatim}
+	
+	is the same as:\\
+	\begin{verbatim}
+	int f(...) {
+	-- if(...){
+	-- -- if (..){	
+	-- -- return x; 
+	-- -- } 
+	-- -- else {
+	-- -- return x;
+	-- }
+	-- return x;
+	-- } 
+	-- else {
+	-- return x;
+	--}
+	}
+	\end{verbatim}
+	
+	When return x follows an assignment to x, merge:\\
+	x = f(...) $\rightarrow$ return f(...)\\
+	return x;\\
+	
+	- may create some tail recursive calls\\
+	
+	Generalization:\\
+	\begin{itemize}
+		\item tail call optimization
+		\item when a function's last action is any function call (recursive or not) can reuse the stack frame\\
+	\end{itemize}
+	
+	\section*{Overloading}
+	What would happen if we wanted to compile:\\
+	
+	\begin{verbatim}
+	int f(int a){...}
+	int f(int a, int *b){...}
+	\end{verbatim}
+	
+	Get duplicated labels for f.\\
+	How do we fix this?\\
+	
+	\subsection*{Name Mangling}
+	Encode the types of params as part of the label\\
+	
+	Example naming convention:\\
+	F + typeinfo + \_ + name\\
+	ie.\\
+	1. int f()\{...\}\\
+	2. int f(int a)\{...\}\\
+	3. int f(int a, int *b)\{...\}\\
+	
+	1. F\_f:\\
+	2. Fi\_f:\\
+	3. Fip\_f:\\
+	
+	
+	\begin{itemize}
+		\item C++ compilers wil ldo this because c++ has overloading
+		\item there is no standard mangling convention
+		\item all compilers are different
+		\item makes it hard or  impossible to link code from different compilers
+		\item this is by design b/c compilers differ in other aspects as well
+	\end{itemize}
+	
+	C doesn't have overloading so there is no mangling\\
+	- C and C++ code call each other routinely\\
+	- How is this done?\\
+	- Suppress mangling in c++\\
+	Call C from C++\\
+	- Extern "C" int f(int n); tells c++ f wot be mangled\\
+	
+	Call c++ from C - tell c++ not to mangle the function\\
+	
+	extern "C" int g(int x)\{...\} // dont mangle g\\
+	
+	and then obviously you cannot overload extern c functions\\
+	
+	\section*{Memory Management and the Heap}
+	WLP4, C, C++\\
+	\begin{itemize}
+		\item explicit memory management
+		\item user must free own data using free/delete
+	\end{itemize}
+	
+	Java, Scheme\\
+	\begin{itemize}
+		\item implicit memory management
+		\item garbage collection
+	\end{itemize}
+	
+	\subsection*{How do new/delete or malloc/free work?}
+	There are a variety of algorithms\\
+	\subsubsection*{1)}
+	List of free blocks:\\
+	\begin{itemize}
+		\item maintain a linked list of ptrs to blocks of free RAM
+		\item Initially entire heap is free, list contains one entry
+		\item Suppose heap is 1k
+		\item suppose we allocate 16 bytes
+		\begin{itemize}
+			\item actually allocate 20 bytes + 1 int (4 bytes)
+			\item return pointer to second word
+			\item store size just before the returned pointer\
+			\item free list ctonains the rest of the loop
+		\end{itemize}
+	\end{itemize}
+	
+	\myt{Note}: Repeated allocation and deallocation creates "holes" in the heap\\
+	\myt{EG:}\\
+	\begin{verbatim}
+	alloc 20 {xx 20 xx,... (140)... ...}
+	alloc 40 {xx 20 xx, xx 40 xx,...(100) ... ...}
+	alloc 20 {...(20)..., xx 40 xx, ... (100)...}
+	alloc 5 {xx 5 xx, ... (15). .., xx 40 xx, ... (100)...}
+	etc.
+	\end{verbatim}
+	
+	We get holes like the 15 block hole on the last line, this causes:\\
+	\myt{Code fragmentation} - means even if n bytes are free, we may not be able to allocate n bytes\\
+	
+	To reduce fragmentation:\\
+	- don't always pick the first block of RAM big enought to satisfy the request\\
+	
+	
+	
+\end{document}
