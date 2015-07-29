@@ -53,7 +53,201 @@
 	$$Q(x)A(x) = P(x)$$
 	Moreover, the solution A(X) is unique\\
 	
+	\myt{1.5.4 Definition:} We say that B(x) is the inverse of A(X) if\\
+	$$A(x)B(x) = 1$$
+	we denote this by B(x) = A(x)$^{-1}$ or by B(x) = $\frac{1}{A(x)}$\\
+	
+	\myt{1.5.7 Theorem:} A formal power series has an inverse if and only if it has a non-zero costant term. Moreover, if the constant term is non-zero, then the inverse is unique\\
+	
+	\myt{1.5.8 Definition:} The composition of formal power series A(x) = $a_0 + a_1x + a_2x^2 + ... $ B(x) is defined by:\\
+	$$A(B(x)) = a_0 a_1B(x) + a_2(B(x))^2 + ...$$
+	
+	However unlink for polynomials, this composition operation is not always well defined. Consider, for example, the case that A(X) = 1 + x + x$^2$ + ... and B(x) = (1+x). Then\\
+	$$A(B(x)) = 1 + (1+x) + (1+x)^2 + ...$$
+	The constant term of the right-hand side has non-zero contributions from an infinite number of terms, so A(B(x)) is not a formal power series. The following result shows that A(B(x)) is well-defined so long as B(x) has its constant term equal to zero (that is B(0) = 0).\\
+	
+	\subsection*{1.6 The Sum and Product Lemma}
+	\myt{1.6.1 (Sum Lemma) Theorem:} Let (A,B) be a partition of a set S. (That is, A and B are disjoint sets whose union is S.) Then,\\
+	$$\Phi_S(x) = \Phi_A(x) + \Phi_B(x)$$
+	
+	\myt{1.6.2 (Product Lemma) Theorem:} Let A and B be sets of configurations with weight functions $\alpha$ and $\beta$ respectively. If $w(\sigma) = \alpha(a) + \beta(b)$ for each $\sigma = (a,b) \in A \times B$, then\\
+	$$\Phi_{A \times B}(x) = \Phi_A(x) \cdot \Phi_B(x)$$
+	
+	\myt{1.6.5 Theorem:} For any positive integer k and non-negative integer n,\\
+	$$(1-x)^{-k} = \sum_{n \geq 0}{n+k-1 \choose k-1}x^n$$
+	
+	\section{Copositions and Strings}
+	\subsection{Compositions of an Integer}
+	\myt{2.1.1 Definition} For non-negative integers n and k, a composition of n with k parts is an ordered list $(c_1, ...c_k)$ of positive integers $c_1, ...c_k$ such that $c_1 + ... + c_k = n$. The positive integers $c_1...c_k$ are called the parts of the composition. There is one composition of 0, the empty composition, which is a composition with 0 parts.\\
+	
+	\subsection*{2.3 Binary Strings}
+	\myt{2.3.1 Definition:} A binary string or \{0,1\}-string is a string of 0's and 1's, its length is the number of occurences of 0 and 1 in the string. We use $\epsilon$ to denote the empty string of length 0\\
+	
+	\subsection*{2.4 Unambiguous Expressions}
+	\myt{Definition:} We say that the expression AB is ambiguous if there exists distinct pairs $(a_1, b_1)$ and $(a_2, b_2)$ in $A \times B$ with $a_1b_1 = a_2b_2$ - otherwise we say that AB is an unambigious expression.\\
+	
+	If A and B are finite sets, then AB is unambiguous if and only if $|AB| = |A\times B|$\\
+	
+	\subsection*{2.5 Decomposition Rules}
+	Basic string decompositions, all are unambiguous\\
+	\begin{itemize}
+		\item Decompose a string after each 0 or 1\\
+		$$S = \{0,1\}^*$$
+		\item Decompose a string after each occurence of 0. Each piece in the decomposition will be from \{0,10,110,...\} = $\{1\}^*$\{0\} except possibly for the last piece which may consist only of 1s. This gives rise to the expression:\\
+		$$S = (\{1\}^*\{0\})^*\{1\}^*$$
+		\item Decompose a string after each block of 0s. Each piece in the decomposition, except possibly the first and last pieces, will constist of a block of 1s followed by a block of 0s. The first piece may consist only of a block of 0s and the last piece may consist only of a block of 1s. This gives rise to the expression:\\
+		$$S = \{0\}^*(\{1\}\{1\}^*\{0\}\{0\}^*)^*\{1\}^*$$
+	\end{itemize}
+	
+	\subsection*{2.6 Sum and Product Rules for Strings}
+	\myt{2.6.1 Theorem:} Let A,B be a set of \{0,1\}-strings. \\
+	\begin{enumerate}
+		\item If $A \cap B = \emptyset$ then\\
+		$$Phi_{A \cup B}(x) = \Phi_A(x) + \Phi_B(x)$$
+		\item If the expression AB is unambiguous then:\\
+		$$\Phi_{AB}(X) = \Phi_A(x)\Phi_B(x)$$
+		\item If the expression $A^*$ is unambiguous then:\\
+		$$\Phi_{A^*}(x) = (1-\Phi_A(X))^{-1}$$
+	\end{enumerate}
+	
+	\subsection*{2.8 Recursive Decompositions of Binary Strings}
+	All strings can be written as:
+	\begin{itemize}
+		\item The empty string is in S
+		\item Any other element of S consists of a symbol (either 0 or 1) followed by an element of S
+	\end{itemize}
+	
+	Recursive definition leads directly into the recusrive decomposition:\\
+	$$S = \{\epsilon\} \cup \{0,1\}S$$
+	
+	\section{Recurrences, Binary Trees and Sorting}
+	\subsection*{3.1 Coefficients of Rational Functions}
+	\myt{3.1.1 Lemma:} If f(x) is a polynomial of degree less than r, then there is a polynomial P(x) with degree less than r such that\\
+	$$[x^n]\frac{f(x)}{(1-\theta x)^r} = P(n)\theta^n$$
+	
+	\myt{3.1.2 Lemma:} Suppose f and g are polynomials with deg(f) $<$ deg(g). If g(x) = $g_1(x)g_2(x)$ where $g_1, g_2$ are coprime, there are polynomials $f_1, f_2$ such that $deg(f_i) < deg(g_i)$ for i = 1,2 and \\
+	$$\frac{f(x)}{g(x)} = \frac{f_1(x)}{g_1(x)} + \frac{f_2(x)}{g_2(x)}$$
+	
+	\myt{3.1.3 Theorem:} Suppose f and g are polynomials such that deg(f) $<$ deg(g). If for i = 1...k there are complex numbers $\theta_i$ and positive integers $m_i$ such that\\
+	$$g(x) = \prod_{i}(1-\theta_ix)^{mi}$$
+	then there are polynomials $P_i$ such that deg$(P_i) < m_i$ and \\
+	$$[x^n]\frac{f(x)}{g(x)} = \sum_{i=1}^{k}P_i(n)\theta_i^n$$
+	
+	\subsection*{3.2 Solutions to Recurrence Equations}
+	\myt{3.2.1 Theorem:} Let $C(x) = \sum_{n\geq 0}c_nx^n$ where the coefficients $c_n$ satisfy the recurence:\\
+	$$c_n + q_1c_{n-1}+...+q_kc_{n-k} = 0$$
+	IF
+	$$g(x) := 1 + q_1x + ... + q_kx^k$$
+	there is a polynomial f(x) with degree less than k such that:\\
+	$$C(x) = \frac{f(x)}{g(x)}$$ 
+	
+	\myt{3.2.2 theorem} Suppose $(c_n)_{n\geq 0}$ satisfies the recurrence equation (3.2.1) if the characteristic polynomial of this recurrence has root $\beta_i$ whith multiplicity $m_i$, for i = 1...j, then the general solution to (3.2.1) is:\\
+	$$c_n = P_1(n)\beta_1^n+...+P_j(n)\beta_j^n$$
+	where $P_i(n)$ is a polynomial in n with degree less than $m_i$ and these polynomials are determined by the $c_0...c_{k-1}$.
+	
+	\subsection*{3.3 Nonhomogeneous Recurrence Equations}
+	
+	\myt{3.3.1 Theorem:} Suppose that $a_0, a_1, ...$ is a solution to (3.3.1)(any solution without checking the initial conditions). Then the general solution to (3.3.1) is given by:\\
+	$$b_n = a_n + c_n$$
+	where $c_n$ is given by theorem 3.2.2 and the k constants $b_{11} ... b_{j,m_j}$ in $c_n$ can be chosent to fit the initial conditions for $b_n$\\
+	
+	\subsection*{3.6 Binary Trees}
+	\myt{Definition} A binary tree is either:\\
+	\begin{itemize}
+		\item the empty tree
+		\item a tree with a fixed root vertex such that each verte has a left branch and a right branch (either of which may be empty)
+	\end{itemize}
+	
+	\myt{3.6.2 Theorem:} The number of binary trees with $n \geq 0$ vertices is:\\
+	$$\frac{1}{n+1}{2n \choose n}$$
+	
+	\subsection*{3.7 The Binomial Series}
+	\myt{3.7.1 Theorem the Binomial Series}: For any rational number a:\\
+	$$(1 + x)^a = \sum_{k \geq 0}{a \choose k}a^k$$
+	
+	$$(1+x)^{-n} = \sum_{k \geq 0}{-n \choose n}(-x)^k = \sum_{k \geq 0}{n + k - 1 \choose n-1}x^k$$
+	
+	\myt{3.7.2 Lemma:}\\
+	$$(1-4x)^{\frac{1}{2}} = 1-2\sum_{n \geq 0}\frac{1}{n+1}{2n \choose n}x^n$$
+		
+	\section{Introduction to Graph Theory}
+	\subsection*{4.1 Definitions}
+	\myt{4.1.1 Definition}: A graph G is a finite non-empty set, V(G) of objects, called vertices, together with a set E(G), of unordered pairs of distinct vertices. The elements of E(G) are called edges.
+	
+	More definitions!\\
+	\begin{itemize}
+		\item Adjacent if an edge connects two vertices
+		\item Incident is the edge between two adjacent vertices (or the edge joins)
+		\item Degree of vertex u is the number of vertices adjacent with u
+	\end{itemize}
+	
+	\subsection*{4.2 Isomorphism}
+	\myt{4.2.1 Definition}: Two graphs $G_1$ and $G_2$ are isomorphic if there exists a bijection f : V($G_1$) $\rightarrow$ V(G$_2$) such that vertices f(u) and f(v) are adjacent in $G_2$ if and only if u and v are adjacent in $G_1$. 
+	
+	\subsection*{4.3 Degree}
+	\myt{4.3.1 Theorem:} For any graph G we have:\\
+	$$\sum_{v \in V(G)}deg(v) = 2|E(G)|$$
+	
+	\myt{4.3.2 Corollary:} The number of vertices of odd degree is even\\
+	
+	\myt{4.3.3 Corollary:} The average degree of a vertex in the graph G is:\\
+	$$\frac{2|E(G)|}{|V(G)|}$$
+	
+	\myt{4.3.4 Definition:} A complete graph is one in which all pairs of distinct vertices are adjacent. (Thus each vertex is joined to every other vertex). The complete graph with p vertices is denoted by $K_p$ $p \geq 1$\\
+
+	\subsection*{4.4 Bipartite Graphs}
+	\myt{Definition}: A grpah in which the vertices can be partitioned into two sets A and B, so that all edges join a vertex in A to a vertex in B is called a bipartite graph.
+	
+	\myt{4.4.1 Definition:} For $n \geq 0$ the n-cube is the graph whose vertices are the \{0,1\}-strings of length n, and two strings are adjacent if and only if they differe in exactly one position.\\
+	
+	\myt{4.5.1 Defintion} Adjacency Matrix (I DONT HTINK WE DID THIS)\\
+	
+	\myt{4.5.2 Definition} Incidence Matrix (I DONT THINK WE DID THIS??)\\
+	
+	\subsection*{4.6 Paths and Cycles}
+	\myt{4.6.1 Definition}: A subgraph of a graph G is a graph whose vertex set is a subset U of V(G) and whose edge set is a subset of those edges in G that have both vertices in U\\
+	
+	\myt{Definitions!}\\
+	\begin{itemize}
+		\item Spanning graph of G if a subgraph has all of the vertexes in G
+		\item A proper-subgraph of G if the subgraph is not equal to G
+		\item A walk in a graph G from $v_0$ to $v_n$ $n \geq 0$ is an alternating sequence of vertices and edges in G. The length of a walk is the number of edges in it.
+		\item A closed walk is when the walk starts and ends at the same point
+		\item A path is a walk in which all vertices are distinct
+	\end{itemize}
+	
+	\myt{4.6.2 Theorem:} If there is a walk from vertex x to vertex y in Gm then there is a path from x to y in G.\\
+	
+	\myt{4.6.3 Corollary:} Let x,y,z be vertices of G. If there is a path from x to y in G and a path from y to z in G then there is a path from x to z in G.\\
+
+	\myt{Hamilton Cycle:} A spanning cycle in graph.\\
+	
+	\subsection*{4.8 Connectedness}
+	\myt{4.8.1 Definition:} A graph G is connected if for each two vertices x and y there is a path from x to y.\\
+	
+	\myt{4.8.2 Theorem} Let G be a graph and let v be a vertex in G. If for each vertex w in G there is a path from v to w in G, then G is connected\\
+	
+	\myt{4.8.4 Definition} A component of G is a subgraph C of G such that\\
+	\begin{itemize}
+		\item C is connected
+		\item No subgraph of G that properly contains C is connected
+	\end{itemize}
+	
+	\myt{4.8.5 Theorem} A graph G is not connected if and only if there exists a proper nonempty subset X of V(G) such that the cut induced by X is empty.\\
+	
+	\subsection*{4.9 Bridges}
+	\myt{4.9.1 Definition:} An edge e of G is a bridge if G-e has more components than G.\\
+	
+	\myt{4.9.2 Lemma}: If e = \{x,y\} is a bridge of a connected graph G, then G-e has precisely two components; furthermore, x and y are in different components.\\
+	
+	\myt{4.9.3 Theorem:} An edge e is a bridge of a graph G if and only if it is not contained in any cycle of G.\\
+	
+	\myt{4.9.4 Corollary}: If there are two distinct paths from vertex u to vertex v in G then G contains a cycle\\
+	
+	\subsection*{4.10 (NOT IN BOOK) Euler Tours}
 	
 	
+
 	
 \end{document}
+

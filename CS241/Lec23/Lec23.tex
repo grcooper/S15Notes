@@ -164,6 +164,99 @@
 	To reduce fragmentation:\\
 	- don't always pick the first block of RAM big enought to satisfy the request\\
 	
+	\subsubsection*{2) Binary Buddy System}
+	Assume: size of heap is a power of 2.\\
+	Example: heap is 4k (4096 byes) = 1024 words.\\
 	
+	Suppose
+	\begin{itemize}
+		\item program requests 20 words
+		\item we need 1 word for bookeeping
+	\end{itemize}
+	
+	Memory allocated in blocks of size 2$^k$
+	\begin{itemize}
+		\item so allocate 23 words
+		\item 1024 is too big so split into two heaps (buddies)
+		\item allocate from one of the 512-word buddies
+		\item still too big, split one of them again
+		\item still to big, split the 256 word buddies
+		\item continue to split until one of the blocks is the size you need for your 21 words
+		\item we return a pointer to a block of 32 words, with the first one being for bookeeping
+	\end{itemize}
+	Now we request 63 words, so we allocate 64
+	\begin{itemize}
+		\item heap contains a 64-word block
+		\item we allocate that 64-word block
+	\end{itemize}
+	
+	Now request 50 words, llocate for 51\\
+	\begin{itemize}
+		\item split one of the 128 blocks into 64
+		\item allocate one of the new 64 blocks
+	\end{itemize}
+	
+	First 64 word block is released\\
+	\begin{itemize}
+		\item simply just free the memory
+	\end{itemize}
+	
+	Free the first 32-word block\\
+	\begin{itemize}
+		\item we free the 32 block and see that it's buddy is also free
+		\item since they are both free, merge them into a 64 word block
+		\item now the 64 block and its buddy is free, so merge into 128 block
+	\end{itemize}
+	
+	Finally free the last 64-word block
+	\begin{itemize}
+		\item merge the 64 block that was just freed and its buddy
+		\item we can now merge the rest of the blocks since everything is free into the 1024 block again
+	\end{itemize}
+	
+	\subsection*{Deallocation info}
+	alloc.asm
+	\begin{itemize}
+		\item assignms each block a code
+		\item entire heap has a code of 1
+		\item the 512-word buddies have codes of 10, and 11
+		\item 256 word buddies have codes of 100, 101, 110, 111
+		\item these are all encoded like a trie
+		\item to find your buddy's code : flip te last bit
+		\item mergin buddies - drop the last big ($>>$1)
+	\end{itemize}
+	
+	\section*{Implicity Memory Management: Garbage Collection}
+	System reclaims memory once client can no longer access it\\
+	\subsection*{1) Mark and Sweep}
+	\begin{itemize}
+		\item scan the entire stack looking for pointers
+		\item for each pointer found mark the heap block its pointing to
+		\item then if the heap block contains pointers, follow those as well and mark etc...
+	\end{itemize}
+	\begin{itemize}
+		\item scan the heap
+		\item reclaim any blocks not marked
+		\item clear all marks
+	\end{itemize}
+	
+	\subsection*{2) Reference Counting}
+	\begin{itemize}
+		\item for each heap block, keep track of the number of pointers that point to it (reference count)
+		\item means you must eatch every pointer and update ref counts (decrement old, increment new) each time a pointer is reassigned
+		\item if a block's ref count reaches 0, reclaim
+	\end{itemize}
+	There is a problem when we have circular references, each is a pointer on the heap, pointing at each other, their reference count is 0, but there is nothing on the stack pointing at them\\
+	
+	\subsection*{3) Copying GC}
+	Heap is in two halves, FROM and TO\\
+	\begin{itemize}
+		\item allocate only from FROM
+		\item when FROM fills up, all reachable data is copied from FROM to TO
+		\item Built in Compaction
+		\item guaranteed that after the swap, the compactor will make it such that all reachable data occupies memory
+		\item this causes there to be no fragmentation yay!
+		\item BUT we can only use half of the heap at a time
+	\end{itemize}
 	
 \end{document}
