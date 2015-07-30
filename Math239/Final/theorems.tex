@@ -245,6 +245,219 @@
 	\myt{4.9.4 Corollary}: If there are two distinct paths from vertex u to vertex v in G then G contains a cycle\\
 	
 	\subsection*{4.10 (NOT IN BOOK) Euler Tours}
+	Proofs to the below theorems are provided due to them not being covered in the book. I got these proofs from the following source:\\
+	https://www.youtube.com/watch?v=1V\_6nUUNoms \\
+	
+	\myt{4.10.1 Definition:} An Euler Path (or trail) is a path that visits every edge in a graph exactly once\\
+	\myt{4.10.2 Definition:} An Euler Tour is an Euler Path that is closed.\\
+	\myt{4.10.3 Definition:} A graph is Eulerian if it contains an Euler tour\\
+	
+	\myt{4.10.4 Theorem:} A connected graph G is Eularian if and only if every vertex of G has even degree\\
+	\myt{4.10.4 Proof:}\\
+	$\implies$ Suppose G is a connected Eularian Graph\\
+	Let w : u $\overset{*}{\rightarrow}$ u be an Euler tour.\\
+	Let u $\neq$ v of G that occurs k times in w\\
+	Since we need to enter and exit v every time we pass it degree(v) = 2k\\
+	we also know that every time we pass through u we need to enter and exit, and we also need a start and end point at u, so this has even degree as well\\
+	
+	$\impliedby$ Let G be a non-trivial connected graph whose vertices all have even degree.\\
+	
+	Let w be a longest trail in the graph.\\
+	w: $v_0e_1v_1e_2 ... e_{i-1}v_{i-1}e_iv_i$\\
+	$v_0 \overset{i}{\rightarrow} v_i$\\
+	
+	Since all edges with $v_i$ are used in $w_i$ and $v_i$ has an even degree, $v_i = v_0$\\
+	Otherwise, w could be extended to a longer trail.\\
+	If $v_i \neq v_0$ and $v_i$ occurs k times in w, then deg($v_i$) = 2(k-1) + 1 which is odd (contradiction)\\
+	Thus, w is a closed path.
+	
+	Suppose w is not an Euler Tour. Since G is not connected, there is an edge f = $\{v_q,u\} \in E(G)$ and $f \notin E(W)$\\
+	But if we add f onto the graph, then f must be on the walk, which is a contradiction.\\
+	
+	\myt{4.10.5 Theorem:} A connected graph has an Euler trail if and only if it has a tmost 2 vertices of odd degree.\\
+	
+	$\implies$ If G has an Euler Trail u $\overset{*}{\rightarrow}$ v then as in the proof of the pverious theorem, all $w \notin \{u,v\}$ has an even degree\\
+	
+	$\impliedby$
+	\begin{itemize}
+		\item If there are no vertices which have odd degree then there is an Euler Tour
+		\item If there are two vertices of odd degree:\\
+		Let u,v have odd degree in G, if we add some vertex w, and new edges \{u,w\} and \{v,w\} the new graph H has vertices which all have even degree, so H has an Euler tour. If we take the section of the euler tour which does not include w, we have an Euler path that starts with u and ends with v\\
+	\end{itemize}
+	
+	\section{Trees}
+	\subsection*{5.1 Trees}
+	\myt{5.1.1 Definition:} A tree is a connected graph with no cycles.\\
+	\myt{Definition:} A forest is a graph with no cycles\\
+	
+	\myt{5.1.2 Lemma:} there is a unique path between every pair of vertices u and v in a tree T.\\
+	
+	\myt{5.1.3 Lemma:} Every edge of a tree T is a bridge.\\
+	
+	\myt{5.1.4 Theorem:} A tree with at least two vertices has at least two vertices of degree one.\\
+	
+	\myt{5.1.5 Theorem:} If T is a tree, then $|E(T)| = |V(T)| - 1$\\
+	
+	\myt{Definition:} A leaf in a tree is a vertex of degree 1\\
+	\myt{Theorem:} Every tree with at least two vertices has at least two leaves\\
+	
+	\myt{Theorem:} A tree is bipartite\\
+	
+	\subsection*{5.2 Spanning Trees}
+	\myt{Definition:} T is a spanning tree of G if T is a subgraph of G that is a tree and uses every vertex in G\\
+	
+	\myt{5.2.1 Theorem:} A graph G is connected if and only if it has a spanning tree\\
+	
+	\myt{5.2.2 Corollary:} If G is connected, with p vertices and q = p - 1 edges, then G is a tree.\\
+	
+	\myt{Theorem:} Let G be a graph with n vertices. If any of the two following points are true then G is a tree:\\
+	\begin{itemize}
+		\item G is connected
+		\item G has no cycles
+		\item G has n-1 edges
+	\end{itemize}
+	
+	\myt{Theorem:} If T is a spanning tree of G and e is an edge in E(G)/E(T) then T + e  contains exactly one cycle C. Moreover, if e' is any edge in C then T + e - e' is also a spanning tree of G.\\
+	
+	\subsection*{5.3 Characterizing Bipartite Graphs}
+	\myt{5.3.1 Lemma:} An odd cycle is not bipartite\\
+	
+	\myt{5.3.2 Theorem:} A graph is bipartite if and only if it has no odd cycles\\
+	
+	\myt{5.3.3 Lemma:} Let T be a spanning tree in a connected graph G. If G is not bipartite, then there is an odd cycle in G that uses exactly one edge not from T.\\
+	
+	\section*{7 Planar Graphs}
+	\subsection*{7.1 Planarity}
+	\myt{7.1.1 Definition:} A graph G is planar if it has a drawing in the plan so that its edges intersect only at their ends, and so that no two vertices coincide. The actual drawing is called a planar embedding of G or a planar map\\
+	
+	\myt{Defnition:} A face of a planar embedding is an area surrounded by edges. The degree of a face is the number of edges that surround it.\\
+	
+	\myt{7.1.2 Theorem:} If we have a planar embedding of a connected graph G with faces $f_1, ...f_s$ then\\
+	$$\sum_{i=1}^{s}deg(f_i) = 2|E(G)|$$
+	(Handshaking Lemma for Faces\\)
+	
+	\myt{7.1.3 Corollary:} if the connected graph G has a planar embedding with f faces, the average degree of a face in the embeddings is $\frac{2|E(G)|}{f}$\\
+	
+	\myt{Jordan Curve Theorem:} Every simple closed curve on the plane, seperates the plane into two parts\\
+	
+	\subsection*{7.2 Euler's Formula}
+	\myt{7.2.1 Theorem:} (Euler's Formula) Let G be a connected graph with p vertices and q edges. If G has a planar embedding with f faces, then:\\
+	$$p - q + f = 2$$
+	
+	\subsection*{7.4 Platonic Solids}
+	\myt{Definition:} A connected graph is platonic if it has an embedding where every vertex has the same degree($>$ 3)\\
+	
+	\myt{7.4.1 Theorem:} There are exactly five platonic graphs\\
+	
+	\myt{7.4.2 Lemma:} Let G be a planar embedding with p vertices and q edges and s faces, in which each vertex has degree $\geq$ 3 and each face has degree $d^* \geq 3$. Then (d,$d^*$) is one of the five pairs:\\
+	\{(3,3),(3,4),(4,3),(3,5),(5,3)\}\\
+	
+	\myt{7.4.3 Lemma:} If G is a platonic graph with p vertices and q edges and f faces, where each vetex has degree d and each face degree $d^*$ then:\\
+	$$q = \frac{2dd^*}{2d + 2d^* - dd^*}$$
+	and $p = 2q/d$ and $f = 2q/d^*$\\
+	
+	\subsection*{7.5 Nonplanar Graphs}
+	\myt{7.5.1 Lemma:} If G is connected and not a tree, then in a planar embedding of G, the boundary of each face contains a cycle\\
+	
+	\myt{7.5.2 Lemma:} Let G be a planar embedding with p vertices and q edges. If each face of G has degree at least $d^*$ then $(d^* - 2)q \leq d^*(p-2)$.\\
+	
+	\myt{7.5.3 Theorem:} In a connected planar graph with $p \geq 3$ vertices and q edges we have:\\
+	$$q \leq 3p - 6$$
+	
+	\myt{7.5.4 Corollary:} $K_5$ is not planar\\
+	
+	\myt{7.5.5 Corollary:} A planar graph has a vertex of degree at most five.\\
+	
+	\myt{7.5.6 Lemma:} $K_{3,3}$ is not planar\\
+	
+	\subsection*{7.6 Kuratowski's Theorem:}
+	
+	\myt{Definition:} An edge subdivision of a graph G is obtained by applying the following operation, independentyl, to each edge of G: replace the edge by a path of legnth 1 or more; if the path has length m $>$ 1, then there are m-1 new vertices and m-1 new edges created; if the path has length m = 1, then the edge is unchanged.\\
+	
+	\myt{7.6.1 Theorem:} A graph is not planar if and only if it has a subgraph that is an edge subdivision of $K_5$ or $K_{3,3}$\\
+	
+	\subsection*{Colouring and Planar Graphs}
+	\myt{7.7.1 Definition:} A k-colouring of a graph G is a function from V(G) to a set of size k (whose elements are called colours), so that adjacent vertices always have different colours. A graph with k-colouring is called a k-colourable graph.\\
+	
+	\myt{Theorem:} If a graph 
+	
+	\myt{7.7.2 Theorem:} A graph is 2-colourable if and only if it is bipartite\\
+	
+	\myt{7.7.3 Theorem:} $K_n$ is n-colourable and not k-colourable for any $K < n$.\\
+	
+	\myt{7.7.4 Theorem:} Every planar graph is 6-colourable\\
+	
+	\myt{7.7.5 Definition:} Let G be a graph and let e = \{x,y\} be an edge of G. The graph G/e obtained from G by contracting the edge e is the graph with the vertex set V(G)/\{x,y\} $\cup$ \{z\} where z is a new vertex and the edge set:\\
+	$$\{\{u,v\} \in E(G) : \{u,v\} \cap \{x,y\} = \emptyset\}: u \notin \{x,y\},\{u,w\} \in E(G) \exists w \in \{x,y\}\}$$
+	
+	\myt{7.7.6 Theorem:} Every planar graph is 5-colourable\\
+	
+	\myt{7.7.7 Theorem:} Every planar graph is 4-colourable\\
+
+	\subsection*{7.8 Dual Planar Maps}
+	\myt{Definition:} Let G be a planar graph with an embedding. The dual G* of the embedding has one vertex $v_f$ corresponding to each face f of G, and for each edge in G whose two sides are $f_1, f_2$, G* has a corresponding edge $v_{f_1}, v_{f_2}$\\
+	
+	Properties of Duality:\\
+	\begin{itemize}
+		\item If G is planar then G* is also planar
+		\item (G*)* = G
+		\item - \# of faces in G = \# of vertices in G*\\
+		\# of vertices in G = \# of faces in G*\\
+		\# of edges in G = \# of edges in G*
+		\item The degree of a vertex in G is the degree of the corresponding face in G*
+		\item The dual of a platonic graph is platonic
+	\end{itemize}
+	
+	\myt{Theorem:} The dual of a Eularian planar graph is bipartite\\
+	
+	\section*{8 Matchings}
+	\subsection*{8.1 Matching}
+	
+	\myt{Definition:} A matching of a graph G is a set of M edges of G such that no two edges in M have a common end.
+	
+	\myt{Definitions:} We say that a vertex v of G is saturated by M, or that M saturates v if v is incident with an edge in M.
+	
+	\myt{Definition:} Maximum Matching is the largest amount of matchings in a graph G. A perfect matching is when the number of matchings is with the number of vertices p, \# of matchings = p/2\\
+	
+	\myt{Definition:} If we have a matching M of G, we say that a path $v_0v_1v_2...v_n$ is an alternating path with respect to M if one of the following is true:\\
+	\begin{itemize}
+		\item \{$v_i,v_{i+1}$\}$\in$ M if i is even and $\{v_i,v_{i+1}\} \notin M$ if i is odd
+		\item \{$v_i,v_{i+1}$\}$\notin$ M if i is even and $\{v_i,v_{i+1}\} \in M$ if i is odd
+	\end{itemize}
+	
+	\myt{Definition:} An augmenting path with respect to M is an alternating path joining two distinct vertices neither of which is saturated by M.
+	
+	\myt{8.1.1 Lemma} If M has an augmenting path, it is not a maximum matching.\\
+	
+	\myt{8.1.1 Lemma(part2)} If there is no augmenting path with respect to M then M is a maximum matching.\\
+	
+	\subsection*{8.2 Covers}
+	\myt{Defintion:} A vertex cover C of a graph G is a set of vertices such that each edge in G has at least one end in C\\
+	
+	\myt{8.2.1 Lemma} If M is a matching of G and C is a cover of G then $|M| \leq |C|$\\
+	
+	\myt{8.2.2 Lemma} IF M is a matching and C is a cover and $|M| = |C|$ then M is a maximum matching and C is a minimum cover\\
+	
+	\subsection*{8.3 Konig's Theorem}
+	\myt{8.3.1 Theorem(Konig's Theorem)} In a bipartite graph the maxmimum size of a matching is the minimum size of a cover\\
+	
+	\myt{XY-Construction} Find all possible alternating paths starting at an unsaturated vertex in A. Any Augumenting path that starts in A must end in B\\
+	
+	\myt{8.3.2 Lemma} Let M be a matching of a bipartite graph G with bipartition A,B and let X and Y are sets of an XY construction.\\
+	\begin{enumerate}
+		\item There is no edge of G from X to B/Y
+		\item C = $Y \cup (A/X)$ is a cover of G
+		\item There is no edge of M from Y to A/X
+		\item $|M| = |C| - |U|$ where U is the set of unsaturated vertices in Y
+		\item There is an augumenting paht to each vertex in U
+	\end{enumerate}
+	
+	\subsection*{8.4 Applications of Konig's Theorem}
+	\myt{8.4.1 Theorem(Hall's Theorem)} A bipartite graph G with bipartition A, B has a matching saturating every vertex in A, if and only if every subset D of A satisfies:\\
+	$$|N(D)| \geq |D|$$
+	where N(D) are the neightbour set of D\\
+	
+	\myt{Corollary} If G is a K-regular bipartite graph with k$\geq 1$ then G has a perfect matching\\
 	
 	
 
