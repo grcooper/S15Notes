@@ -1,0 +1,216 @@
+\documentclass[12pt]{article}
+
+\setlength\parindent{0pt}
+\newcommand{\myt}[1]{\textbf{\underline{#1}}}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\title{\vspace{-15ex}CS 241 Final Review Session\vspace{-1ex}}
+\date{August 7th, 2015}
+\author{Graham Cooper}
+
+\begin{document}
+	\maketitle
+	Summary:\\
+	\begin{itemize}
+		\item Top Down Parsing
+		\item Bottom up Parsing
+		\item Error Checking
+		\item Code Generation
+		\item Optimization
+		\item Memory management
+	\end{itemize}
+	
+	\section*{Top Down Parsing}
+	LL(1)\\
+	$First(\gamma) = \{b| \gamma \implies *b\beta for some \beta \}$\\
+	$Follow(A) = \{c | S' \implies \alpha A c \beta$ for some $\alpha, \beta$ \}\\
+	$Predict(A,a) = \{A \implies \gamma | a \in First(\gamma)$ or ($\gamma$ is nullable and $a \in$ Follow(A))\}\\
+	
+	\subsection*{Problem 1}
+	(SUBTRACT 1 from all of the rules)
+	\begin{enumerate}
+		\item $S' \rightarrow \vdash S \dashv$
+		\item $S \rightarrow aYb$
+		\item $S \rightarrow XS$
+		\item $y \rightarrow ccZy$
+		\item $y \rightarrow \epsilon$
+		\item $X \rightarrow dZe$
+		\item $Z \rightarrow f$
+		\item $Z \rightarrow \epsilon$
+	\end{enumerate}
+	first(S') = \{$\vdash $\}\\
+	first(S) = \{a,d\}\\
+	first(y) = \{c\}\\
+	first(X) = \{d\}\\
+	first(Z) = \{f\}\\
+	
+	Epsilon does not appear in any of the above sets as it is a string containing NO TERMINALS\\
+	
+	follow(S')=\{\}\\
+	follow(S) = \{$\dashv$\}\\
+	follow(y) = \{b\}\\
+	follow(X) = \{a,d\}\\
+	follow(Z) = \{c,e,b\}\\
+	
+	\begin{tabular}{c | c | c | c | c | c | c | c | c}
+		& $\vdash$ & $\dashv$ & a & b & c & d & e & f \\ \hline
+		S'& 0 & & & & & & & \\
+		S & & & 1 & & & 2 & & \\
+		y & & & & 4 & 3 & & & \\
+		X & & & & & & 5 & & \\
+		Z & & & & 7 & 7 & & 7 & 6 \\
+	\end{tabular}
+	
+	To go through this, go through the rules and check the first of the left hand side, and put the state in the appropriate box\\
+	Then find all nullables and include the follow of the left hand side of the rule.\\
+	
+	Since there is no cell with more than 1 item it is LL(1)\\
+	
+	PARSE:\\
+	\begin{tabular}{c | c | c }
+		Action & TOP Stack BOTTOM & Unread \\ \hline
+		init & S' & $\vdash dfeaccb \dashv$ \\
+		expand 0 & $\vdash S \dashv$ & $\vdash dfeaccb \dashv$\\
+		match $\vdash$ & S $\dashv$ & dfeaccb$\dashv$\\
+		expand 2 & XS $\dashv$ & dfeaccb $\dashv$\\
+		expand 5 & dZeS $\dashv$ & dfeaccb $\dashv$\\
+		match d & ZeS $\dashv$ & feaccb $\dashv$\\
+	\end{tabular}
+	
+	\section*{Bottom Up Parsing}
+	(rules are correct for this one)\\
+	$\vdash$ababaab$\dashv$\\
+	\begin{enumerate}
+		\item $S' \rightarrow \vdash X \dashv$
+		\item $X \rightarrow XbAb$
+		\item $X \rightarrow XaBa$
+		\item $X \rightarrow \epsilon$
+		\item $A \rightarrow An$
+		\item $A \rightarrow \epsilon$
+		\item $B \rightarrow Bb$
+		\item $B \rightarrow \epsilon$
+	\end{enumerate}
+	
+	\begin{tabular}{c | c | c | c}
+		0 $\vdash$ S 3 & 3 a R 3 & 5 a S 9 & 8 a S 2 \\
+		1 a R 1 & 3 b R 3 & 5 b S 1 & 8 b S 6 \\
+		1 b R 1 & 3 $\dashv$ R 3 & 6 a R 6 & 9 a R 4 \\
+		1 $\dashv$ R 1 & 3 X S 10 & 6 b R 6 & 9 b R 4 \\
+		2 a R 2 & 4 a R 5 & 7 a R 7 & 10 a S 7 \\
+		2 b R 2 & 4 b R 5 & 7 b R 7 & 10 b S 4 \\
+		2 $\dashv$ R 2 & 4 A S 5 & 7 B S 8 & 10 $\dashv$ S 11 \\
+	\end{tabular}
+	
+	\begin{tabular}{c | c | c }
+		Action & STACK & Unread Input \\ \hline
+		init & 0 & $\vdash$ ababaab $\dashv$\\
+		shift $\vdash$ & 0 $\vdash$ 3 & ababaab $\dashv$ \\
+		reduce 3, & 0 $\vdash$ 3 X 10 & ababaab $\dashv$ \\
+		shift a & 0 $\vdash$ 3 X 10 a 7 & babaab $\dashv$ \\
+		reduce 7 & 0 $\vdash$ 3 X 10 a 7 B 8 & babaab $\dashv$ \\
+		shift b & 0 $\vdash$ 3 X 10 a 7 B 8 b 6 & abaab $\dashv$ \\
+		reduce 6 & 0 $\vdash$ 3 X 10 a 7 B 8 & abaab $\dashv$ \\
+		shift a & 0 $\vdash$ 3 X 10 a 7 B 8 a 2 & baab $\dashv$ \\
+		reduce 2 & 0 $\vdash$ 3 X 10 & baab $\dashv$\\
+	\end{tabular}
+	
+	When do we accept/reject? \\
+	- accept on empty stack and empty input
+	- reject on bad input or if only one of stack or input is empty
+	
+	\section*{Error Checking}
+	\begin{verbatim}
+	int wain(int * a, int *b){
+	-- int c = 5;
+	-- if(c !=== a){
+	-- -- *(a + 4) = c;
+	-- }
+	-- return b;
+	}
+	\end{verbatim}
+	errors:\\
+	scanning, semantic or syntax\\
+	\begin{itemize}
+		\item int * b is a semantic error (type)
+		\item !=== a is a scanning error
+		\item Must have an else case (parsing error = syntax)
+		\item return has a to return an int (semantic)
+	\end{itemize}
+	
+	\section*{Code Generation}
+	\subsection*{Want to add simple for loop}
+		\begin{itemize}
+			\item exactly one assignment in initializer portion
+			\item exactly one test
+			\item exactly one assignment increment portion
+			\item new variables can be made in initializer portion
+		\end{itemize}
+	What do we need to change/add in WLP4 to make this work?
+	
+	Tokens:\\
+	FOR "for"\\
+	
+	Gramar:\\
+	statement $->$ for ( assign ; test ; assign ) \{ statements \}\\
+	assign $->$ lvalue becomes expr\\
+	
+	Typing:\\
+	WT(assign1) and WT(test) and WT(assign2) and WT(statements)\\
+	$\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_$\\
+	for(assign1;test;assign2)\{statements\}\\
+	
+	code(stmt $\rightarrow$ sasn1; test; assign2)\{statements\}=\\
+	code(assign1)\\
+	forX:\\
+	code(test)\\
+	for1beq \$3, \$0, skipX\\
+	code(stmts)\\
+	code(assgn2)\\
+	beq \$0, \$0, forX\\
+	skipX:\\
+	
+	\subsection*{Adding Bitshift Operators}
+	\underline{Tokens:}\\
+	$>>$ RShift\\
+	$<<$ LShift\\
+	
+	\underline{Grammar}\\
+	bitexpr $\rightarrow$ expr\\
+	bitexpr $\rightarrow$ bitexpr $<<$ expr\\
+	bitexpr $\rightarrow$ bitexpr $>>$ expr\\
+	statement $\rightarrow$ lvalue = bitexpr\\
+	
+	\underline{CODE}\\
+	code(bitexpr $\rightarrow$ bitexpr $<<$ expr)=\\
+	code(bitexpr)\\
+	push(\$3)\\
+	code(expr)\\
+	pop(\$5)\\
+	lis \$2\\
+	.word 2\\
+	topX:\\
+	beq \$3, \$0, endX\\
+	mult \$5, \$2\\
+	mflo \$5\\
+	sub \$3, \$3, \$11\\
+	beq \$0, \$0, topX\\
+	endX:\\
+	add \$3, \$5, \$0\\
+	
+	\section*{Optimization}
+	\begin{itemize}
+		\item constant propagation
+		\item constant folding
+		\item dead code elmination
+		\item common subexpression elimination
+		\item register allocation
+		\item strength reduction
+		\item procedure inlining
+		\item tail recursion
+	\end{itemize}
+	
+	
+	
+\end{document}
